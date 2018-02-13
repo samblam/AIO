@@ -1,0 +1,8 @@
+chromedriver
+faker
+pip-tools
+pytest
+pytest-bdd
+pytest-dotenv
+pytest-splinter
+splinter
