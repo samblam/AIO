@@ -1,0 +1,2 @@
+The following project is with regards to automating the process of resolving a student academic integrity offence.
+It is a web portal designed to ease the amount of emails being sent back and forth between AIOs and Professors.
