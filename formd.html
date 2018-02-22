@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Portal</title>
+        <link rel="stylesheet" href="main.css">
+        <link rel="stylesheet" href="formd.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="top-header.js"></script>
+    </head>
+    <body style="margin: auto;">
+        <div class="top-header"></div>
+        <div class="container">
+            <h2 class="form-d-title">Form D</h2>
+            <p>AIO Assessment and Recommendations</p>
+        </div>
+        <div class="form-container">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Student Name:</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="student_name" placeholder="Student Name" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Student B00:</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="b00_num" placeholder="B00 Number" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Professor Name:</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="prof_name" placeholder="Professor Name" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Class Name:</label>
+                    <div class="dropdown col-sm-2">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" id="class_name">Name <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li><a>Class #1</a></li>
+                            <li><a>Class #2</a></li>
+                            <li><a>Class #3</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-2">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" id="class_code">Code <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li><a>Code #1</a></li>
+                            <li><a>Code #2</a></li>
+                            <li><a>Code #3</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3">Allegation(s) named in AIO letter to student:</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="allegations" placeholder="Allegations" required>
+                    </div>
+                </div>
+                
+            </form>
+        </div>
+    </body>
+</html>
