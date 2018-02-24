@@ -37,9 +37,9 @@ td button{
      width:100%
 }
 
-thead{
+thead.cases-table{
     background-color: black; 
-    font-style: oblique; 
+    font-style: oblique;
     color: white
 }
 
