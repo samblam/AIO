@@ -33,6 +33,15 @@ a {
 b, strong {
     font-weight: 600;
 }
+td button{
+     width:100%
+}
+
+thead{
+    background-color: black; 
+    font-style: oblique; 
+    color: white
+}
 
 samp {
     display: none;

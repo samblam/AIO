@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Portal</title>
+        <link rel="stylesheet" href="main.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    </head>
+    <body style="margin: auto;">
+       
+        <!-- Headder div + Logout button -->
+        <div>
+            <button class="btn btn-default pull-right" style="font-size: 16px;">Logout</button>
+            <h2>Active Cases</h2>
+        </div>
+        <br>
+        
+        <!-- Newcase button div -->
+        <div>
+            <span class="pull-right">
+                <button class="btn btn-success" style="font-size: 16px;">NewCase</button>
+            </span>
+        </div>
+        
+        <!-- Table div -->
+        <div style="padding-top: 40px">
+            <table class="table table-bordered" style="font-size: 14px;">
+                <thead>
+                    <tr>
+                        <th>Student(s) Banner</th>
+                        <th>Student(s) Name</th>
+                        <th>AIO</th>
+                        <th>Action required</th>
+                        <th>View</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>B00000001</td>
+                        <td>Mark Otto</td>
+                        <td>Fred</td>
+                        <td><button class="custombtn btn btn-danger">Yes</button></td>
+                        <td><button class="btn btn-primary">View Case</button></td>
+                    </tr>
+                    <tr>
+                        <td>B00000002</td>
+                        <td>Moe</td>
+                        <td>Fred</td>
+                        <td>No</td>
+                        <td><button class="btn btn-primary">View Case</button></td>
+                    </tr>
+                    <tr>
+                        <td>B00000003</td>
+                        <td>Dooley</td>
+                        <td>Matt</td>
+                        <td>No</td>
+                        <td><button class="btn btn-primary">View Case</button></td>               
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
