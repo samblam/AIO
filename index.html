@@ -5,7 +5,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Portal</title>
-        <link rel="stylesheet" href="main.css">
+        <link rel="stylesheet" href="/CSS/main.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -17,31 +17,31 @@
         <!-- Main Navagation tabs, each containing their own logins -->
         
         <ul class="nav nav-pills nav-justified">
-            <li class="active"><a data-toggle="tab" href="#Aio">AIO</a></li>
-            <li><a data-toggle="pill" href="#Prof">Professor</a></li>
+            <li class="active"><a data-toggle="tab" href="#Prof">Professor</a></li>
+            <li><a data-toggle="pill" href="#Aio">AIO</a></li>
             <li><a data-toggle="pill" href="#Admin">Admin</a></li>
         </ul>
         
-            <div class="tab-content">
-                <div id="Aio" style="margin-left: 10px" class=" rounded tab-pane fade in active">
-                    <br>
-                    <input style="margin-bottom: 3px" placeholder="CS ID"><br>
-                    <input style="margin-bottom: 3px" placeholder="Password"><br>
-                    <button> Login </button>
-                </div>
-
+            <div class="tab-content">   
                 <div id="Prof" style="margin-left: 10px" class="tab-pane fade">
                     <br>
                     <input style="margin-bottom: 3px" placeholder="CS ID"><br>
                     <input style="margin-bottom: 3px" placeholder="Password"><br>
-                    <button> Login </button>
+                    <a href="/HTML/ProfessorActiveCasses.html" class="btn btn-info" role="button">Login</a>
+                </div>
+
+                <div id="Aio" style="margin-left: 10px" class=" rounded tab-pane fade in active">
+                    <br>
+                    <input style="margin-bottom: 3px" placeholder="CS ID"><br>
+                    <input style="margin-bottom: 3px" placeholder="Password"><br>
+                    <a href="/HTML/AioActiveCasses.html" class="btn btn-info" role="button">Login</a>
                 </div>
 
                 <div id="Admin" style="margin-left: 10px" class="tab-pane fade">
                     <br>
                     <input style="margin-bottom: 3px" placeholder="CS ID"><br>
                     <input style="margin-bottom: 3px" placeholder="Password"><br>
-                    <button> Login </button>
+                    <a href="#" class="btn btn-info" role="button">Login</a>
                 </div>
             </div>
     </body>
