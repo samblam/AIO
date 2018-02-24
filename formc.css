@@ -1,0 +1,16 @@
+.form-d-title {
+    margin-top: 1.3em;
+    margin-bottom: 0px;
+}
+.form-container {
+    margin-top: 25px;
+    margin-left: 15px;
+}
+
+.form-horizontal .form-group .control-label {
+    text-align: left;
+}
+
+.date-form {
+    text-align: center;
+}
