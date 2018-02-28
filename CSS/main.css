@@ -33,6 +33,15 @@ a {
 b, strong {
     font-weight: 600;
 }
+td button{
+     width:100%
+}
+
+thead.cases-table{
+    background-color: black; 
+    font-style: oblique;
+    color: white
+}
 
 samp {
     display: none;
@@ -57,4 +66,8 @@ img {
         -webkit-filter: grayscale(0%);
         filter: grayscale(0%);
     }
+}
+
+.top-header{
+    margin-left: 15px;
 }
