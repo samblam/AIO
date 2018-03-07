@@ -13,7 +13,7 @@ body {
     line-height: 1.5;
     margin: 0 auto;
   /*  max-width: 800px;*/
-    padding: 2em 2em 4em;
+    padding: 2em 2em 4em; 
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -55,13 +55,23 @@ img {
     border-style: solid;
     border-color: black;
     border-radius: 17px;
-/*    margin-top:25px;
-    margin-bottom: 25px; */
     margin:20px;
 }
 
 .spacing {
     margin-top:20px;
+}
+
+#addStudent {
+    margin-LEFT: 15px;
+    MARGIN-BOTTOM: 15px;
+}
+
+/* copied from main.css to add black styling to table heads */
+thead.cases-table{
+    background-color: black; 
+    font-style: oblique;
+    color: white
 }
 
 @keyframes colorize {
