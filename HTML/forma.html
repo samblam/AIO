@@ -2,14 +2,14 @@
 <html lang="en">
     <head>  
         <title>Form A</title>
-        <link rel="stylesheet" href="/CSS/formA.css">
+        <link rel="stylesheet" href="../CSS/formA.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js">
         </script>
         
-        <!-- Dream's header -->
-        <script src="/JS/top-header.js"></script>
+        <!--the header -->
+        <script src="../JS/top-header.js"></script>
         <!-- this adds a new student row when the button is clicked -->
         <script>
             function add_Student() {
@@ -17,7 +17,7 @@
             }
         </script>
     </head>
-    <!-- I think these are obsolete now -->
+    <!-- original header. Comment out when replaced with a standard one -->
     <header class="container">
         <!-- buttons for back and login-->
         <button type="button" class="btn btn-default col-sm-2 ">Back</button>
@@ -110,7 +110,7 @@
                 <p class="col-sm-11">Please describe the incident below or attach a memo. Please attach the original piece of work in which the offence occurred, the class syllabus, and any supporting material. If there are comparisons to be noted between documents (e.g., sections of a paper assignment and Urkund results), instructors are asked to clearly mark relevant sections in ink or highlighter.</p>
             </div>
             
-            <!-- file input for evidence. Does this allow user to remove files?-->
+            <!-- file input for evidence. Needs to append to files selected, not replace. Should be able to remove files too.-->
             <br>
             <div class="form-group row">
                 <label for="fileInput" class="col-sm-3">Evidence</label>
@@ -125,7 +125,6 @@
             </div> 
             
             </form>
-        <!--save button, submit button-->
         <!--save button, submit button-->
         <div class="row">
             <div class="col-sm-4"></div>
