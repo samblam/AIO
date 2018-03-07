@@ -27,7 +27,7 @@
         <br>
         
         <!-- Division for general information info. -->
-        <div class="form-horizontal">
+        <form class="form-horizontal">
             
             <div class="form-group">
                 <label for="aioName" class="col-sm-3 control-label">AIO Name:</label>
@@ -86,7 +86,7 @@
             
             <br>
             
-            <label class="col-sm-offset-1 col-sm-10">Name and Email of instructor authorized to submit grades, if different from above:</label>
+            <label>Name and Email of instructor authorized to submit grades, if different from above:</label>
             <div class="form-group">
                 <label for="profName"  class="col-sm-3 control-label">Instructor Name:</label>
                 <div class="col-sm-8">
@@ -100,12 +100,12 @@
                     <input type="text" class="form-control" style="margin-bottom: 3px" placeholder="Email" id="profEmail">
                 </div>
             </div>  
-        </div>
+        </form>
         
         <br>
         
         <!-- Division for section A. -->
-        <div class="form-horizontal">
+        <form class="form-horizontal">
             
             <!-- Section A checkbox -->
             <div class="form-group">
@@ -135,7 +135,7 @@
                         <input type="date" class="form-control" style="margin-bottom: 3px" id="allegationStudent">
                     </div>
                     
-                    <label for="allegationMeeting" class="col-sm-offset-3 col-sm-5 control-label">Date(s) of AIO Meetings with Sudent(s):</label>
+                    <label for="allegationMeeting" class="col-sm-offset-3 col-sm-5 control-label">Date of AIO Meeting with Sudent:</label>
                     <div class="col-sm-3">
                         <input type="date" class="form-control" style="margin-bottom: 3px" id="allegationMeeting">
                     </div>
@@ -166,10 +166,10 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
         
         <!-- Division for section B. -->
-        <div class="form-horizontal">
+        <form class="form-horizontal">
             
             <!-- Section B checkbox -->
             <div class="form-group">
@@ -184,7 +184,7 @@
             <div class="form-group">
                 <div class="section-b-content" id="section-b-content" style="display: none">
                     
-                    <label class="col-sm-offset-3">Reason for referral:</label>
+                    <label class="col-sm-offset-3 col-sm-3 control-label">Reason for referral:</label>
                     <div class="checkbox col-sm-offset-3 col-sm-8">
                         <label>
                             <input type="checkbox">Student has prior offence on record and this is not a common allegation.
@@ -197,8 +197,8 @@
                         </label>
                     </div>
                     
-                    <label for="reason" class="col-sm-5 control-label">Reason:</label>
-                    <div class="col-sm-6">
+                    <label for="reason" class="col-sm-offset-3 col-sm-1 control-label">Reason:</label>
+                    <div class="col-sm-7">
                         <input type="text" class="form-control" style="margin-bottom: 3px" placeholder="Reason" id="reason">
                     </div>
                     
@@ -221,12 +221,12 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
         
         <!-- Division for the signature, and date -->
-        <div class="form-horizontal">
+        <form class="form-horizontal">
             <div class="form-group">
-                <label for="aoiSignature" class="col-sm-3 control-label">AIO Signature</label>
+                <label for="aoiSignature" class="control-label col-sm-3 ">AIO Signature</label>
                 <div class="dropdown col-sm-8">
                     <input type="text" class="form-control" style="margin-bottom: 3px" placeholder="Signature" id="aioSignature">
                 </div>
@@ -237,7 +237,7 @@
                     <input type="date" class="form-control" style="margin-bottom: 3px" id="signDate">
                 </div>
             </div>
-        </div>
+        </form>
         
         <!-- Division for the submit button. -->
         <div>
