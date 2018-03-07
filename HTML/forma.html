@@ -2,9 +2,10 @@
 <html lang="en">
     <head>  
         <title>Form A</title>
+        <!-- css for this page -->
         <link rel="stylesheet" href="../CSS/formA.css">
+        <!-- bootstrap imports-->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js">
         </script>
         
@@ -17,7 +18,7 @@
             }
         </script>
     </head>
-    <!-- original header. Comment out when replaced with a standard one -->
+    <!-- original header. delete when replaced with standardized header -->
     <header class="container">
         <!-- buttons for back and login-->
         <button type="button" class="btn btn-default col-sm-2 ">Back</button>
@@ -71,7 +72,7 @@
                 <div class="col-sm-4">
                     <select id="coursePicker" class="form-control" required>
                     <option selected>Choose..</option>
-                        <!-- need to have course list grabbed from elsewhere? -->
+                        <!-- these options need to pull from list of courses (?) -->
                     <option>CSCI 2132 &nbsp;- Software Development</option>
                     <option>CSCI 1000 &nbsp;- Computer Science I</option>
                     </select>
@@ -97,7 +98,7 @@
                 <button id="addStudent" onClick="add_Student()" class="btn btn-success">+ Student</button>
             </div>
             
-            <!--date of allegation - date chooser is not functional atm-->
+            <!--date of allegation -->
             <div class="form-group row">
                 <label class="col-sm-3">Date of Alleged Offense:</label>
                 <div class="col-sm-4">                    
