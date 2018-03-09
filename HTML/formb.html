@@ -21,37 +21,42 @@
     <!-- Form B -->
     
     <body style="margin: auto;">
+<<<<<<< HEAD
         <h2 style="text-align: center">Form B</h2>
+=======
+        <div class="top-header"></div>
+        <h2 style="text-align: left">Form B</h2>
+>>>>>>> master
         <br>
         
         <!-- Division for general information info. -->
-        <div class="form-horizontal">
+        <form class="form-horizontal">
             
             <div class="form-group">
                 <label for="aioName" class="col-sm-3 control-label">AIO Name:</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" style="margin-bottom: 3px" placeholder="Name" id="aioName">
+                    <input type="text" class="form-control" style="margin-bottom: 3px" placeholder="Name" id="aioName" required>
                 </div>
             </div>
             
             <div class="form-group">
                 <label for="profName" class="col-sm-3 control-label">Instructor Name:</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" style="margin-bottom: 3px" placeholder="Name" id="profName">
+                    <input type="text" class="form-control" style="margin-bottom: 3px" placeholder="Name" id="profName" required>
                 </div>
             </div>
                 
             <div class="form-group">
                 <label for="profEmail" class="col-sm-3 control-label">Instructor Email:</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" style="margin-bottom: 3px" placeholder="Email" id="profEmail">
+                    <input type="text" class="form-control" style="margin-bottom: 3px" placeholder="Email" id="profEmail" required>
                 </div>
             </div>
             
             <div class="form-group">
                 <label class="col-sm-3 control-label">Faculty:</label>
                 <div class="dropdown col-sm-8">
-                    <select class="selectpicker" id="faculty" data-show-subtext="true" data-live-search="true"> 
+                    <select class="selectpicker" id="faculty" data-show-subtext="true" data-live-search="true" required> 
                         <option data-subtext="Faculty of Computer Science">FCS</option>
                     </select>
                 </div>
@@ -62,18 +67,20 @@
             <div class="form-group">
                 <label for="studentName" class="col-sm-3 control-label">Student Name:</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" style="margin-bottom: 3px" placeholder="Name" id="studentName">
+                    <input type="text" class="form-control" style="margin-bottom: 3px" placeholder="Name" id="studentName" required>
                 </div>
+            </div>
+            <div class="form-group">
                 <label for="studentNumber" class="col-sm-3 control-label">Student ID:</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" style="margin-bottom: 3px" placeholder="B00" id="studentNumber">
+                    <input type="text" class="form-control" style="margin-bottom: 3px" placeholder="B00" id="studentNumber" required>
                 </div>
             </div> 
             
             <div class="form-group">
                 <label class="col-sm-3 control-label">Class Name:</label>
                 <div class="dropdown col-sm-8">
-                    <select class="selectpicker" id="class-name" data-show-subtext="true" data-live-search="true"> 
+                    <select class="selectpicker" id="class-name" data-show-subtext="true" data-live-search="true" required> 
                         <option data-subtext="Communication Skills: Oral and Written">CSCI 2100</option>
                             <option data-subtext="Network Security">CSCI 4174</option>
                             <option data-subtext="Introduction to web site creation">INFX 1606</option>
@@ -84,7 +91,7 @@
             
             <br>
             
-            <label class="col-sm-offset-1 col-sm-10">Name and Email of instructor authorized to submit grades, if different from above:</label>
+            <label>Name and Email of instructor authorized to submit grades, if different from above:</label>
             <div class="form-group">
                 <label for="profName"  class="col-sm-3 control-label">Instructor Name:</label>
                 <div class="col-sm-8">
@@ -98,12 +105,12 @@
                     <input type="text" class="form-control" style="margin-bottom: 3px" placeholder="Email" id="profEmail">
                 </div>
             </div>  
-        </div>
+        </form>
         
         <br>
         
         <!-- Division for section A. -->
-        <div class="form-horizontal">
+        <form class="form-horizontal">
             
             <!-- Section A checkbox -->
             <div class="form-group">
@@ -120,31 +127,31 @@
                     
                     <label for="allegationDate" class="col-sm-offset-3 col-sm-5 control-label">Date of allegation by Instructor:</label>
                     <div class="col-sm-3">
-                        <input type="date" class="form-control" style="margin-bottom: 3px" id="allegationDate">
+                        <input class="form-control" placeholder="MM/DD/YYYY" style="margin-bottom: 3px" id="allegationDate" >
                     </div>
                     
                     <label for="allegationReceived" class="col-sm-offset-3 col-sm-5 control-label">Date of allegation and supporting documents received by AIO:</label>
                     <div class="col-sm-3">
-                        <input type="date" class="form-control" style="margin-bottom: 3px" id="allegationReceived">
+                        <input class="form-control" placeholder="MM/DD/YYYY" style="margin-bottom: 3px" id="allegationReceived" >
                     </div>
                     
                     <label for="allegationStudent" class="col-sm-offset-3 col-sm-5 control-label">Date AIO allegation letter sent to student:</label>
                     <div class="col-sm-3">
-                        <input type="date" class="form-control" style="margin-bottom: 3px" id="allegationStudent">
+                        <input class="form-control" placeholder="MM/DD/YYYY" style="margin-bottom: 3px" id="allegationStudent" >
                     </div>
                     
-                    <label for="allegationMeeting" class="col-sm-offset-3 col-sm-5 control-label">Date(s) of AIO Meetings with Sudent(s):</label>
+                    <label for="allegationMeeting" class="col-sm-offset-3 col-sm-5 control-label">Date of AIO Meeting with Sudent:</label>
                     <div class="col-sm-3">
-                        <input type="date" class="form-control" style="margin-bottom: 3px" id="allegationMeeting">
+                        <input class="form-control" placeholder="MM/DD/YYYY" style="margin-bottom: 3px" id="allegationMeeting" >
                     </div>
                     
                     <label class="col-sm-offset-3 col-sm-5 control-label">Did instructor attend meeting:</label>
                     <div class="col-sm-3">
                         <label class="radio-inline">
-                            <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> Yes.
+                            <input type="radio" name="inlineRadioOptions" style="margin-bottom: 3px" id="inlineRadio1" value="option1"> Yes.
                         </label>
                         <label class="radio-inline">
-                            <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> No.
+                            <input type="radio" name="inlineRadioOptions" style="margin-bottom: 3px" id="inlineRadio2" value="option2"> No.
                         </label>
                     </div>
                     
@@ -156,18 +163,18 @@
                     <label class="col-sm-offset-3 col-sm-5 control-label">Is this a common allegation:</label>
                     <div class="col-sm-3">
                         <label class="radio-inline">
-                            <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> Yes.
+                            <input type="radio" name="inlineRadioOptions" style="margin-bottom: 3px" id="inlineRadio1" value="option1"> Yes.
                         </label>
                         <label class="radio-inline">
-                            <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> No.
+                            <input type="radio" name="inlineRadioOptions" style="margin-bottom: 3px" id="inlineRadio2" value="option2"> No.
                         </label>
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
         
         <!-- Division for section B. -->
-        <div class="form-horizontal">
+        <form class="form-horizontal">
             
             <!-- Section B checkbox -->
             <div class="form-group">
@@ -182,7 +189,7 @@
             <div class="form-group">
                 <div class="section-b-content" id="section-b-content" style="display: none">
                     
-                    <label class="col-sm-offset-3">Reason for referral:</label>
+                    <label class="col-sm-offset-3 col-sm-3 control-label">Reason for referral:</label>
                     <div class="checkbox col-sm-offset-3 col-sm-8">
                         <label>
                             <input type="checkbox">Student has prior offence on record and this is not a common allegation.
@@ -195,8 +202,8 @@
                         </label>
                     </div>
                     
-                    <label for="reason" class="col-sm-5 control-label">Reason:</label>
-                    <div class="col-sm-6">
+                    <label for="reason" class="col-sm-offset-3 col-sm-1 control-label">Reason:</label>
+                    <div class="col-sm-7">
                         <input type="text" class="form-control" style="margin-bottom: 3px" placeholder="Reason" id="reason">
                     </div>
                     
@@ -219,23 +226,23 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
         
         <!-- Division for the signature, and date -->
-        <div class="form-horizontal">
+        <form class="form-horizontal">
             <div class="form-group">
-                <label for="aoiSignature" class="col-sm-3 control-label">AIO Signature</label>
+                <label for="aoiSignature" class="control-label col-sm-3 ">AIO Signature</label>
                 <div class="dropdown col-sm-8">
-                    <input type="text" class="form-control" style="margin-bottom: 3px" placeholder="Signature" id="aioSignature">
+                    <input type="text" class="form-control" style="margin-bottom: 3px" placeholder="Signature" id="aioSignature" required>
                 </div>
             </div>
             <div class="form-group">
                 <label for="signDate" class="col-sm-3 control-label">Date:</label>
                 <div class="date col-sm-8">
-                    <input type="date" class="form-control" style="margin-bottom: 3px" id="signDate">
+                    <input class="form-control" placeholder="MM/DD/YYYY" style="margin-bottom: 3px" id="signDate" required>
                 </div>
             </div>
-        </div>
+        </form>
         
         <!-- Division for the submit button. -->
         <div>
