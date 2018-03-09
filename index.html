@@ -5,7 +5,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Portal</title>
-        <link rel="stylesheet" href="/CSS/main.css">
+        <link rel="stylesheet" href="../CSS/main.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -16,33 +16,33 @@
         
         <!-- Main Navagation tabs, each containing their own logins -->
         
-        <ul class="nav nav-pills nav-justified">
-            <li class="active"><a data-toggle="tab" href="#Prof">Professor</a></li>
-            <li><a data-toggle="pill" href="#Aio">AIO</a></li>
-            <li><a data-toggle="pill" href="#Admin">Admin</a></li>
-        </ul>
-        
-            <div class="tab-content">   
-                <div id="Prof" style="margin-left: 10px" class="tab-pane fade">
-                    <br>
-                    <input style="margin-bottom: 3px" placeholder="CS ID"><br>
-                    <input style="margin-bottom: 3px" placeholder="Password"><br>
-                    <a href="/HTML/ProfessorActiveCasses.html" class="btn btn-info" role="button">Login</a>
-                </div>
+        <!-- Login screen ready for backend php-->
+        <form action="">
 
-                <div id="Aio" style="margin-left: 10px" class=" rounded tab-pane fade in active">
+            <div class="container">
+                <label for="uname"><b>Enter CS ID and password</b></label>
+                <br>
+                <input type="text" placeholder="Enter CS ID" name="uname" required>
+                <br>
+                <input type="password" placeholder="Enter Password" name="psw" required>
+                <br><br>
+                <!-- Roll select -->
+                <label> Login as:
                     <br>
-                    <input style="margin-bottom: 3px" placeholder="CS ID"><br>
-                    <input style="margin-bottom: 3px" placeholder="Password"><br>
-                    <a href="/HTML/AioActiveCasses.html" class="btn btn-info" role="button">Login</a>
-                </div>
-
-                <div id="Admin" style="margin-left: 10px" class="tab-pane fade">
-                    <br>
-                    <input style="margin-bottom: 3px" placeholder="CS ID"><br>
-                    <input style="margin-bottom: 3px" placeholder="Password"><br>
-                    <a href="#" class="btn btn-info" role="button">Login</a>
-                </div>
+                    <select class="selectpicker" id="login_roll"> 
+                            <option>Professor</option>
+                            <option>AIO</option>
+                            <option >Admin</option>
+                    </select>
+                </label>
+                <br>
+                <!-- 
+                Temp button links to the active case screen.
+                Use the second commented out button for when PHP is enabled.-->
+                <a href="./HTML/ProfessorActiveCases.html" class="btn btn-info" role="button">Submit</a>
+                <!-- <button class="btn btn-info" type="submit">Submit</button> -->
+                
             </div>
+        </form>
     </body>
 </html>
