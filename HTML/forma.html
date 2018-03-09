@@ -9,17 +9,9 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        
         <!--the header -->
         <script src="../JS/top-header.js"></script>
-        <!-- this adds a new student row when the button is clicked -->
-        <script>
-            function add_Student() {
-                document.getElementById('students').innerHTML += '<div class="row"><label class="col-sm-3"></label><div class="col-sm-8"><div class="input-group"><span class="input-group-addon">Student Name</span><input type="text" class="form-control" aria-label="Name"><span class="input-group-addon">Banner Number</span><input type="text" class="form-control" aria-label="B00"></div></div></div>';
-            }
-        </script>
     </head>
-    
     <body style="margin:auto;">
         <div class="top-header"></div>
         <form class="border" action="#">
@@ -73,10 +65,10 @@
                 </div>
             </div>
             <!-- student name(s) and banner id(s) -->
-            <div id="students">
+            <div>
                 <div class="row">
                     <label class="col-sm-3">Student(s): </label>
-                    <div class="col-sm-8">
+                    <div class="col-sm-8" id="students">
                         <div class="input-group">
                             <span class="input-group-addon">Student Name</span>
                             <input type="text" class="form-control" aria-label="Name" required>
@@ -89,7 +81,7 @@
             <!-- this refreshes page. try to fix if time permits -->
             <div class="row">
                 <label class="col-sm-3"></label>
-                <button id="addStudent" onClick="add_Student()" class="btn btn-success">+ Student</button>
+                <button id="addStudent" class="btn btn-success">+ Student</button>
             </div>
             
             <!--date of allegation -->
@@ -129,4 +121,11 @@
             <button type="button" class="btn btn-primary col-sm-2">Submit</button>
         </div>
     </body>
+    
+    <!-- adds student form on click -->
+    <script type="text/javascript">
+        $("#addStudent").click(function () {
+           $("#students").append('<div class="input-group"> <span class="input-group-addon">Student Name</span> <input type="text" class="form-control" aria-label="Name" required> <span class="input-group-addon">Banner Number</span> <input type="text" class="form-control" aria-label="B00" required> </div>'); 
+        });
+    </script>
 </html>
