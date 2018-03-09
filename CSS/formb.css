@@ -6,3 +6,7 @@ label{
     display:inline-block;
     text-align:left;
 }
+
+.form-horizontal .form-group .control-label {
+    text-align: left;
+}
