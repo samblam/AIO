@@ -2,11 +2,12 @@ The following project is with regards to automating the process of resolving a s
 It is a web portal designed to ease the amount of emails being sent back and forth between AIOs and Professors.
 
 # Functional Testing
-Contains all the automated functional test scripts for the AIO-automate
+Contains all the automated functional test scripts for the AIO-automate.
+Uses splinter and pytest-bdd libraries in python.
 ## Requirements
 - python 2.7
 - virtualenv and virtualenvwrapper
-- pip-tools
+- pip-tools (this will install all the requirements for you)
 
 ## How to set up dev environment for functional testing
 **Note: make sure you're in virtualenv when working on python**
@@ -46,3 +47,16 @@ To resume project:
 $workon aio-automate
 $pip-sync
 ```
+
+## Running functional tests in python
+**Note: Make sure you're in virtualenv**
+```
+pytest functiona/test_filename.py
+```
+
+## Working on test scripts
+TODO: add standards, naming
+
+## Documentations
+- [Splinter] (https://splinter.readthedocs.io/en/latest/)
+- [Pytest-bdd] (https://pypi.python.org/pypi/pytest-bdd)
