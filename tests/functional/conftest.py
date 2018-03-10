@@ -52,6 +52,11 @@ personas = {
 # Used when logging in as different user types
 def login_persona(browser, credentials):
     browser.visit(base_url())
+    ui.WebDriverWait(browser, 10).until(lambda driver: browser.find_by_name('uname'))
+    browser.find_by_name('uname').fill(credentials['username'])
+    browser.find_by_name('psw').fill(credentials['password'])
+    browser.find_by_name('LoginSubmit').click()
+    time.sleep(1)
 
 @pytest.fixture
 def credentials():
@@ -61,10 +66,13 @@ def credentials():
 
 @pytest.fixture
 def base_url():
-    try:
-        return os.environ['AIO_URL']
-    except KeyError:
-        sys.exit("Please set the environment variable AIO_URL")
+    return "https://projects.cs.dal.ca/aio/"
+    #TODO: Fix .env stuff
+    # try:
+    #     print os.environ['AIO_URL']
+    #       return os.environ['AIO_URL']
+    # except KeyError:
+    #     sys.exit("Please set the environment variable AIO_URL")
 
 @pytest.fixture
 def aio(browser):
