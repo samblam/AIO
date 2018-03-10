@@ -11,30 +11,19 @@ from pytest_bdd import (
 import utility
 import conftest as var
 
-@scenario('login.feature', 'AIO-0 AIO can login to web portal')
-def test_aio_can_login_to_web_portal():
-    """AIO-0 AIO can login to web portal."""
+@scenario('login.feature', 'AIO-0 Professor can login to web portal')
+def test_professor_can_login_to_web_portal(professor):
+    """AIO-0 Professor can login to web portal."""
 
-@scenario('login.feature', 'AIO-1 AIO can login to web portal')
-def test_aio_can_login_to_web_portal_1():
-    """AIO-1 AIO can login to web portal."""
+@given('I am in main page as Professor')
+def i_am_in_main_page_as_professor(browser):
+    """I am in main page as Professor."""
 
-@given('I am in main page')
-def i_am_in_main_page(browser):
-    """I am in main page."""
-    time.sleep(1)
-    browser.visit('http://www.google.co.th')
+@when('I click the submit button')
+def i_click_the_submit_button(browser):
+    """I click the submit button."""
 
-@when('I click on the "About" button')
-def i_click_on_the_about_button(browser):
-    """I click on the "About" button."""
-    time.sleep(2)
-    browser.find_by_text('About').click()
-    time.sleep(2)
-
-
-@then('I see "Our latest"')
-def i_see_our_latest(browser):
-    """I see "Our latest"."""
-    time.sleep(2)
-    assert browser.find_by_xpath('//a[@title="Our latest"]')
+@then('I see the Active Cases page')
+def i_see_the_active_cases_page(browser):
+    """I see the Active Cases page."""
+    assert browser.find_by_text('Active Cases')

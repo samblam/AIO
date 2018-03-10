@@ -67,7 +67,7 @@ def credentials():
 @pytest.fixture
 def base_url():
     return "https://projects.cs.dal.ca/aio/"
-    #TODO: Fix .env stuff
+    # TODO: Fix .env stuff
     # try:
     #     print os.environ['AIO_URL']
     #       return os.environ['AIO_URL']
