@@ -29,7 +29,7 @@ include 'includes/formProcess.php';
         
         <!-- Main Navagation tabs, each containing their own logins -->
         
-        <!-- Login screen ready for backend php-->
+        <!-- Login screen ready for backend php -->
 	<form action="includes/login.php" method="post">
 
             <div class="container">
