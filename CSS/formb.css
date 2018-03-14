@@ -7,6 +7,11 @@ label{
     text-align:left;
 }
 
+.form-container {
+    margin-top: 25px;
+    margin-left: 15px;
+}
+
 .form-horizontal .form-group .control-label {
     text-align: left;
 }
