@@ -1,12 +1,8 @@
 .show {
-    display:block;
-}
-            
-label{
-    display:inline-block;
-    text-align:left;
+    display: block;
 }
 
-.form-horizontal .form-group .control-label {
+label{
+    display: inline-block;
     text-align: left;
 }
