@@ -1,7 +1,8 @@
-$('.active[data-toggle="tab"]').ready(function(e) {
-    $("#forma").load("forma.html");
+$(function () {
+    $("#tab-content").tabs();
+    $("#tab-content").tabs("option", "active", 1);
 });
-
+  
 $(document).ready( function() {
     $("#forma").load("forma.html");
 });
