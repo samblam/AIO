@@ -29,8 +29,8 @@ include '../includes/formProcess.php';
             <h2>Active Cases</h2>
         </div>
         <!-- Table div -->
-        <div style="padding-top: 40px">
-            <table class="table table-bordered" style="font-size: 14px;">
+        <div>
+            <table class="table table-bordered" style="font-size: 12px;">
                 <thead class="cases-table">
                     <tr>
                         <th>Student(s) Banner</th>

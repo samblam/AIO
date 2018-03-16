@@ -16,33 +16,25 @@ include '../includes/formProcess.php';
         <title>Admin</title>
         <link rel="stylesheet" href="../CSS/formA.css">
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="../CSS/main.css">
+
+      <!-- bootstrap imports -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
         <!-- the header; logout and back buttons -->
         <script src="../JS/top-header.js"></script>
     </head>
-    <header class="container">
-                <!-- logout button -->
 
-    </header>
-    <body>
-        <!-- header (logout and back buttons) -->
+     <body style="margin: auto;">
+        <!-- Headder div + Logout button -->
         <div class="top-header"></div>
-
-   <!--     <div class="row">
-            <div class="col-sm-10"></div>
-            <button id= "logout" class="btn btn-default spacing col-sm-1">Logout</button>
-        </div> -->
-
-        <div class="row">
-            <h1 class="col-sm-3">Admin Page</h1>
-            <button class="btn btn-success spacing col-sm-1">+ Case</button>
-            <div class="col-sm-6"></div>
-            <button id= "logout" class="btn btn-default spacing col-sm-1">Logout</button>
+        <div>
+            <h2>Active Cases</h2>
         </div>
-
-        <div class="container">
-            <table class="table table-hover ">
+        <div>
+            <table class="table table-bordered" style="font-size: 12px;">
                 <thead class="cases-table">
                     <tr>
                         <!--should we include a section to indicate the case has been rejected or accepted by the senate? Or rejected by the AIO (case closed), so the case can be deleted. Also, the cases should be ordered by newest cases first, or by whichever field they choose.-->
@@ -66,20 +58,19 @@ include '../includes/formProcess.php';
                         <td>N/A</td>
                         <!-- make functional! -->
                         <td>
-                            <select class="btn">
-                                <optgroup>
-                                    <option selected>Action</option>
-                                    <option>View</option>
-                                    <option>Assign AIO</option>
-                                </optgroup>
-                                <optgroup>
-                                    <option>Delete</option>
-                                </optgroup>
-                            </select>
+                            <div class="dropdown">
+                                <button class="btn btn-default dropdown-toggle" type="button" style="font-size: 12px;" data-toggle="dropdown">Actions
+                                <span class="caret"></span></button>
+                                <ul class="dropdown-menu">
+
+                                    <li><a href="CaseInformation.html">View</a></li>
+                                    <li><a href="ChangeAIO.html">Change AIO</a></li>
+                                    <li><a href="#" style="background-color: red">Delete</a></li>
+                                </ul>
+                            </div>
                         </td>
                     </tr>
                 </tbody>
-
             </table>
         </div>
     </body>

@@ -37,8 +37,14 @@ include '../includes/formProcess.php';
         </div>
 
         <!-- Table div -->
-        <div style="padding-top: 40px">
-            <table class="table table-bordered" style="font-size: 14px;">
+        <!-- TODO: Table will need to populate based on the entries in the DB(server side) -->
+        <!-- TODO: I think to properly link the buttons, each row might have to be an input form(haven't looked it up) -->
+        <div>
+            <span class="pull-right" style="display: inline-block;">
+                <button class="btn btn-success" style="font-size: 16px; vertical-align: bottom;">Submit new case</button>
+            </span>
+
+            <table class="table table-bordered" style="font-size: 12px;">
                 <thead class="cases-table">
                     <tr>
                         <th>Student Banners</th>
