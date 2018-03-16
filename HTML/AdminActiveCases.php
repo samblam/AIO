@@ -1,3 +1,13 @@
+<?php
+
+session_start();
+//Open the db connection
+include '../includes/db.php';
+//Check if the form variables have been submitted, store them in the session variables
+include '../includes/formProcess.php';
+
+?>
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -5,8 +15,9 @@
         <meta charset="utf-8">
         <title>Admin</title>
         <link rel="stylesheet" href="../CSS/formA.css">
+
         <link rel="stylesheet" href="../CSS/main.css">
-        
+
       <!-- bootstrap imports -->
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -15,15 +26,13 @@
         <!-- the header; logout and back buttons -->
         <script src="../JS/top-header.js"></script>
     </head>
-    
+
      <body style="margin: auto;">
         <!-- Headder div + Logout button -->
         <div class="top-header"></div>
-         
         <div>
             <h2>Active Cases</h2>
         </div>
-         
         <div>
             <table class="table table-bordered" style="font-size: 12px;">
                 <thead class="cases-table">
@@ -53,7 +62,7 @@
                                 <button class="btn btn-default dropdown-toggle" type="button" style="font-size: 12px;" data-toggle="dropdown">Actions
                                 <span class="caret"></span></button>
                                 <ul class="dropdown-menu">
-                                    
+
                                     <li><a href="CaseInformation.html">View</a></li>
                                     <li><a href="ChangeAIO.html">Change AIO</a></li>
                                     <li><a href="#" style="background-color: red">Delete</a></li>
@@ -63,6 +72,6 @@
                     </tr>
                 </tbody>
             </table>
-        </div> 
+        </div>
     </body>
 </html>

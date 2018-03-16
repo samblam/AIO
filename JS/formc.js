@@ -1,17 +1,13 @@
-$(document).ready(function () {
+dy(function () {
     "use strict";
-    var date_input = $('input[id="date"]');
+    var date_input = $('input[id="date"]'); //our date input has the name "date"
+    //var container = $('.form-group.date').length > 0 ? $('.form-group.date').parent() : "div";
     var options = {
         format: 'mm/dd/yyyy',
         todayHighlight: true,
         autoclose: true
     };
-    
-    var datepicker = date_input.datepicker(options)
-    datepicker.on('show', function(e) {
-        var rect = e.currentTarget.getBoundingClientRect();
-        $(this).data('datepicker').picker.css('left', rect.left);
-    });
+    date_input.datepicker(options);
     
     $('input.timepicker').timepicker({
         timeFormat: 'h:mm p',

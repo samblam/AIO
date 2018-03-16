@@ -51,3 +51,4 @@ $(document).ready(function () {
         $(this).data('datepicker').picker.css('left', rect.left);
     });
 });
+

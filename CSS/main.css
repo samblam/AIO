@@ -4,6 +4,7 @@ html {
     -webkit-font-smoothing: antialiased;
 }
 
+
 body {
     background: #fff;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.06);
@@ -38,7 +39,7 @@ td button{
 }
 
 thead.cases-table{
-    background-color: black; 
+    background-color: black;
     font-style: oblique;
     color: white
 }
