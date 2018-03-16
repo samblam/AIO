@@ -17,7 +17,7 @@
         <div class="top-header"></div>
 
         <div style="display: inline-block;">
-            <h2>Active Cases</h2>
+            <h2>Case Information</h2>
 
         </div>
             
@@ -28,44 +28,49 @@
         <!-- TODO: Table will need to populate based on the entries in the DB(server side) -->
         <!-- TODO: I think to properly link the buttons, each row might have to be an input form(haven't looked it up) -->
         <div>   
-                    <span class="pull-right" style="display: inline-block;">
-            <button class="btn btn-success" style="font-size: 16px; vertical-align: bottom;">Submit new case</button>
-        </span>
         
-            <table class="table table-bordered" style="font-size: 12px;">
-                <thead class="cases-table">
-                    <tr>
-                        <th>Student(s) Banner</th>
-                        <th>Student(s) Name</th>
-                        <th>AIO</th>
-                        <th>Meeting date</th>
-                        <th>View</th>
-                    </tr>
-                </thead>
+            <table class="table table-bordered" style="font-size: 14px;">
                 <tbody>
                     <tr>
-                        <td>B00000001</td>
-                        <td>Mark Otto</td>
-                        <td>Fred</td>
-                        <td>Feb 28th, 2018</td>
-                        <td><button class="btn btn-primary">View Case</button></td>
+                        <td>Banner number</td>
+                        <td>B00000000</td>
                     </tr>
                     <tr>
-                        <td>B00000002</td>
-                        <td>Moe</td>
-                        <td>Fred</td>
-                        <td>TBD</td>
-                        <td><button class="btn btn-primary">View Case</button></td>
+                        <td>Student(s) name</td>
+                        <td>Mark Auto</td>
                     </tr>
                     <tr>
-                        <td>B00000003</td>
-                        <td>Dooley</td>
-                        <td>Matt</td>
-                        <td>TBA</td>
-                        <td><button class="btn btn-primary">View Case</button></td>               
+                        <td>Professor</td>
+                        <td>Fred</td>
                     </tr>
+                    <tr>
+                        <td>Date</td>
+                        <td>Jan 31st 2017</td>
+                    </tr>
+                    <tr>
+                        <td>Files</td>
+                        <td><a href="#">Link.zip</a></td>
+                    </tr>            
+                    
+                    <tr>
+                        <td>Case status</td>
+                        <td>Waiting for student to confirm meeting date</td>
+                    </tr>
+                    
                 </tbody>
             </table>
         </div>
+        
+        <div>
+            Current AIO: Fred <br><br>
+            New AIO: 
+                    <select class="border border-dark">
+                        <option selected>Select New</option>
+                        <option>AIO 1</option>
+                        <option>AIO 2</option>
+                    </select>
+            <button class="btn btn-success">Submit</button>
+        </div>
+        
     </body>
 </html>
