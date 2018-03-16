@@ -1,6 +1,16 @@
+<?php
+
+session_start();
+//Open the db connection
+include '../includes/db.php';
+//Check if the form variables have been submitted, store them in the session variables
+include '../includes/formProcess.php';
+
+?>
+
 <!DOCTYPE html>
 <html>
-    
+
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,14 +29,21 @@
         <div>
             <h2>Active Cases</h2>
         </div>
-        <!-- Table div -->
+        <!-- Newcase button div -->
         <div>
+            <span class="pull-right">
+                <button class="btn btn-success" style="font-size: 16px;" onclick="location.href='forma.php';">NewCase</button>
+            </span>
+        </div>
+
+        <!-- Table div -->
+        <div style="padding-top: 40px">
             <table class="table table-bordered" style="font-size: 14px;">
                 <thead class="cases-table">
                     <tr>
-                        <th>Student(s)  Banner</th>
-                        <th>Student(s) Name</th>
-                        <th>Professor</th>
+                        <th>Student Banners</th>
+                        <th>Student Names</th>
+                        <th>AIO</th>
                         <th>Action required</th>
                         <th>View</th>
                     </tr>
@@ -43,15 +60,15 @@
                         <td>B00000002</td>
                         <td>Moe</td>
                         <td>Fred</td>
-                        <td><button class="custombtn btn btn-danger">Yes</button></td>
+                        <td>No</td>
                         <td><button class="btn btn-primary">View Case</button></td>
                     </tr>
                     <tr>
                         <td>B00000003</td>
                         <td>Dooley</td>
                         <td>Matt</td>
-                        <td style="text-align: center">No</td>
-                        <td><button class="btn btn-primary">View Case</button></td>               
+                        <td>No</td>
+                        <td><button class="btn btn-primary">View Case</button></td>
                     </tr>
                 </tbody>
             </table>

@@ -1,3 +1,13 @@
+<?php
+
+session_start();
+//Open the db connection
+include '../includes/db.php';
+//Check if the form variables have been submitted, store them in the session variables
+include '../includes/formProcess.php';
+
+?>
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -5,28 +15,34 @@
         <meta charset="utf-8">
         <title>Admin</title>
         <link rel="stylesheet" href="../CSS/formA.css">
-        
-      <!-- bootstrap imports -->
+
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        
         <!-- the header; logout and back buttons -->
-        <script src="top-header.js"></script>
+        <script src="../JS/top-header.js"></script>
     </head>
     <header class="container">
+                <!-- logout button -->
+
+    </header>
+    <body>
+        <!-- header (logout and back buttons) -->
+        <div class="top-header"></div>
+
+   <!--     <div class="row">
+            <div class="col-sm-10"></div>
+            <button id= "logout" class="btn btn-default spacing col-sm-1">Logout</button>
+        </div> -->
+
         <div class="row">
-            <h1 class="col-sm-4">Admin Page</h1>
-            <!-- take to form A -->
+            <h1 class="col-sm-3">Admin Page</h1>
             <button class="btn btn-success spacing col-sm-1">+ Case</button>
             <div class="col-sm-6"></div>
             <button id= "logout" class="btn btn-default spacing col-sm-1">Logout</button>
         </div>
-    </header>
-    
-    <body style="margin: auto;">        
+
         <div class="container">
-            <table class="table table-hover table-bordered">
+            <table class="table table-hover ">
                 <thead class="cases-table">
                     <tr>
                         <!--should we include a section to indicate the case has been rejected or accepted by the senate? Or rejected by the AIO (case closed), so the case can be deleted. Also, the cases should be ordered by newest cases first, or by whichever field they choose.-->
@@ -63,8 +79,8 @@
                         </td>
                     </tr>
                 </tbody>
-                
+
             </table>
-        </div> 
+        </div>
     </body>
 </html>
