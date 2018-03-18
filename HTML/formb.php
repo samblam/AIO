@@ -1,4 +1,13 @@
 <!-- HTML file for Form B -->
+<?php
+
+session_start();
+//Open the db connection
+include '../includes/db.php';
+//Check if the form variables have been submitted, store them in the session variables
+include '../includes/formProcess.php';
+
+?>
 
 <!DOCTYPE html>
 <html>
@@ -17,42 +26,43 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
         <script src="../JS/formb.js"></script>
     </head>
-    
+
     <!-- Form B -->
-    
+
     <body style="margin: auto;">
         <h2 style="text-align: left">Form B</h2>
         <br>
-        
+
         <!-- Division for general information info. -->
+        <form method="post" action="../includes/formProcess.php">
         <div class="form-container">
             <form class="form-horizontal">
 
                 <div class="form-group">
                     <label for="aioName" class="col-sm-3 control-label">AIO Name:</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control"  placeholder="Name" id="aioName" required>
+                        <input type="text" class="form-control" placeholder="Name" id="aioName" name="aioName" required>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="profName" class="col-sm-3 control-label">Instructor Name:</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control"  placeholder="Name" id="profName" required>
+                        <input type="text" class="form-control" placeholder="Name" id="profName" name="profName" required>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="profEmail" class="col-sm-3 control-label">Instructor Email:</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control"  placeholder="Email" id="profEmail" required>
+                        <input type="text" class="form-control" placeholder="Email" id="profEmail" name="profEmail" required>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-sm-3 control-label">Faculty:</label>
                     <div class="dropdown col-sm-9">
-                        <select class="selectpicker" id="faculty" data-show-subtext="true" data-live-search="true" required> 
+                        <select class="selectpicker" id="faculty" data-show-subtext="true" data-live-search="true" required>
                             <option data-subtext="Faculty of Computer Science">FCS</option>
                         </select>
                     </div>
@@ -63,20 +73,20 @@
                 <div class="form-group">
                     <label for="studentName" class="col-sm-3 control-label">Student Name:</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control"  placeholder="Name" id="studentName" required>
+                        <input type="text" class="form-control" placeholder="Name" id="studentName" name="studentName" required>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="studentNumber" class="col-sm-3 control-label">Student ID:</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control"  placeholder="B00" id="studentNumber" required>
+                        <input type="text" class="form-control" placeholder="B00" id="studentNumber" name="studentNumber" required>
                     </div>
-                </div> 
+                </div>
 
                 <div class="form-group">
                     <label class="col-sm-3 control-label">Class Name:</label>
                     <div class="dropdown col-sm-9">
-                        <select class="selectpicker" id="class-name" data-show-subtext="true" data-live-search="true" required> 
+                        <select class="selectpicker" id="class-name" data-show-subtext="true" data-live-search="true" required>
                             <option data-subtext="Communication Skills: Oral and Written">CSCI 2100</option>
                                 <option data-subtext="Network Security">CSCI 4174</option>
                                 <option data-subtext="Introduction to web site creation">INFX 1606</option>
@@ -91,16 +101,16 @@
                 <div class="form-group">
                     <label for="profName"  class="col-sm-3 control-label">Instructor Name:</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control"  placeholder="Name" id="profName">
+                        <input type="text" class="form-control" placeholder="Name" id="profName" name="profName">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="profEmail" class="col-sm-3 control-label">Instructor Email:</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control"  placeholder="Email" id="profEmail">
+                        <input type="text" class="form-control" placeholder="Email" id="profEmail" name="profEmail">
                     </div>
-                </div>  
+                </div>
             </form>
 
             <br>
@@ -153,7 +163,7 @@
 
                         <label for="organization" class="col-sm-offset-3 col-sm-5 control-label">Name and organization of advocate (enter n/a in none):</label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control"  placeholder="Name" id="organization">
+                            <input type="text" class="form-control" placeholder="Name" id="organization">
                         </div>
 
                         <label class="col-sm-offset-3 col-sm-5 control-label">Is this a common allegation:</label>
@@ -175,6 +185,7 @@
                 <!-- Section B checkbox -->
                 <div class="form-group">
                     <div class="checkbox col-sm-offset-3 col-sm-9">
+
                         <label>
                             <input type="checkbox" onchange="sectionB()">B. Transfer for Referral to Senate Discipline Committee.
                         </label>
@@ -200,7 +211,7 @@
 
                         <label for="reason" class="col-sm-offset-3 col-sm-1 control-label">Reason:</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control"  placeholder="Reason" id="reason">
+                            <input type="text" class="form-control" placeholder="Reason" id="reason" name="reason">
                         </div>
 
                         <div class="checkbox col-sm-offset-3 col-sm-9">
@@ -229,13 +240,13 @@
                 <div class="form-group">
                     <label for="aoiSignature" class="control-label col-sm-3 ">AIO Signature</label>
                     <div class="dropdown col-sm-9">
-                        <input type="text" class="form-control"  placeholder="Signature" id="aioSignature" required>
+                        <input type="text" class="form-control" placeholder="Signature" id="aioSignature" required>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="signDate" class="col-sm-3 control-label">Date:</label>
                     <div class="date col-sm-9">
-                        <input class="form-control" placeholder="MM/DD/YYYY"  id="signDate" required>
+                        <input class="form-control" placeholder="MM/DD/YYYY" id="signDate" name="signDate" required>
                     </div>
                 </div>
             </form>
@@ -245,5 +256,6 @@
                 <button type="submit" class="btn btn-success center-block">Submit</button>
             </div>
         </div>
+	</form>
     </body>
 </html>
