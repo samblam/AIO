@@ -30,13 +30,14 @@ include '../includes/formProcess.php';
     <!-- Form B -->
 
     <body style="margin: auto;">
-        <h2 style="text-align: left">Form B</h2>
-        <br>
+        <div class="container">
+            <h2 class="form-b-title" style="text-align: left">Form B</h2>
+            <p>AIO Transfer to Senate</p>
+        </div>
 
         <!-- Division for general information info. -->
-        <form method="post" action="../includes/formProcess.php">
         <div class="form-container">
-            <form class="form-horizontal">
+            <form class="form-horizontal" method="post" action="../includes/formProcess.php">
 
                 <div class="form-group">
                     <label for="aioName" class="col-sm-3 control-label">AIO Name:</label>
@@ -67,8 +68,6 @@ include '../includes/formProcess.php';
                         </select>
                     </div>
                 </div>
-
-                <br>
 
                 <div class="form-group">
                     <label for="studentName" class="col-sm-3 control-label">Student Name:</label>
@@ -111,12 +110,10 @@ include '../includes/formProcess.php';
                         <input type="text" class="form-control" placeholder="Email" id="profEmail" name="profEmail">
                     </div>
                 </div>
-            </form>
 
-            <br>
+                <br>
 
-            <!-- Division for section A. -->
-            <form class="form-horizontal">
+                <!-- Division for section A. -->
 
                 <!-- Section A checkbox -->
                 <div class="form-group">
@@ -128,29 +125,36 @@ include '../includes/formProcess.php';
                 </div>
 
                 <!-- Section A content -->
-                <div class="form-group">
-                    <div class="section-a-content" id="section-a-content" style="display: none">
-
+                <div class="section-a-content" id="section-a-content" style="display: none">
+                    <div class="form-group">
                         <label for="allegationDate" class="col-sm-offset-3 col-sm-5 control-label">Date of allegation by Instructor:</label>
                         <div class="col-sm-4">
                             <input class="form-control" placeholder="MM/DD/YYYY"  id="allegationDate" >
                         </div>
-
+                    </div>
+                    
+                    <div class="form-group">
                         <label for="allegationReceived" class="col-sm-offset-3 col-sm-5 control-label">Date of allegation and supporting documents received by AIO:</label>
                         <div class="col-sm-4">
                             <input class="form-control" placeholder="MM/DD/YYYY"  id="allegationReceived" >
                         </div>
+                    </div>
 
+                    <div class="form-group">
                         <label for="allegationStudent" class="col-sm-offset-3 col-sm-5 control-label">Date AIO allegation letter sent to student:</label>
                         <div class="col-sm-4">
                             <input class="form-control" placeholder="MM/DD/YYYY"  id="allegationStudent" >
                         </div>
+                    </div>
 
+                    <div class="form-group">
                         <label for="allegationMeeting" class="col-sm-offset-3 col-sm-5 control-label">Date of AIO Meeting with Sudent:</label>
                         <div class="col-sm-4">
                             <input class="form-control" placeholder="MM/DD/YYYY"  id="allegationMeeting" >
                         </div>
-
+                    </div>
+                        
+                    <div class="form-group">
                         <label class="col-sm-offset-3 col-sm-5 control-label">Did instructor attend meeting:</label>
                         <div class="col-sm-4">
                             <label class="radio-inline">
@@ -160,12 +164,16 @@ include '../includes/formProcess.php';
                                 <input type="radio" name="inlineRadioOptions"  id="inlineRadio2" value="option2"> No.
                             </label>
                         </div>
-
+                    </div>
+                    
+                    <div class="form-group">
                         <label for="organization" class="col-sm-offset-3 col-sm-5 control-label">Name and organization of advocate (enter n/a in none):</label>
                         <div class="col-sm-4">
                             <input type="text" class="form-control" placeholder="Name" id="organization">
                         </div>
+                    </div>
 
+                    <div class="form-group">
                         <label class="col-sm-offset-3 col-sm-5 control-label">Is this a common allegation:</label>
                         <div class="col-sm-4">
                             <label class="radio-inline">
@@ -177,15 +185,12 @@ include '../includes/formProcess.php';
                         </div>
                     </div>
                 </div>
-            </form>
 
-            <!-- Division for section B. -->
-            <form class="form-horizontal">
+                <!-- Division for section B. -->
 
                 <!-- Section B checkbox -->
                 <div class="form-group">
                     <div class="checkbox col-sm-offset-3 col-sm-9">
-
                         <label>
                             <input type="checkbox" onchange="sectionB()">B. Transfer for Referral to Senate Discipline Committee.
                         </label>
@@ -193,39 +198,48 @@ include '../includes/formProcess.php';
                 </div>
 
                 <!-- Section B content -->
-                <div class="form-group">
-                    <div class="section-b-content" id="section-b-content" style="display: none">
-
+                <div class="section-b-content" id="section-b-content" style="display: none">
+                    <div class="form-group">
                         <label class="col-sm-offset-3 col-sm-3 control-label">Reason for referral:</label>
                         <div class="checkbox col-sm-offset-3 col-sm-9">
                             <label>
                                 <input type="checkbox">Student has prior offence on record and this is not a common allegation.
                             </label>
                         </div>
+                    </div>
 
+                    <div class="form-group">
                         <div class="checkbox col-sm-offset-3 col-sm-9">
                             <label>
                                 <input type="checkbox">Student has failed to attend scheduled meeting(s).
                             </label>
                         </div>
-
+                    </div>
+                    
+                    <div class="form-group">
                         <label for="reason" class="col-sm-offset-3 col-sm-1 control-label">Reason:</label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control" placeholder="Reason" id="reason" name="reason">
                         </div>
+                    </div>
 
+                    <div class="form-group">
                         <div class="checkbox col-sm-offset-3 col-sm-9">
                             <label>
                                 <input type="checkbox">Student did not accept assessment and/or recommended penalty.
                             </label>
                         </div>
+                    </div>
 
+                    <div class="form-group">
                         <div class="checkbox col-sm-offset-3 col-sm-9">
                             <label>
                                 <input type="checkbox">Level of penalty is at issue.
                             </label>
                         </div>
+                    </div>
 
+                    <div class="form-group">
                         <div class="checkbox col-sm-offset-3 col-sm-9">
                             <label>
                                 <input type="checkbox">This is a common allegationand due to prior involvement of this student. The student has accepted that the allegation is proven.
@@ -233,10 +247,8 @@ include '../includes/formProcess.php';
                         </div>
                     </div>
                 </div>
-            </form>
 
-            <!-- Division for the signature, and date -->
-            <form class="form-horizontal">
+                <!-- Division for the signature, and date -->
                 <div class="form-group">
                     <label for="aoiSignature" class="control-label col-sm-3 ">AIO Signature</label>
                     <div class="dropdown col-sm-9">
@@ -256,6 +268,5 @@ include '../includes/formProcess.php';
                 <button type="submit" class="btn btn-success center-block">Submit</button>
             </div>
         </div>
-	</form>
     </body>
 </html>
