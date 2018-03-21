@@ -23,6 +23,13 @@ include '../includes/formProcess.php';
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+        <script>
+            function warning()
+            {
+                 confirm("this will delete the file permanently!");
+            }
+        </script>
+        
         <!-- the header; logout and back buttons -->
         <script src="../JS/top-header.js"></script>
     </head>
@@ -61,11 +68,11 @@ include '../includes/formProcess.php';
                             <div class="dropdown">
                                 <button class="btn btn-default dropdown-toggle" type="button" style="font-size: 12px;" data-toggle="dropdown">Actions
                                 <span class="caret"></span></button>
-                                <ul class="dropdown-menu">
+                                <ul class="dropdown-menu" onchange="warning()">
 
                                     <li><a href="CaseInformation.html">View</a></li>
                                     <li><a href="ChangeAIO.html">Change AIO</a></li>
-                                    <li><a href="#" style="background-color: red">Delete</a></li>
+                                    <li><button onclick="warning()" style="background-color: red" color="black" class="btn btn-link">Delete</button></li>
                                 </ul>
                             </div>
                         </td>
