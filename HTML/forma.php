@@ -129,8 +129,11 @@ include '../includes/formProcess.php';
     </body>
     <!-- adds student form on click -->
     <script type="text/javascript">
+        var students =0;
+        
         $("#addStudent").click(function () {
-           $("#students").append('<div class="input-group"> <span class="input-group-addon">Student Name</span> <input type="text" class="form-control" aria-label="Name" required> <span class="input-group-addon">Banner Number</span> <input type="text" class="form-control" aria-label="B00" required> </div>');
+            students++;
+           $("#students").append('<div class="input-group"> <span class="input-group-addon">Student Name</span> <input type="text" class="form-control" aria-label="Name" id="name'+students+'" required> <span class="input-group-addon">Banner Number</span> <input type="text" class="form-control" aria-label="B00" id="id'+students+'" required> </div>');
         });
     </script>
 
