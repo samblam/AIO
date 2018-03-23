@@ -70,8 +70,8 @@ include '../includes/formProcess.php';
                                 <span class="caret"></span></button>
                                 <ul class="dropdown-menu" onchange="warning()">
 
-                                    <li><a href="CaseInformation.html">View</a></li>
-                                    <li><a href="ChangeAIO.html">Change AIO</a></li>
+                                    <li><a href="CaseInformation.php">View</a></li>
+                                    <li><a href="ChangeAIO.php">Change AIO</a></li>
                                     <li><button onclick="warning()" style="background-color: red" color="black" class="btn btn-link">Delete</button></li>
                                 </ul>
                             </div>
