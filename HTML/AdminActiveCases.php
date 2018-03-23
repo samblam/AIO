@@ -29,7 +29,7 @@ include '../includes/formProcess.php';
 
      <body style="margin: auto;">
         <!-- Headder div + Logout button -->
-        <div class="top-header"></div>
+        <button class="btn btn-default pull-right" type="button">Logout</button>
         <div>
             <h2>Active Cases</h2>
         </div>
