@@ -94,8 +94,11 @@ include '../includes/formProcess.php';
 
                 <!-- this refreshes page. try to fix if time permits -->
                 <div class="form-group">
-                    <button onClick="add_Student()" class="btn btn-success" id="addStudent" name="addStudent" type="button">+ Student</button>
-                    <button onClick="remove_student()" class="btn btn-success" id="removeStudent" name="removeStudent" type="button">- Student</button>
+                    <label class="col-sm-3 control-label"></label>
+                    <div class="col-sm-9">
+                        <button onClick="add_Student()" class="btn btn-success" id="addStudent" name="addStudent" type="button">+ Student</button>
+                        <button onClick="remove_student()" class="btn btn-success" id="removeStudent" name="removeStudent" type="button">- Student</button>
+                    </div>
                 </div>
 
                 <!--date of allegation -->
