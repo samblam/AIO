@@ -99,7 +99,7 @@ include_once 'page.php';
             </ul>
 
             <div class="tab-content">
-                <div id="forma" class="tab-pane fade  active in">
+                <div id="forma" class="tab-pane fade active in">
                     <?php include 'forma.php' ?>
                 </div>
 
