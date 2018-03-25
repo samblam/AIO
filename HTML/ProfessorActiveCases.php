@@ -35,7 +35,7 @@ include '../includes/formProcess.php';
         <!-- TODO: I think to properly link the buttons, each row might have to be an input form(haven't looked it up) -->
         <div>
             <span class="pull-right" style="display: inline-block;">
-                <button class="btn btn-success" onclick="location.href='CaseInformation.php'" style="font-size: 16px; vertical-align: bottom;">Submit new case</button>
+                <button class="btn btn-success" onclick="location.href='forma.php'" style="font-size: 16px; vertical-align: bottom;">Submit new case</button>
             </span>
 
             <table class="table table-bordered" style="font-size: 12px;">
