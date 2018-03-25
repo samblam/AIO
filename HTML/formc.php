@@ -7,6 +7,7 @@ include '../includes/db.php';
 include '../includes/formProcess.php';
 
 ?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -87,10 +88,13 @@ include '../includes/formProcess.php';
                 <div class="form-group">
                     <label class="control-label col-sm-3"><input type="checkbox"> Notify Professor</label>
                 </div>
+                
+                <!--save button, submit button-->
                 <div class="form-group">
                     <div class="center-block text-center">
-                        <button type="submit" class="btn btn-success" name="SaveFormC">Save</button>
                         <button type="submit" class="btn btn-primary" name="SubmitFormC">Create PDF</button>
+                        <button type="submit" class="btn btn-primary" name="SaveFormA">Save</button>
+                        <button type="submit" class="btn btn-success" name="SubmitFormA">Submit</button>
                     </div>
                 </div>
             </form>

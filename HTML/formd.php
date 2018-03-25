@@ -7,6 +7,7 @@ include '../includes/db.php';
 include '../includes/formProcess.php';
 
 ?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -98,7 +99,14 @@ include '../includes/formProcess.php';
                     <label type="text">Date: </label>
                     <text class="date-bottom"> [Date from other form]</text>
                 </div>
-                <button type="submit" class="btn btn-success center-block" name="SubmitFormD">Submit</button>
+                
+                <!--save button, submit button-->
+                <div class="form-group">
+                    <div class="center-block text-center">
+                        <button type="submit" class="btn btn-primary" name="SaveFormA">Save</button>
+                        <button type="submit" class="btn btn-success" name="SubmitFormA">Submit</button>
+                    </div>
+                </div>
             </form>
         </div>
     </body>
