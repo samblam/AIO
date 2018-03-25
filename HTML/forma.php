@@ -128,16 +128,18 @@ include '../includes/formProcess.php';
                         <textarea class="form-control" rows="5" placeholder="Write additional comments here" id="additionalComments" name="additionalComments"></textarea>
                     </div>
                 </div>
+                
+                <!--save button, submit button-->
+                <div class="form-group">
+                    <div class="center-block text-center">
+                        <button type="submit" class="btn btn-primary" name="SaveFormA">Save</button>
+                        <button type="submit" class="btn btn-success" name="SubmitFormA">Submit</button>
+                    </div>
+                </div>
             </form>
         </div>
 
-        <!--save button, submit button-->
-        <div class="form-group">
-            <div class="col-sm-4"></div>
-            <button type="submit" class="btn btn-success col-sm-2" form="forma" name="SaveFormA">Save</button>
-            <div class="col-sm-1"></div>
-            <button type="submit" class="btn btn-success col-sm-2" form="forma" name="SubmitFormA">Submit</button>
-        </div>
+        
     </body>
 
     <!-- adds student form on click -->

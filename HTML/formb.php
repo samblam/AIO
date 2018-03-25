@@ -260,12 +260,15 @@ include '../includes/formProcess.php';
                         <input class="form-control" placeholder="MM/DD/YYYY" id="signDate" name="signDate" required>
                     </div>
                 </div>
+                
+                <!--save button, submit button-->
+                <div class="form-group">
+                    <div class="center-block text-center">
+                        <button type="submit" class="btn btn-primary" name="SaveFormA">Save</button>
+                        <button type="submit" class="btn btn-success" name="SubmitFormA">Submit</button>
+                    </div>
+                </div>
             </form>
-
-            <!-- Division for the submit button. -->
-            <div>
-                <button type="submit" class="btn btn-success center-block">Submit</button>
-            </div>
         </div>
     </body>
 </html>
