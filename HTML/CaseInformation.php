@@ -1,10 +1,10 @@
 <?php
 
-session_start();
 //Open the db connection
 include '../includes/db.php';
 //Check if the form variables have been submitted, store them in the session variables
 include '../includes/formProcess.php';
+include_once 'page.php';
 
 ?>
 <!DOCTYPE html>
@@ -15,11 +15,7 @@ include '../includes/formProcess.php';
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Portal</title>
         <link rel="stylesheet" href="../CSS/main.css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
         <script src="../JS/top-header-full.js"></script>
-        <script src="../JS/formLoader.js"></script>
     </head>
     <body style="margin: auto;">
         <!-- Headder div + Logout button -->
@@ -49,20 +45,20 @@ include '../includes/formProcess.php';
                         <td>Student(s) name</td>
                         <!-- needs to pull all students names from backend -->
                         <td>
-                            
+
                             <div class="dropdown">
                                 <button class="btn btn-default dropdown-toggle" type="button" style="font-size: 12px;" data-toggle="dropdown">Students
                                 <span class="caret"></span></button>
                                 <ul class="dropdown-menu" onchange="warning()">
                                     <!-- needs to add an <li> tage for each student in the case upon loading page; BACKEND -->
-                                    <li><a href="student-case-information.html"> TestStudent Name</a></li>
-                                    
+                                    <li><a href="student-case-information.php"> TestStudent Name</a></li>
+
                                 </ul>
                             </div>
-                            
+
                         </td>
-     
-                
+
+
                     </tr>
                     <tr>
                         <td>Professor</td>
@@ -90,27 +86,12 @@ include '../includes/formProcess.php';
         <!-- Form display div -->
         <div>
             <ul class="nav nav-tabs nav-justified">
-
                 <li class="active"><a data-toggle="tab" href="#forma">Form A</a></li>
-                <!--
-                <li><a data-toggle="tab" href="#formb">Form B</a></li>
-                <li><a data-toggle="tab" href="#formc">Form C</a></li>
-                <li><a data-toggle="tab" href="#formd">Form D</a></li> -->
             </ul>
-
             <div class="tab-content">
-                <div id="forma" class="tab-pane fade  active in">
+                <div id="forma" class="tab-pane fade active in">
+                    <?php include 'forma.php' ?>
                 </div>
-<!--
-                <div id="formb" class="tab-pane fade">
-                </div>
-
-                <div id="formc" class="tab-pane fade">
-                </div>
-
-                <div id="formd" class="tab-pane fade">
-                </div>
--->
             </div>
         </div>
     </body>
