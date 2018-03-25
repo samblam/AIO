@@ -93,7 +93,7 @@ include '../includes/formProcess.php';
                 </div>
                 
                 <!-- this refreshes page. try to fix if time permits -->
-                <div class="row">
+                <div class="form-group">
                     <label class="col-sm-3 control-label"></label>
                     <button onClick="add_Student()" class="btn btn-success" id="addStudent" name="addStudent">+ Student</button>
                 </div>
@@ -127,12 +127,13 @@ include '../includes/formProcess.php';
                 </div>
             </form>
         </div>
+        
         <!--save button, submit button-->
         <div class="form-group">
             <div class="col-sm-4"></div>
-            <button type="submit" class="btn btn-primary col-sm-2" form="forma" name="SaveFormA">Save</button>
+            <button type="submit" class="btn btn-success col-sm-2" form="forma" name="SaveFormA">Save</button>
             <div class="col-sm-1"></div>
-            <button type="submit" class="btn btn-primary col-sm-2" form="forma" name="SubmitFormA">Submit</button>
+            <button type="submit" class="btn btn-success col-sm-2" form="forma" name="SubmitFormA">Submit</button>
         </div>
     </body>
     
