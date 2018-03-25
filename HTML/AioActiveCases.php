@@ -41,14 +41,36 @@ include '../includes/formProcess.php';
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>B00000001</td>
-                        <td>Mark Otto</td>
-                        <td>Fred</td>
-                        <td>No</td>
-                        <td><button class="btn btn-primary">View Case</button></td>
-                    </tr>
-                    <tr>
+                    <?php
+                    
+                    
+		      $statement = $conn->prepare("SELECT  FROM active_cases WHERE aio_id = ?");
+                      //$statement = $conn->query("SELECT * FROM case WHERE aio_id = 1233");
+		      //if (is_object($statement))
+		      $statement->bind_param("s",$_SESSION['userId']); //bind the csid to the prepared statements
+  		      //$num = "1";
+		      if(!$statement->execute()){
+     		        echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+                      } 
+		      $statement->bind_result($name, $code);
+		      
+		      $queryAllPosts = $conn->query("SELECT  FROM active_cases WHERE aio_id = '$_SESSION['userId']'");
+  }
+
+  $row = $queryAllPosts->fetch_array(MYSQLI_NUM);
+  $isFirst = TRUE;
+  while($statement->fetch()){
+    $tableData = <<<ViewAllPost
+    <tr>
+      <td>B000</td>
+      <td>Moe</td>
+      <td>Fred</td>
+      <td><button class="custombtn btn btn-danger">Yes</button></td>
+      <td><button class="btn btn-primary">View Case</button></td>
+    </tr>		
+ViewAllPost;
+?>
+		    <tr>
                         <td>B00000002</td>
                         <td>Moe</td>
                         <td>Fred</td>
