@@ -1,5 +1,4 @@
-dy(function () {
+$(document).ready(function() {
     "use strict";
-    $(".top-header").load("top-header.html");
+    $(".top-header").load("top-header.php");
 });
-

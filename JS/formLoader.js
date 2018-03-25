@@ -1,20 +1,15 @@
-$(function () {
-    $("#tab-content").tabs();
-    $("#tab-content").tabs("option", "active", 1);
-});
-  
 $(document).ready( function() {
-    $("#forma").load("forma.html");
+    $("#forma").load("forma.php");
 });
 
 $(document).ready( function() {
-    $("#formb").load("formb.html");
+    $("#formb").load("formb.php");
 });
 
 $(document).ready( function() {
-    $("#formc").load("formc.html");
+    $("#formc").load("formc.php");
 });
 
 $(document).ready( function() {
-    $("#formd").load("formd.html");
+    $("#formd").load("formd.php");
 });
