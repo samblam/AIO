@@ -1,4 +1,12 @@
-<!-- this page is for the student view for each active case.-->
+<?php
+
+//Open the db connection
+include '../includes/db.php';
+//Check if the form variables have been submitted, store them in the session variables
+include '../includes/formProcess.php';
+include_once 'page.php';
+
+?>
 
 <!DOCTYPE html>
 <html>
@@ -8,11 +16,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Student Case</title>
         <link rel="stylesheet" href="../CSS/main.css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
         <script src="../JS/top-header-full.js"></script>
-        <script src="../JS/formLoader.js"></script>
     </head>
     <body style="margin: auto;">
         <!-- Headder div + Logout button -->
@@ -52,10 +56,10 @@
                                     <!-- needs to add an <li> tage for other students in the case upon loading page; BACKEND -->
                                     <li><a href="student-case-information.html"> TestStudent Name</a></li>
                                     <li><a href="#"> TestStudent Name</a></li>
-                                    
+
                                 </ul>
                             </div>
-                            
+
                         </td>
                     </tr>
                     <tr>
@@ -95,16 +99,20 @@
             </ul>
 
             <div class="tab-content">
-                <div id="forma" class="tab-pane fade  active in">
+                <div id="forma" class="tab-pane fade active in">
+                    <?php include 'forma.php' ?>
                 </div>
 
                 <div id="formb" class="tab-pane fade">
+                    <?php include 'formb.php' ?>
                 </div>
 
                 <div id="formc" class="tab-pane fade">
+                    <?php include 'formc.php' ?>
                 </div>
 
                 <div id="formd" class="tab-pane fade">
+                    <?php include 'formd.php' ?>
                 </div>
 
             </div>

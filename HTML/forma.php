@@ -1,11 +1,12 @@
 <?php
 
-session_start();
 //Open the db connection
-include '../includes/db.php';
+// include '../includes/db.php';
 //Check if the form variables have been submitted, store them in the session variables
 include '../includes/formProcess.php';
 include '../includes/formFill.php';
+include_once 'page.php';
+
 ?>
 
 <!DOCTYPE html>
@@ -16,13 +17,6 @@ include '../includes/formFill.php';
         <title>Portal</title>
         <link rel="stylesheet" href="../CSS/formA.css">
         <link rel="stylesheet" href="../CSS/main.css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
     </head>
     <body style="margin:auto;">
 
@@ -130,7 +124,7 @@ include '../includes/formFill.php';
                         <textarea class="form-control" rows="5" placeholder="Write additional comments here" id="additionalComments" name="additionalComments"></textarea>
                     </div>
                 </div>
-                
+
                 <!--save button, submit button-->
                 <div class="form-group">
                     <div class="center-block text-center">
@@ -141,7 +135,7 @@ include '../includes/formFill.php';
             </form>
         </div>
 
-        
+
     </body>
 
     <!-- adds student form on click -->
