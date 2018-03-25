@@ -5,7 +5,7 @@ session_start();
 include '../includes/db.php';
 //Check if the form variables have been submitted, store them in the session variables
 include '../includes/formProcess.php';
-
+include '../includes/formFill.php';
 ?>
 
 <!DOCTYPE html>
@@ -31,19 +31,19 @@ include '../includes/formProcess.php';
             <div class="form-group row">
                 <label for="ProfessorName" class="col-sm-3 col-form-label">Professor:</label>
                 <div class="col-sm-8">
-                     <input type="text" class="form-control" placeholder="Professor Name" id="ProfessorName" name="ProfessorName" required>
+                     <input type="text" class="form-control" placeholder="Professor Name" id="ProfessorName" name="ProfessorName" required value="<?php if (isset($prof_name)) {echo $prof_name;} ?>">
                 </div>
             </div>
             <div class="form-group row">
                 <label for="email" class="col-sm-3 col-form-label">Email Address:</label>
                 <div class="col-sm-8">
-                    <input type="email" class="form-control" placeholder="Email" id="email" name="email" required>
+                    <input type="email" class="form-control" placeholder="Email" id="email" name="email" required value="<?php if (isset($prof_email)) {echo $prof_email;} ?>" >
                 </div>
             </div>
             <div class="form-group row">
                 <label for="phoneNum" class="col-sm-3">Phone Number:</label>
                 <div class="col-sm-8">
-                    <input type="tel" class="form-control" placeholder="Phone Number" id="phoneNum" name="phoneNum" required>
+                    <input type="tel" class="form-control" placeholder="Phone Number" id="phoneNum" name="phoneNum" required value="<?php if (isset($prof_phone)) {echo $prof_phone;} ?>" >
                 </div>
             </div>
             <div class="form-group row">
@@ -55,14 +55,14 @@ include '../includes/formProcess.php';
             <div class="form-group row">
                 <label for="dept" class="col-sm-3">Department:</label>
                  <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="Department" id="dept" name="dept">
+                    <input type="text" class="form-control" placeholder="Department" id="dept" name="dept" value="<?php if (isset($prof_dept)) {echo $prof_dept;} ?>" >
                 </div>
             </div>
             <!-- course picker drop-down-->
             <div class="form-group row">
                 <label for="coursePicker" class="col-sm-3">Course Name: </label>
                 <div class="col-sm-4">
-                    <select class="form-control" id="coursePicker" name="coursePicker" required>
+                    <select class="form-control" id="coursePicker" name="coursePicker" required value="<?php if (isset($course_name)) {echo $course_name;} ?>" >
                     <option selected>Choose..</option>
                         <!-- these options need to pull from list of courses (?) -->
                     <option>CSCI 2132 &nbsp;- Software Development</option>
@@ -94,7 +94,7 @@ include '../includes/formProcess.php';
             <div class="form-group row">
                 <label class="col-sm-3">Date of Alleged Offense:</label>
                 <div class="col-sm-4">
-                     <input type="date" class="form-control col-sm-4" id="date" name="date" required>
+                     <input type="date" class="form-control col-sm-4" id="date" name="date" required value="<?php if (isset($date_alleg)) {echo $date_alleg;} ?>" >
           <!--         <i class="glyphicon glyphicon-calendar form-control-feedback"></i> -->
                 </div>
             </div>
