@@ -1,8 +1,22 @@
 .show {
-    display: block;
+    display:block;
 }
 
 label{
-    display: inline-block;
+    display:inline-block;
+    text-align:left;
+}
+
+.form-b-title {
+    margin-top: 1.3em;
+    margin-bottom: 0px;
+}
+
+.form-container {
+    margin-top: 25px;
+    margin-left: 15px;
+}
+
+.form-horizontal .form-group .control-label {
     text-align: left;
 }
