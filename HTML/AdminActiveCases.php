@@ -53,7 +53,7 @@ include '../includes/formProcess.php';
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- cases need to be taken from database -->
+                    <!-- cases need to be taken from database, and add this code for each one. -->
                     <tr>
                         <td>123</td>
                         <td>CSCI 2132</td>
@@ -61,7 +61,7 @@ include '../includes/formProcess.php';
                         <td>Mr. Incredible</td>
                         <td>No</td>
                         <td>N/A</td>
-                        <!-- make functional! -->
+                        <!-- drop-down action choices -->
                         <td>
                             <div class="dropdown">
                                 <button class="btn btn-default dropdown-toggle" type="button" style="font-size: 12px;" data-toggle="dropdown">Actions
