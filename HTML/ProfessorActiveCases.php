@@ -29,19 +29,13 @@ include '../includes/formProcess.php';
         <div>
             <h2>Active Cases</h2>
         </div>
-        <!-- Newcase button div -->
-        <div>
-            <span class="pull-right">
-                <button class="btn btn-success" style="font-size: 16px;" onclick="location.href='forma.php';">NewCase</button>
-            </span>
-        </div>
 
         <!-- Table div -->
         <!-- TODO: Table will need to populate based on the entries in the DB(server side) -->
         <!-- TODO: I think to properly link the buttons, each row might have to be an input form(haven't looked it up) -->
         <div>
             <span class="pull-right" style="display: inline-block;">
-                <button class="btn btn-success" style="font-size: 16px; vertical-align: bottom;">Submit new case</button>
+                <button class="btn btn-success" onclick="location.href='forma.php'" style="font-size: 16px; vertical-align: bottom;">Submit new case</button>
             </span>
 
             <table class="table table-bordered" style="font-size: 12px;">

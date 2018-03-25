@@ -14,6 +14,7 @@ include '../includes/formProcess.php';
         <title>Form A</title>
         <!-- css for this page -->
         <link rel="stylesheet" href="../CSS/formA.css">
+        <link rel="stylesheet" href="../CSS/main.css">
         <!-- bootstrap imports-->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -114,7 +115,7 @@ include '../includes/formProcess.php';
             <!-- text input for additional comments-->
             <br>
             <div class="form-group row">
-                <label for="additionalComments" class="col-sm-3">Description of Allegation & Comments:</label>
+                <label for="additionalComments" class="col-sm-3">Description of Allegation and Comments:</label>
                 <textarea class="form-control" class="col-sm-11" rows="5" placeholder="Write additional comments here" id="additionalComments" name="additionalComments"></textarea>
             </div>
 
@@ -129,8 +130,11 @@ include '../includes/formProcess.php';
     </body>
     <!-- adds student form on click -->
     <script type="text/javascript">
+        var students = 1;
+        
         $("#addStudent").click(function () {
-           $("#students").append('<div class="input-group"> <span class="input-group-addon">Student Name</span> <input type="text" class="form-control" aria-label="Name" required> <span class="input-group-addon">Banner Number</span> <input type="text" class="form-control" aria-label="B00" required> </div>');
+            students++;
+           $("#students").append('<div class="row"><label class="col-sm-3"> </label><div class="col-sm-8"><div class="input-group"> <span class="input-group-addon">Student Name</span> <input type="text" class="form-control" aria-label="Name" id="name"+$students required> <span class="input-group-addon">Banner Number</span> <input type="text" class="form-control" aria-label="B00" id="id$students" required> </div></div></div>');
         });
     </script>
 
