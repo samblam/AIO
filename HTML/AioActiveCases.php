@@ -35,55 +35,34 @@ include '../includes/formProcess.php';
                     <tr>
                         <th>Student(s) Banner</th>
                         <th>Student(s) Name</th>
-                        <th>AIO</th>
+                        <th>Professor</th>
                         <th>Action required</th>
                         <th>View</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-                    
-                    
-		      $statement = $conn->prepare("SELECT  FROM active_cases WHERE aio_id = ?");
-                      //$statement = $conn->query("SELECT * FROM case WHERE aio_id = 1233");
-		      //if (is_object($statement))
-		      $statement->bind_param("s",$_SESSION['userId']); //bind the csid to the prepared statements
-  		      //$num = "1";
-		      if(!$statement->execute()){
-     		        echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
-                      } 
-		      $statement->bind_result($name, $code);
-		      
-		      $queryAllPosts = $conn->query("SELECT  FROM active_cases WHERE aio_id = '$_SESSION['userId']'");
-  }
+            		      $statement = $conn->prepare("SELECT professor.fname, professor.lname, student.fname, student.lname, student.csid, active_cases.case_id FROM professor, active_cases, student WHERE professor.professor_id = active_cases.prof_id AND student.case_id = active_cases.case_id AND active_cases.aio_id = ?");
+            		      $statement->bind_param("d", $id); //bind the csid to the prepared statements
 
-  $row = $queryAllPosts->fetch_array(MYSQLI_NUM);
-  $isFirst = TRUE;
-  while($statement->fetch()){
-    $tableData = <<<ViewAllPost
-    <tr>
-      <td>B000</td>
-      <td>Moe</td>
-      <td>Fred</td>
-      <td><button class="custombtn btn btn-danger">Yes</button></td>
-      <td><button class="btn btn-primary">View Case</button></td>
-    </tr>		
+                      $id = (int)$_SESSION['userId'];
+
+            		      if(!$statement->execute()){
+                 		    echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+                      }
+            		      $statement->bind_result($pfname, $plname, $sfname, $slname, $scsid, $caseId);
+                      while($statement->fetch()){
+                        echo <<<ViewAllPost
+                        <tr>
+                          <td>$scsid</td>
+                          <td>$sfname $slname</td>
+                          <td>$pfname $plname</td>
+                          <td><button class="custombtn btn btn-danger">Yes</button></td>
+                          <td><a href="student-case-information.php?case_id={$caseId}" class="btn btn-primary">View Case</a></td>
+                        </tr>
 ViewAllPost;
-?>
-		    <tr>
-                        <td>B00000002</td>
-                        <td>Moe</td>
-                        <td>Fred</td>
-                        <td><button class="custombtn btn btn-danger">Yes</button></td>
-                        <td><button class="btn btn-primary">View Case</button></td>
-                    </tr>
-                    <tr>
-                        <td>B00000003</td>
-                        <td>Dooley</td>
-                        <td>Matt</td>
-                        <td><button class="custombtn btn btn-danger">Yes</button></td>
-                        <td><button class="btn btn-primary">View Case</button></td>
-                    </tr>
+                      }
+                      ?>
                 </tbody>
             </table>
         </div>

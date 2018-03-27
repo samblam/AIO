@@ -27,14 +27,14 @@ include '../includes/formProcess.php';
                  confirm("this will delete the file permanently!");
             }
         </script>
-        
+
         <!-- the header; logout and back buttons -->
         <script src="../JS/top-header.js"></script>
     </head>
 
      <body style="margin: auto;">
         <!-- Headder div + Logout button -->
-        <button class="btn btn-default pull-right" type="button">Logout</button>
+        <div class="top-header"></div>
         <div>
             <h2>Active Cases</h2>
         </div>
@@ -53,28 +53,42 @@ include '../includes/formProcess.php';
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- cases need to be taken from database, and add this code for each one. -->
-                    <tr>
-                        <td>123</td>
-                        <td>CSCI 2132</td>
-                        <td>Bob Parr</td>
-                        <td>Mr. Incredible</td>
-                        <td>No</td>
-                        <td>N/A</td>
-                        <!-- drop-down action choices -->
-                        <td>
-                            <div class="dropdown">
-                                <button class="btn btn-default dropdown-toggle" type="button" style="font-size: 12px;" data-toggle="dropdown">Actions
-                                <span class="caret"></span></button>
-                                <ul class="dropdown-menu" onchange="warning()">
+                  <?php
+                    $statement = $conn->prepare("SELECT active_cases.case_id, active_cases.class_name_code, professor.fname, professor.lname, aio.fname, aio.lname  FROM professor, active_cases, aio WHERE professor.professor_id = active_cases.prof_id AND aio.aio_id = active_cases.aio_id");
+                    //$statement->bind_param("d", $id); //bind the csid to the prepared statements
 
-                                    <li><a href="CaseInformation.php">View</a></li>
-                                    <li><a href="ChangeAIO.php">Change AIO</a></li>
-                                    <li><button onclick="warning()" style="background-color: red" color="black" class="btn btn-link">Delete</button></li>
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
+                    //$id = (int)$_SESSION['userId'];
+
+                    if(!$statement->execute()){
+                      echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+                    }
+                    $statement->bind_result($caseId, $className, $pfname, $plname, $afname, $alname);
+                    while($statement->fetch()){
+                      echo <<<ViewAllPost
+                      <tr>
+                          <td>$caseId</td>
+                          <td>$className</td>
+                          <td>$pfname $plname</td>
+                          <td>$afname $alname</td>
+                          <td>No</td>
+                          <td>N/A</td>
+                          <!-- drop-down action choices -->
+                          <td>
+                              <div class="dropdown">
+                                  <button class="btn btn-default dropdown-toggle" type="button" style="font-size: 12px;" data-toggle="dropdown">Actions
+                                  <span class="caret"></span></button>
+                                  <ul class="dropdown-menu" onchange="warning()">
+
+                                      <li><a href="CaseInformation.php?case_id={$caseId}">View</a></li>
+                                      <li><a href="ChangeAIO.php">Change AIO</a></li>
+                                      <li><button onclick="warning()" style="background-color: red" color="black" class="btn btn-link">Delete</button></li>
+                                  </ul>
+                              </div>
+                          </td>
+                      </tr>
+ViewAllPost;
+                    }
+                    ?>
                 </tbody>
             </table>
         </div>
