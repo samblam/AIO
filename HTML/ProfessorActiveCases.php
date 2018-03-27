@@ -45,31 +45,40 @@ include '../includes/formProcess.php';
                         <th>Student Names</th>
                         <th>AIO</th>
                         <th>Action required</th>
+                        <th>Status</th>
                         <th>View</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>B00000001</td>
-                        <td>Mark Otto</td>
-                        <td>Fred</td>
+                  <?php
+                    $notSubmitted = "";
+                    $submitted = "";
+                    $statement = $conn->prepare("SELECT aio.fname, aio.lname, student.fname, student.lname, student.csid, active_cases.case_id, active_cases.form_a_submit_date FROM aio, active_cases, student WHERE aio.aio_id = active_cases.aio_id AND student.case_id = active_cases.case_id AND active_cases.prof_id = ?");
+                    $statement->bind_param("d", $id); //bind the csid to the prepared statements
+
+                    $id = (int)$_SESSION['userId'];
+
+                    if(!$statement->execute()){
+                      echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+                    }
+                    $statement->bind_result($afname, $alname, $sfname, $slname, $scsid, $caseId, $subDate);
+                    while($statement->fetch()){
+                      $submitted = "Submitted";
+                      if($subDate == NULL){
+                        $submitted = "Not Submitted";
+                      }
+                      echo <<<ViewAllPost
+                      <tr>
+                        <td>$scsid</td>
+                        <td>$sfname $slname</td>
+                        <td>$afname $alname</td>
                         <td><button class="custombtn btn btn-danger">Yes</button></td>
-                        <td><button class="btn btn-primary">View Case</button></td>
-                    </tr>
-                    <tr>
-                        <td>B00000002</td>
-                        <td>Moe</td>
-                        <td>Fred</td>
-                        <td>No</td>
-                        <td><button class="btn btn-primary">View Case</button></td>
-                    </tr>
-                    <tr>
-                        <td>B00000003</td>
-                        <td>Dooley</td>
-                        <td>Matt</td>
-                        <td>No</td>
-                        <td><button class="btn btn-primary">View Case</button></td>
-                    </tr>
+                        <td>$submitted</td>
+                        <td><a href="forma.php?case_id={$caseId}" class="btn btn-primary">View Case</a></td>
+                      </tr>
+ViewAllPost;
+                    }
+                    ?>
                 </tbody>
             </table>
         </div>
