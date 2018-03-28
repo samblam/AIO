@@ -19,7 +19,7 @@ include_once 'page.php';
         <script src="../JS/formd.js"></script>
     </head>
     <body style="margin: auto;">
-        <div class="container">
+        <div class="form-container">
             <h2 class="form-d-title">Form D</h2>
             <p>AIO Assessment and Recommendations</p>
         </div>

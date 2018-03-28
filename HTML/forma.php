@@ -20,7 +20,7 @@ include_once 'page.php';
     </head>
     <body style="margin:auto;">
 
-        <div class="container">
+        <div class="form-container">
             <h2 class="form-a-title" style="text-align: left">Form A</h2>
             <p>Report of Academic Integrity Violation</p>
         </div>

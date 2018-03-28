@@ -22,7 +22,7 @@ include_once 'page.php';
     <!-- Form B -->
 
     <body style="margin: auto;">
-        <div class="container">
+        <div class="form-container">
             <h2 class="form-b-title" style="text-align: left">Form B</h2>
             <p>AIO Transfer to Senate</p>
         </div>

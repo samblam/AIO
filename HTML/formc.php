@@ -19,7 +19,7 @@ include_once 'page.php';
         <script src="../JS/formc.js"></script>
     </head>
     <body style="margin: auto;">
-        <div class="container">
+        <div class="form-container">
             <h2 class="form-d-title">Form C</h2>
             <p>AIO Allegation Letter</p>
         </div>
