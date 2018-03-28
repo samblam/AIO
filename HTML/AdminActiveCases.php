@@ -21,12 +21,7 @@ include '../includes/formProcess.php';
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-        <script>
-            function warning()
-            {
-                 confirm("this will delete the file permanently!");
-            }
-        </script>
+
 
         <!-- the header; logout and back buttons -->
         <script src="../JS/top-header.js"></script>
@@ -55,9 +50,6 @@ include '../includes/formProcess.php';
                 <tbody>
                   <?php
                     $statement = $conn->prepare("SELECT active_cases.case_id, active_cases.class_name_code, professor.fname, professor.lname, aio.fname, aio.lname  FROM professor, active_cases, aio WHERE professor.professor_id = active_cases.prof_id AND aio.aio_id = active_cases.aio_id");
-                    //$statement->bind_param("d", $id); //bind the csid to the prepared statements
-
-                    //$id = (int)$_SESSION['userId'];
 
                     if(!$statement->execute()){
                       echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
@@ -77,11 +69,11 @@ include '../includes/formProcess.php';
                               <div class="dropdown">
                                   <button class="btn btn-default dropdown-toggle" type="button" style="font-size: 12px;" data-toggle="dropdown">Actions
                                   <span class="caret"></span></button>
-                                  <ul class="dropdown-menu" onchange="warning()">
+                                  <ul class="dropdown-menu">
 
                                       <li><a href="CaseInformation.php?case_id={$caseId}">View</a></li>
                                       <li><a href="ChangeAIO.php">Change AIO</a></li>
-                                      <li><button onclick="warning()" style="background-color: red" color="black" class="btn btn-link">Delete</button></li>
+                                      <li><button value="$caseId" style="background-color: red" color="black" class="btn btn-link">Delete</button></li>
                                   </ul>
                               </div>
                           </td>
@@ -94,3 +86,11 @@ ViewAllPost;
         </div>
     </body>
 </html>
+<script>
+    $(".btn-link").click(function() {
+      var answer = confirm("this will delete the case permanently!");
+      if (answer){
+        window.location.href = 'AdminActiveCases.php?case_id='+$(this).val()+'&deleteCase=true'
+      }
+    });
+</script>
