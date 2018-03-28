@@ -95,6 +95,7 @@ include_once 'page.php';
                 <!--save button, submit button-->
                 <div class="form-group">
                     <div class="center-block text-center">
+                        <button type="submit" class="btn btn-primary" name="SubmitFormC">Preview PDF</button>
                         <button type="submit" class="btn btn-primary" name="SaveFormA">Save</button>
                         <button type="submit" class="btn btn-success" name="SubmitFormA">Submit</button>
                     </div>
