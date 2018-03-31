@@ -60,6 +60,10 @@ def login_persona(browser, credentials):
     ui.WebDriverWait(browser, 10).until(lambda driver: browser.find_by_name('uname'))
     browser.find_by_name('uname').fill(credentials['username'])
     browser.find_by_name('psw').fill(credentials['password'])
+    if credentials['username'] == AIOUSER:
+        browser.find_by_xpath('//*[@id="login_role"]/option[@value="aio"]').click()
+    elif credentials['username'] == ADMINUSER:
+        browser.find_by_xpath('//*[@id="login_role"]/option[@value="admin"]').click()
     browser.find_by_name('LoginSubmit').click()
     time.sleep(1)
 

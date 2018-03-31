@@ -15,13 +15,21 @@ import conftest as var
 def test_professor_can_login_to_web_portal(professor):
     """AIO-0 Professor can login to web portal."""
 
-@given('I am in main page as Professor')
-def i_am_in_main_page_as_professor(browser):
-    """I am in main page as Professor."""
+@scenario('login.feature', 'AIO-1 AIO can login to web portal')
+def test_aio_can_login_to_web_portal(aio):
+    """AIO-1 AIO can login to web portal."""
 
-@when('I click the submit button')
-def i_click_the_submit_button(browser):
-    """I click the submit button."""
+@scenario('login.feature', 'AIO-3 Admin can login to web portal')
+def test_admin_can_login_to_web_portal(admin):
+    """AIO-3 Admin can login to web portal."""
+
+@given('I am in the login page')
+def i_am_in_the_login_page(browser):
+    """I am in the login page."""
+
+@when('I sign in')
+def i_sign_in(browser):
+    """I sign in."""
 
 @then('I see the Active Cases page')
 def i_see_the_active_cases_page(browser):
