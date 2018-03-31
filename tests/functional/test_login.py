@@ -11,17 +11,17 @@ from pytest_bdd import (
 import utility
 import conftest as var
 
-@scenario('login.feature', 'AIO-0 Professor can login to web portal')
+@scenario('login.feature', 'LOGIN-0 Professor can login to web portal')
 def test_professor_can_login_to_web_portal(professor):
-    """AIO-0 Professor can login to web portal."""
+    """LOGIN-0 Professor can login to web portal."""
 
-@scenario('login.feature', 'AIO-1 AIO can login to web portal')
+@scenario('login.feature', 'LOGIN-1 AIO can login to web portal')
 def test_aio_can_login_to_web_portal(aio):
-    """AIO-1 AIO can login to web portal."""
+    """LOGIN-1 AIO can login to web portal."""
 
-@scenario('login.feature', 'AIO-3 Admin can login to web portal')
+@scenario('login.feature', 'LOGIN-3 Admin can login to web portal')
 def test_admin_can_login_to_web_portal(admin):
-    """AIO-3 Admin can login to web portal."""
+    """LOGIN-3 Admin can login to web portal."""
 
 @given('I am in the login page')
 def i_am_in_the_login_page(browser):
