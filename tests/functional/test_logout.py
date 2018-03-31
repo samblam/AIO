@@ -1,7 +1,4 @@
 import time
-import pytest
-from selenium.webdriver.common.keys import Keys
-import selenium.webdriver.support.ui as ui
 from pytest_bdd import (
     given,
     scenario,
