@@ -17,7 +17,7 @@ def test_professor_can_login_to_web_portal(professor):
 def test_aio_can_login_to_web_portal(aio):
     """LOGIN-1 AIO can login to web portal."""
 
-@scenario('login.feature', 'LOGIN-3 Admin can login to web portal')
+@scenario('login.feature', 'LOGIN-2 Admin can login to web portal')
 def test_admin_can_login_to_web_portal(admin):
     """LOGIN-3 Admin can login to web portal."""
 
