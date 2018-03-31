@@ -64,6 +64,17 @@ pytest tests/functional/test_filename.py
 - Everything related to fixtures, how .env files/webdriver are loaded, etc. are in `conftest.py`
 - To login to as aio/professor/admin, simply pass in the corresponding persona into parameters in `@scenario`
 - To unstick pages, use `ui.WebDriverWait(browser, 10).until(lambda driver: browser.find_by_etc('[etc]'))` -- otherwise use `time.sleep(1)`
+- **DO NOT** use absolute paths when using `find_by_xpath`:
+
+```
+DO NOT USE SOMETHING LIKE: /html/body/div[3]/table/tbody/tr[1]/td[5]/button
+Rather use something like: //tr/td[text()="Moe"]/following-sibling::td/button[text()="View Case"] instead
+```
+- This essentially selects the View Case button on the row that contains "Moe"
+- Using absolute paths to select a button, etc. is not the way to go. Once a new div, button, text, etc. is added to the page, your script will break because that absolute path is now something different
+- Dev tool in your browser is useful when trying to test if that xpath is correct or not
+- Simply inspect -> find div -> right click div -> copy -> copy xpath. Then do CTRL+F inside the browser dev tool and paste the xpath/your own xpath
+
 
 ### Code standards:
 - Refer to `test_login.py` and `login.feature` on how feature files and scripts should be written and follow its function naming, etc.
