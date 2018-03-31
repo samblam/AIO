@@ -53,9 +53,21 @@ $pip-sync
 
 ## Running functional tests in python
 **Note: Make sure you're in virtualenv**
+
+This will only execute 1 test script of that file name:
+
 ```
 pytest tests/functional/test_filename.py
 ```
+
+In order to execute ALL test scripts:
+- Go into the folder with shell script, `run_functional_tests.sh`:
+
+```
+$sh run_functional_tests.sh
+```
+- All scripts should now run automatically
+
 
 ## Working on test scripts
 ### Notes:
