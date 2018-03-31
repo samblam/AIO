@@ -25,6 +25,10 @@ def test_professor_can_view_active_cases_page(professor):
 def test_professor_can_submit_new_case(professor):
     """PROF_ACTIVE_CASE-1 Professor can submit new case."""
 
+@scenario('prof_active_cases.feature', 'PROF_ACTIVE_CASE-2 Professor can view case')
+def test_professor_can_view_case(professor):
+    """PROF_ACTIVE_CASE-2 Professor can view case."""
+
 @given('I am in the login page')
 def i_am_in_the_login_page(browser):
     """I am in the login page."""
@@ -58,6 +62,11 @@ def i_fill_in_information(browser):
 def i_click_the_submit_button(browser):
     """I click the "Submit" button."""
     browser.find_by_name('SubmitFormA').click()
+
+@when('I click "View case"')
+def i_click_view_case(browser):
+    """I click "View case"."""
+    browser.find_by_xpath('//tr/td[text()="Mark Otto"]/following-sibling::td/button[text()="View Case"]').click()
 
 @then('I see the "Active Cases" page')
 def i_see_the_active_cases_page(browser):
