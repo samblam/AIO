@@ -8,8 +8,6 @@ from pytest_bdd import (
     then,
     when,
 )
-import utility
-import conftest as var
 
 @scenario('login.feature', 'LOGIN-0 Professor can login to web portal')
 def test_professor_can_login_to_web_portal(professor):
