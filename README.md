@@ -58,9 +58,26 @@ pytest tests/functional/test_filename.py
 ```
 
 ## Working on test scripts
-TODO: add standards, naming
+### Notes:
+- `.feature` files uses Gherkin syntax (refer to resources section on how to write them)
+- `.py` files uses Splinter library and python
+- Everything related to fixtures, how .env files/webdriver are loaded, etc. are in `conftest.py`
+- To login to as aio/professor/admin, simply pass in the corresponding persona into parameters in `@scenario`
+- To unstick pages, use `ui.WebDriverWait(browser, 10).until(lambda driver: browser.find_by_etc('[etc]'))` -- otherwise use `time.sleep(1)`
+
+### Code standards:
+- Refer to `test_login.py` and `login.feature` on how feature files and scripts should be written and follow its function naming, etc.
+- In `.py` scripts, put `@given`, `@when`, `@then` together (easier to read)
+- If two or more `@when` (or `@then`) function does the same thing (ie. clicks the same button but has different statement in feature file, it can be written as:
+
+```
+@when('I click on submit')
+@when('I select the submit button')
+def function(browser):
+    <do some stuff>
+```
 
 ## Documentations of the libraries used/other resources
 - [Splinter] (https://splinter.readthedocs.io/en/latest/)
-- [Pytest-bdd] (https://pypi.python.org/pypi/pytest-bdd)
-- [Resource on Gherkin syntax and how to write it] (http://docs.behat.org/en/v2.5/guides/1.gherkin.html)
+- [Pytest-bdd (there are examples on how splinter is used along with feature files using Gherkin)] (https://pypi.python.org/pypi/pytest-bdd)
+- [Resource on Gherkin syntax/how to write it] (http://docs.behat.org/en/v2.5/guides/1.gherkin.html)
