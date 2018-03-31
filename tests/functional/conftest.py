@@ -7,6 +7,9 @@ from splinter import Browser
 from selenium import webdriver
 import selenium.webdriver.support.ui as ui
 from inspect import getsourcefile
+from dotenv import load_dotenv, find_dotenv
+load_dotenv(find_dotenv())
+
 
 @pytest.fixture(scope='session')
 def pytestbdd_selenium_speed():
@@ -31,20 +34,22 @@ LOGGED_IN = None
 AIO = 'aio'
 ADMIN = 'admin'
 PROFESSOR = 'professor'
-# PASS = os.environ['PW]
-PASS = 'pass1234'
+PASS = os.getenv('PW')
+AIOUSER = os.getenv('AIO_USER')
+ADMINUSER = os.getenv('ADMIN_USER')
+PROFUSER = os.getenv('PROF_USER')
 
 personas = {
     'aio': {
-        'username':'aio@email.com',
+        'username': AIOUSER,
         'password': PASS
     },
     'admin': {
-        'username':'admin@email.com',
+        'username': ADMINUSER,
         'password': PASS
     },
     'professor': {
-        'username':'prof@email.com',
+        'username': PROFUSER,
         'password': PASS
     }
 }
@@ -66,13 +71,11 @@ def credentials():
 
 @pytest.fixture
 def base_url():
-    return "https://projects.cs.dal.ca/aio/"
-    # TODO: Fix .env stuff
-    # try:
-    #     print os.environ['AIO_URL']
-    #       return os.environ['AIO_URL']
-    # except KeyError:
-    #     sys.exit("Please set the environment variable AIO_URL")
+    try:
+        print os.getenv('AIO_URL')
+        return os.getenv('AIO_URL')
+    except KeyError:
+        sys.exit("Please set the environment variable AIO_URL")
 
 @pytest.fixture
 def aio(browser):
