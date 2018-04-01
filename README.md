@@ -4,7 +4,9 @@ It is a web portal designed to ease the amount of emails being sent back and for
 # Functional Testing
 Contains all the automated functional test scripts for the AIO-automate.
 It uses splinter and pytest-bdd libraries in python.
-## Requirements
+
+## Requirements 
+**Make sure you have python 2.7, virtualenv and pip-tools before proceeding to the next step**
 - python 2.7
 - virtualenv and virtualenvwrapper
 - pip-tools (this will install all the requirements for you)
@@ -21,6 +23,7 @@ $pip install pip-tools
 $pip-compile //will install all requirements in your virtualenv
 $pip-sync //must be in folder with requirements files
 ```
+- Don't forget to add corresponding info to the `.env` file
 
 ### Setting up virtualenv:
 ```
@@ -104,3 +107,4 @@ def function(browser):
 - [Splinter] (https://splinter.readthedocs.io/en/latest/)
 - [Pytest-bdd (there are examples on how splinter is used along with feature files using Gherkin)] (https://pypi.python.org/pypi/pytest-bdd)
 - [Resource on Gherkin syntax/how to write it] (http://docs.behat.org/en/v2.5/guides/1.gherkin.html)
+- [Information about .env] (https://github.com/theskumar/python-dotenv)
