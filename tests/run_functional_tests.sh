@@ -1,0 +1,1 @@
+pytest functional --tb=short
