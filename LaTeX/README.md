@@ -1,0 +1,1 @@
+This directory contains all of our projects relevant LaTeX files.
