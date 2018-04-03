@@ -1,8 +1,4 @@
-filename = "infotest.tex" #file name
-
-#frequently used commands
-check = "\\CheckBox"
-uncheck = "\\UnCheckBox"
+filename = "InfoStatic.tex" #file name
 
 def newCom(command, value): #new command
 	file.write("\\newcommand{" + command + "}{" + value + "}\n")
