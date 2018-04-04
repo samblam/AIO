@@ -49,7 +49,7 @@ include '../includes/formProcess.php';
                 </thead>
                 <tbody>
                   <?php
-                    $statement = $conn->prepare("SELECT active_cases.case_id, active_cases.class_name_code, professor.fname, professor.lname, aio.fname, aio.lname  FROM professor, active_cases, aio WHERE professor.professor_id = active_cases.prof_id AND aio.aio_id = active_cases.aio_id");
+                    $statement = $conn->prepare("SELECT active_cases.case_id, active_cases.class_name_code, professor.fname, professor.lname, aio.fname, aio.lname  FROM active_cases LEFT JOIN professor ON professor.professor_id = active_cases.prof_id LEFT JOIN aio ON aio.aio_id = active_cases.aio_id");
 
                     if(!$statement->execute()){
                       echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
@@ -73,7 +73,12 @@ include '../includes/formProcess.php';
 
                                       <li><a href="CaseInformation.php?case_id={$caseId}">View</a></li>
                                       <li><a href="ChangeAIO.php">Change AIO</a></li>
-                                      <li><button value="$caseId" style="background-color: red" color="black" class="btn btn-link">Delete</button></li>
+                                      <li>
+                                      <form class="delete_this_case" method="post" action="AdminActiveCases.php" onclick="return confirm('Are you sure?')">
+                                        <input type="text" name="case_id" value="$caseId" hidden>
+                                        <button value="true" type="submit" style="background-color: red" name="deleteCase">Delete</button>
+                                      </form>
+                                      </li>
                                   </ul>
                               </div>
                           </td>
@@ -86,11 +91,3 @@ ViewAllPost;
         </div>
     </body>
 </html>
-<script>
-    $(".btn-link").click(function() {
-      var answer = confirm("this will delete the case permanently!");
-      if (answer){
-        window.location.href = 'AdminActiveCases.php?case_id='+$(this).val()+'&deleteCase=true'
-      }
-    });
-</script>
