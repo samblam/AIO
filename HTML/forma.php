@@ -1,7 +1,7 @@
 <?php
 
 //Open the db connection
-// include '../includes/db.php';
+include_once '../includes/db.php';
 //Check if the form variables have been submitted, store them in the session variables
 include '../includes/formProcess.php';
 include '../includes/formFill.php';
@@ -20,7 +20,7 @@ include_once 'page.php';
     </head>
     <body style="margin:auto;">
 
-        <div class="container">
+        <div class="form-container">
             <h2 class="form-a-title" style="text-align: left">Form A</h2>
             <p>Report of Academic Integrity Violation</p>
         </div>
@@ -128,6 +128,7 @@ include_once 'page.php';
                 <!--save button, submit button-->
                 <div class="form-group">
                     <div class="center-block text-center">
+                        <button type="submit" class="btn btn-primary" name="SubmitFormC">Preview PDF</button>
                         <button type="submit" class="btn btn-primary" name="SaveFormA">Save</button>
                         <button type="submit" class="btn btn-success" name="SubmitFormA">Submit</button>
                     </div>
