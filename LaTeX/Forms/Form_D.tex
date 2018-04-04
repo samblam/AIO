@@ -1,0 +1,153 @@
+\documentclass[10pt]{dalcsletter}
+\usepackage{graphicx}
+\usepackage{ifthen}
+
+\begin{document}
+\pagestyle{empty}
+
+\name{}  % example, default is empty
+\telephone{902.494.2093} % example, default is FCS#: 902.494.2093
+\fax{902.492.1517}       % example, default is FCS#: 902.492.1517
+\web{http://www.cs.dal.ca} % example, default is www.cs.da.ca
+%\web{abrodsky@cs.dal.ca} % example, default is www.cs.da.ca
+
+%\date{November 9, 2011} % example, default is today
+
+\input{info.tex}
+
+\newcommand{\ignore}[1]{}
+\newcommand{\noignore}[1]{#1}
+
+\signature{\vspace*{-10ex}\includegraphics[scale=0.1]{\AIOSig}\\ 
+\AIO \\ 
+Academic Integrity Officer\\
+\vspace*{2em}
+\AIOCC/\\
+\vspace*{1em}
+Enclosure\\
+\vspace*{1em}
+\begin{tabular}{ll}
+c:\ \ \  & Professor \Professor, Faculty of Computer Science\\
+         & \RegistrarRecords, Registrar's Office, Dalhousie University\\
+\end{tabular}
+}
+
+\begin{letter}{ \Student\\ \Address}
+
+\vspace*{-30mm} % To have more space on the first page, add some
+              % negative vertical space
+\opening{Dear \Student{} (\Banner):}
+\begin{center}
+\large \bf Re: Allegation of Academic Offence – (\Student)
+\end{center}
+
+I have reviewed the allegation and considered all evidence put
+forward during our discussion and have found that you have \Allegation{}
+on \Work{} in the course \Class. 
+
+\AllegationDiscussion{}
+% I urge you to consider the discussion that we had on using resources
+% online such that you may feel confident that you will never be in
+% a similar situation in the future.
+
+I recommend that you:
+\Penalties{}
+
+Please take note that your name will be recorded on a database that
+keeps track of previous offenses. This consequence is automatic and
+doesn't leave a trail on your student record. A subsequent allegation
+would, however, be handled directly by the Senate Disciplinary
+Committee.
+
+I'm sorry that we met under these circumstances. However, I encourage
+you to carry on with your studies and put this behind you.
+
+\closing{Sincerely,}
+
+\end{letter}
+
+\pagebreak
+
+\vspace*{-3em}
+\begin{center}
+\LARGE\bf FORM D --- AIO Assessment and Recommendation
+\end{center}
+
+{\large
+\noindent {\bf Student name: \Student \hfill Banner ID: \Banner}
+
+\noindent Instructor name: \Professor
+
+\noindent Class name and code: \Class
+
+\noindent Allegations named in AIO letter to student:  
+\begin{quote}
+          \Student{} {\em \Allegation{}} on \Work{} in the course \Class.
+\end{quote}
+}
+
+\vspace*{0em}
+\noindent {\bf\Large ASSESSMENT and RECOMMENDED PENALTY}
+\begin{enumerate}
+\item Allegation(s) to be recorded on Senate Disciplinary case database
+\begin{quote}
+      \Allegation{} 
+\end{quote}
+\item Penalty (In the case of a common allegation where the issue of 
+      penalty is to be determined by SDC, please state this.)
+      \Penalties{}
+  \vspace*{-0.5ex}
+  \vspace*{-0.5ex}
+  \vspace*{-0.5ex}
+  \vspace*{-0.5ex}
+  \vspace*{-0.5ex}
+  \vspace*{-0.5ex}
+\end{enumerate}
+
+\vspace*{-1.7em}
+\noindent 
+\begin{tabular}{ccc}
+\AIO & \includegraphics[scale=0.1]{\AIOSig} & \today \\
+\vspace{-1ex}
+\rule{50ex}{2pt} & \rule{20ex}{2pt} & \rule{20ex}{2pt} \\
+{\bf Name of Academic Integrity Officer} & {\bf Signature} & {\bf Date}
+\end{tabular}
+
+\vspace*{0em}
+\noindent \rule{\linewidth}{5pt}
+\noindent {\large \bf This section is to be COMPLETED BY THE STUDENT WITHIN
+2 WORKING DAYS and this Form is to be returned to the Academic
+Integrity Officer, Faculty of Computer Science, 6050 University Avenue, 
+Dalhousie University.}
+\vspace*{-0.5em}
+\begin{description}
+\item[\fbox{\rule[1em]{1em}{0pt}}] {\bf I ACCEPT} the assessment and 
+     the penalty. I understand that, having accepted the assessment
+     and penalty, this matter is now binding. I understand that
+     this matter will be presented for ratification and that I will
+     receive confirmation of this ratification in due course.
+
+\item[\fbox{\rule[1em]{1em}{0pt}}] {\bf I DO NOT ACCEPT} the allegation
+     and/or the penalty assessment. I understand that the allegation
+     made against me will be sent to the Senate Discipline Committee
+     for a hearing, and that I will receive notification of the
+     hearing from the Vice-Chair (Student Affairs) in due course.
+
+\item[\fbox{\rule[1em]{1em}{0pt}}] This is a common allegation and
+     due to prior involvement, the issue of penalty will be determined
+     by the Senate Discipline Committee. I accept the assessment that
+     the allegation is proven. This finding is now binding and will be
+     presented for ratification. I understand I will receive notification
+     of the hearing to determine penalty from the Senate Vice-Chair
+     (Student Affairs) in due course.
+\end{description}
+
+\noindent (Please go to the academic regulations of Dalhousie
+University for further details regarding the Senate Discipline
+Committee.)
+
+{\large\bf
+  \noindent Student's signature: \rule{40ex}{1pt} Date: \rule{15ex}{1pt}
+}
+
+\end{document}

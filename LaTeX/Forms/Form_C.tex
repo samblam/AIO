@@ -1,0 +1,132 @@
+\documentclass[11pt]{dalcsletter}
+\usepackage{graphicx}
+\usepackage{ifthen}
+
+\begin{document}
+\name{}  % example, default is empty
+\telephone{902.494.2093} % example, default is FCS#: 902.494.2093
+\fax{902.492.1517}       % example, default is FCS#: 902.492.1517
+\web{http://www.cs.dal.ca} % example, default is www.cs.da.ca
+\web{abrodsky@cs.dal.ca} % example, default is www.cs.da.ca
+
+\date{November 9, 2011} % example, default is today
+
+\input{info.tex}
+
+\newcommand{\ignore}[1]{}
+\newcommand{\noignore}[1]{#1}
+
+\signature{\vspace*{-10ex}\includegraphics[scale=0.1]{\AIOSig}\\ 
+\AIO \\ 
+Academic Integrity Officer\\
+\vspace*{2em}
+\AIOCC/\\
+\vspace*{1em}
+Enclosure\\
+\vspace*{1em}
+\begin{tabular}{ll}
+c:\ \ \  & Professor \Professor, Faculty of Computer Science\\
+         & \Registrar, Registrar, Dalhousie University\\
+         & \AIClerk, Academic Integrity Clerk, Registrar’s Office, 
+                     Dalhousie University \\
+\end{tabular}
+}
+
+\begin{letter}{ \Student\\ \Address}
+
+\vspace*{-15mm} % To have more space on the first page, add some
+              % negative vertical space
+\opening{Dear \Student{} (\Banner):}
+\begin{center}
+\large \bf Re: Allegation of Academic Offence – (\Student)
+\end{center}
+
+Please be advised that Professor \Professor, Faculty of Computer
+Science, alleges that you have committed an academic offence contrary
+to the academic regulations of Dalhousie University. In particular,
+it is alleged that you have \Allegation{} with respect to \Work{} for
+\Class{}.
+
+I enclose a copy of the Professor's allegations and supporting
+documentation.
+
+I ask you to meet with me and the Professor at the following time
+and location to discuss this matter:
+
+\begin{center}
+\bf\large
+Date: \MeetDate\\
+Time: \MeetTime\\
+Location: \MeetLocation
+\end{center}
+
+If you do not attend this meeting, your case will be referred to
+the Senate Discipline Committee for a hearing.
+
+\ignore{ % Set to noignore during exams or holidays
+The meeting can be rescheduled, at your written request, [e.g. to
+accommodate your exam schedule] to a date immediately following
+your return to Dalhousie University. The request must be received
+no later than (one working day before initially scheduled meeting).
+}
+
+Please bring all documentation and information that you think is
+necessary to respond to the allegation to the meeting or submit it
+in advance to me. You may also bring a friend, relative, representative
+from the {\em Dalhousie Student Advocacy Service} (DSAS), or a
+lawyer to assist you. Should you choose to use the services of DSAS,
+you should contact them as soon as possible before the meeting at
+494-2205 or {\tt dsas@dal.ca}. Dalhousie Counseling Services are
+also available to you at 494-2081.
+
+You are to confirm with me no later than \ConfirmDate{} your attendance
+at this meeting, and the names of any individuals who will be
+accompanying you and the role of those individuals (i.e. advocate,
+support person).
+
+Within five working days of the meeting, I will make a preliminary
+assessment as to whether you have committed an academic offence,
+and if so, what penalty is warranted in the circumstances (an
+exception for students who have a prior offence on record is noted
+at the end of this paragraph). You will then have two working days
+to determine whether you will accept my assessment and recommended
+penalty. If you accept these, the matter will be presented for
+ratification and implementation. If you reject my assessment and/or
+recommended penalty, or if the matter is so serious that it warrants
+suspension, dismissal or failure of your academic year, your case
+will be referred to the Senate Discipline Committee for a hearing.
+When there is a common allegation, which is a case involving 2 or
+more students facing allegations arising from the same fact situation,
+and a student has a prior academic offence on record, I will make
+a preliminary assessment only as to whether or not an academic
+offence has been committed; the issue of penalty will be determined
+by the Senate Discipline Committee.
+
+\noignore{ % Please use the following paragraph ONLY when a final grade has 
+           % not yet been entered on the student’s transcript.
+The Registrar will record a grade of PENDING for the class on your
+transcript, until receiving confirmation of the result of the
+allegation and the final mark.
+}
+
+Please take note that if you request an official transcript to be
+issued while your case is pending, a revised transcript will be
+sent to all earlier recipients upon the conclusion of your case.
+
+This allegation does not affect your current status in the class.
+Requirements of attending classes and labs, completing assignments,
+and writing exams remain in effect.
+
+The allegation will proceed even if you choose to withdraw from the
+class, your academic program, or the University. If the allegation
+of an academic offence is proven, this finding will be recorded on
+the Senate database of disciplinary cases.
+
+If you have any questions concerning this process, please contact
+me at 494-\AIOPhoneExt{} or \AIOEmail.
+
+\closing{Sincerely,}
+
+\end{letter}
+
+\end{document}
