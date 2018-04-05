@@ -168,6 +168,15 @@ if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
       echo"Error uploading file.";
     }
   }
+  if($_SESSION['role'] == "professor"){
+    header('location: ../HTML/ProfessorActiveCases.php');
+  }
+  elseif ($_SESSION['role'] == "admin") {
+    header('location: ../HTML/AdminActiveCases.php');
+  }
+  else{
+    header('location: ../HTML/AioActiveCases.php');
+  }
 }
 if(isset($_POST['SaveFormB']) || isset($_POST['SubmitFormB'])){
 
