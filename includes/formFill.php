@@ -5,7 +5,6 @@
         //if($_GET['saved'] == "true") {
                 //$id = $_GET['case_id'];
                 $id = '1';
-                $var = "hello";
                 $query = $conn->prepare("SELECT prof_id, class_name_code, date_aware FROM active_cases WHERE case_id = ?");
                 $query->bind_param("i", $id);
                 $query->execute();
