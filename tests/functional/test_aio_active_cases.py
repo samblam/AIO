@@ -5,6 +5,7 @@ from pytest_bdd import (
     when,
 )
 
+# As of April 5, 2018: EVERYTHING in this test script is failing because AIO login doesn't work
 @scenario('aio_active_cases.feature', 'AIO_ACTIVE_CASES-0 AIO can view "Active Cases" page')
 def test_aio_can_view_active_cases_page(aio):
     """AIO_ACTIVE_CASES-0 AIO can view "Active Cases" page."""

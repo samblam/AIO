@@ -42,15 +42,18 @@ PROFUSER = os.getenv('PROF_USER')
 personas = {
     'aio': {
         'username': AIOUSER,
-        'password': PASS
+        'password': PASS,
+        'usertype': "aio"
     },
     'admin': {
         'username': ADMINUSER,
-        'password': PASS
+        'password': PASS,
+        'usertype': "admin"
     },
     'professor': {
         'username': PROFUSER,
-        'password': PASS
+        'password': PASS,
+        'usertype': "professor"
     }
 }
 
@@ -60,9 +63,10 @@ def login_persona(browser, credentials):
     ui.WebDriverWait(browser, 10).until(lambda driver: browser.find_by_name('uname'))
     browser.find_by_name('uname').fill(credentials['username'])
     browser.find_by_name('psw').fill(credentials['password'])
-    if credentials['username'] == AIOUSER:
+    print credentials['usertype']
+    if credentials['usertype'] == "aio":
         browser.find_by_xpath('//*[@id="login_role"]/option[@value="aio"]').click()
-    elif credentials['username'] == ADMINUSER:
+    elif credentials['usertype'] == "admin":
         browser.find_by_xpath('//*[@id="login_role"]/option[@value="admin"]').click()
     browser.find_by_name('LoginSubmit').click()
     time.sleep(1)
