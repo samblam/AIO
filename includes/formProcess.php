@@ -1,5 +1,7 @@
 <?php
-
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 include_once 'db.php';
 //This makes it so no one can submit forms at the moment
 //if(basename($_SERVER['PHP_SELF'])=="formProcess.php")
@@ -15,14 +17,15 @@ if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
     $finfo= finfo_open(FILEINFO_MIME_TYPE);
     $mime = finfo_file($finfo, $_FILES["fileInput"]["tmp_name"]);
     switch ($mime) {
-      case '':// Allowed mimes
-      case '':// Allowed mimes
-        $uploadAllowed = true;
-        break;
+      /*case '':// Allowed mimes          /* These will be the allowed file types
+      case '':// Allowed mimes             *
+        $uploadAllowed = true;             *
+        break;*/
       default:
-        die("Unknown file type. Upload not permitted.");
+        $uploadAllowed = true;
+        //die("Unknown file type. Upload not permitted.");
     }
-    if($_FILES["image"]["size"] >2097152) { // Check size of upload. 2097152 = 2MB. Will probs want to change
+    if($_FILES["fileInput"]["size"] >2097152) { // Check size of upload. 2097152 = 2MB. Will probs want to change
       die("File too large. Upload not permitted.");
     }
   }
@@ -36,11 +39,12 @@ if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
   $email = htmlspecialchars(trim(stripslashes($_POST['email'])));
   $phone = htmlspecialchars(trim(stripslashes($_POST['phoneNum'])));
   $faculty = htmlspecialchars(trim(stripslashes($_POST['faculty'])));
-  $depart = htmlspecialchars(trim(stripslashes($_POST['dept'])));
-  $cname = htmlspecialchars(trim(stripslashes($_POST['coursePicker'])));
-  $students = htmlspecialchars(trim(stripslashes($_POST['students'])));
-  $boos = htmlspecialchars(trim(stripslashes($_POST['boos'])));
-  $date = htmlspecialchars(trim(stripslashes($_POST['date'])));
+  $cname = htmlspecialchars(trim(stripslashes($_POST['class-name'])));
+  //$students = htmlspecialchars(trim(stripslashes($_POST['Name'])));
+  //$boos = htmlspecialchars(trim(stripslashes($_POST['B00'])));
+  $students = $_POST['Name'];
+  $boos = $_POST['B00'];
+  $date = htmlspecialchars(trim(stripslashes($_POST['DateAlleged'])));
   $comments = htmlspecialchars(trim(stripslashes($_POST['additionalComments'])));
 
   //The case where a new Form A is created and is submitted
@@ -56,27 +60,27 @@ if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
     }
 
     //Create new case entry
-    $statement = $conn->prepare("INSERT INTO case (prof_id, class_name_code, date_aware, description, form_a_submit_date) VALUES (?, ?, ?, ?, ?, ?)");
-    $statement->bind_param("sssss",$_SESSION['userId'], $cname, $date, $comments, date()); //bind initial values to the prepared statements
+    $statement = $conn->prepare("INSERT INTO active_cases (prof_id, class_name_code, date_aware, description, form_a_submit_date) VALUES (?, ?, ?, ?, ?)");
+    $statement->bind_param("sssss",$_SESSION['userId'], $cname, $date, $comments, time()); //bind initial values to the prepared statements
     if (!$statement->execute()) {
-       echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+       echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
     }
 
     //Grabs case_id of the just inserted case and uses it to create the evidence folder location in the database
     $caseId = $conn->insert_id;
-    $updateEvidence = $conn->prepare("UPDATE case SET evidence_fileDir = ? WHERE case_id = ".$caseId);
+    $updateEvidence = $conn->prepare("UPDATE active_cases SET evidence_fileDir = ? WHERE case_id = ".$caseId);
     $updateEvidence->bind_param("s", $caseId); //bind evidence folder name to the prepared statements
     if (!$updateEvidence->execute()) {
-       echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+       echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
     }
 
     //Insert students into student table
     for($i = 0; $i < sizeof($students); $i++) {
       if($students[$i] != NULL && $boos[$i] != NULL){
         $statement = $conn->prepare("INSERT INTO student (csid, case_id, fname) VALUES (?, ?, ?)");
-        $statement->bind_param("ssss",$boos[$i], $caseId, $student[$i]); //bind initial values to the prepared statements
+        $statement->bind_param("sis",htmlspecialchars(trim(stripslashes($boos[$i]))), $caseId, htmlspecialchars(trim(stripslashes($students[$i])))); //bind initial values to the prepared statements
         if (!$statement->execute()) {
-           echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+           echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
         }
       }
     }
@@ -85,27 +89,27 @@ if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
   //The case where this Form A has already been saved before and needs to be just saved again
   if(isset($_POST['SaveFormA']) && !isset($_GET['case_id'])){
     //Create new case entry
-    $statement = $conn->prepare("INSERT INTO case (prof_id, class_name_code, date_aware, description) VALUES (?, ?, ?, ?)");
+    $statement = $conn->prepare("INSERT INTO active_cases (prof_id, class_name_code, date_aware, description) VALUES (?, ?, ?, ?)");
     $statement->bind_param("ssss",$_SESSION['userId'], $cname, $date, $comments); //bind initial values to the prepared statements
     if (!$statement->execute()) {
-       echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+       echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
     }
 
     //Grabs case_id of the just inserted case and uses it to create the evidence folder location in the database
     $caseId = $conn->insert_id;
-    $updateEvidence = $conn->prepare("UPDATE case SET evidence_fileDir = ? WHERE case_id = ".$caseId);
+    $updateEvidence = $conn->prepare("UPDATE active_cases SET evidence_fileDir = ? WHERE case_id = ".$caseId);
     $updateEvidence->bind_param("s", $caseId); //bind evidence folder name to the prepared statements
     if (!$updateEvidence->execute()) {
-       echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+       echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
     }
 
     //Insert students into student table
     for($i = 0; $i < sizeof($students); $i++) {
       if($students[$i] != NULL && $boos[$i] != NULL){
         $statement = $conn->prepare("INSERT INTO student (csid, case_id, fname) VALUES (?, ?, ?)");
-        $statement->bind_param("ssss",$boos[$i], $caseId, $student[$i]); //bind initial values to the prepared statements
+        $statement->bind_param("sss",$boos[$i], $caseId, $students[$i]); //bind initial values to the prepared statements
         if (!$statement->execute()) {
-           echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+           echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
         }
       }
     }
@@ -114,10 +118,10 @@ if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
   //The case where a new Form A is created but saved instead of submitted
   if(isset($_POST['SaveFormA']) && isset($_GET['case_id'])){
     //Create new case entry
-    $statement = $conn->prepare("UPDATE case SET prof_id = ?, class_name_code = ?, date_aware = ?, description = ? WHERE case_id = {$_GET['case_id']}");
+    $statement = $conn->prepare("UPDATE active_cases SET prof_id = ?, class_name_code = ?, date_aware = ?, description = ? WHERE case_id = {$_GET['case_id']}");
     $statement->bind_param("ssss",$_SESSION['userId'], $cname, $date, $comments); //bind initial values to the prepared statements
     if (!$statement->execute()) {
-       echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+       echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
     }
 
     //Select students from this case
@@ -145,21 +149,23 @@ if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
         }
         elseif(!array_key_exists("{$boos[$i]}", $currStudents)) {
           $statement = $conn->prepare("INSERT INTO student (csid, case_id, fname) VALUES (?, ?, ?)");
-          $statement->bind_param("sss", $boos[$i], $caseId, $student[$i]); //bind initial values to the prepared statements
+          $statement->bind_param("sss", $boos[$i], $caseId, $students[$i]); //bind initial values to the prepared statements
         }
         elseif(!in_array($currStudents[$boos[$i]], $students)){
           $statement = $conn->prepare("DELETE FROM student WHERE case_id = {$_GET['case_id']} AND csid = {$boos[$i]}");
         }
 
         if (!$statement->execute()) {
-           echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+           echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
         }
       }
     }
   }
 
   //Gets the necessary directory location and then uploads the evidence to it
-  $target_file = $target_dir.$caseId."/".$_FILES["file"]["name"];
+  $target_file = $target_dir.$caseId."/".$_FILES["fileInput"]["name"];
+  mkdir("../evidence/".$caseId);
+
   if ($uploadAllowed) {
     if (move_uploaded_file($_FILES["fileInput"]["tmp_name"], $target_file)) {
       echo"File uploaded successfully.";
