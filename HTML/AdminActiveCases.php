@@ -21,20 +21,15 @@ include '../includes/formProcess.php';
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-        <script>
-            function warning()
-            {
-                 confirm("this will delete the file permanently!");
-            }
-        </script>
-        
+
+
         <!-- the header; logout and back buttons -->
         <script src="../JS/top-header.js"></script>
     </head>
 
      <body style="margin: auto;">
         <!-- Headder div + Logout button -->
-        <button class="btn btn-default pull-right" type="button">Logout</button>
+        <div class="top-header"></div>
         <div>
             <h2>Active Cases</h2>
         </div>
@@ -53,28 +48,44 @@ include '../includes/formProcess.php';
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- cases need to be taken from database, and add this code for each one. -->
-                    <tr>
-                        <td>123</td>
-                        <td>CSCI 2132</td>
-                        <td>Bob Parr</td>
-                        <td>Mr. Incredible</td>
-                        <td>No</td>
-                        <td>N/A</td>
-                        <!-- drop-down action choices -->
-                        <td>
-                            <div class="dropdown">
-                                <button class="btn btn-default dropdown-toggle" type="button" style="font-size: 12px;" data-toggle="dropdown">Actions
-                                <span class="caret"></span></button>
-                                <ul class="dropdown-menu" onchange="warning()">
+                  <?php
+                    $statement = $conn->prepare("SELECT active_cases.case_id, active_cases.class_name_code, professor.fname, professor.lname, aio.fname, aio.lname  FROM active_cases LEFT JOIN professor ON professor.professor_id = active_cases.prof_id LEFT JOIN aio ON aio.aio_id = active_cases.aio_id");
 
-                                    <li><a href="CaseInformation.php">View</a></li>
-                                    <li><a href="ChangeAIO.php">Change AIO</a></li>
-                                    <li><button onclick="warning()" style="background-color: red" color="black" class="btn btn-link">Delete</button></li>
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
+                    if(!$statement->execute()){
+                      echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+                    }
+                    $statement->bind_result($caseId, $className, $pfname, $plname, $afname, $alname);
+                    while($statement->fetch()){
+                      echo <<<ViewAllPost
+                      <tr>
+                          <td>$caseId</td>
+                          <td>$className</td>
+                          <td>$pfname $plname</td>
+                          <td>$afname $alname</td>
+                          <td>No</td>
+                          <td>N/A</td>
+                          <!-- drop-down action choices -->
+                          <td>
+                              <div class="dropdown">
+                                  <button class="btn btn-default dropdown-toggle" type="button" style="font-size: 12px;" data-toggle="dropdown">Actions
+                                  <span class="caret"></span></button>
+                                  <ul class="dropdown-menu">
+
+                                      <li><a href="CaseInformation.php?case_id={$caseId}">View</a></li>
+                                      <li><a href="ChangeAIO.php">Change AIO</a></li>
+                                      <li>
+                                      <form class="delete_this_case" method="post" action="AdminActiveCases.php" onclick="return confirm('Are you sure?')">
+                                        <input type="text" name="case_id" value="$caseId" hidden>
+                                        <button value="true" type="submit" style="background-color: red" name="deleteCase">Delete</button>
+                                      </form>
+                                      </li>
+                                  </ul>
+                              </div>
+                          </td>
+                      </tr>
+ViewAllPost;
+                    }
+                    ?>
                 </tbody>
             </table>
         </div>
