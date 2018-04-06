@@ -26,7 +26,7 @@ include_once 'page.php';
         </div>
 
         <div class="form-container">
-            <form class="form-horizontal" method="post" action="../includes/formProcess.php">
+            <form class="form-horizontal" method="post" action="../includes/formProcess.php" enctype="multipart/form-data">
 
                 <div class="form-group">
                     <label for="ProfessorName" class="col-sm-3 control-label">Professor:</label>
@@ -49,12 +49,12 @@ include_once 'page.php';
                         <input type="tel" class="form-control" placeholder="Phone Number" id="phoneNum" name="phoneNum" required value="<?php if (isset($prof_phone)) { echo $prof_phone;} ?>">
                     </div>
                 </div>
-                
+
                 <!-- faculty drop-down-->
                 <div class="form-group">
                     <label class="col-sm-3 control-label">Faculty:</label>
                     <div class="dropdown col-sm-9">
-                        <select class="selectpicker" id="faculty" data-show-subtext="true" data-live-search="true" required>
+                        <select class="selectpicker" id="faculty" name="faculty" data-show-subtext="true" data-live-search="true" required>
                             <option data-subtext="Faculty of Computer Science" value="FCS" >FCS</option>
                         </select>
                     </div>
@@ -64,7 +64,7 @@ include_once 'page.php';
                 <div class="form-group">
                     <label class="col-sm-3 control-label">Class Name:</label>
                     <div class="dropdown col-sm-9">
-                        <select class="selectpicker" id="class-name" data-show-subtext="true" data-live-search="true" required value="<?php if (isset($course_name)) { echo $course_name;} ?>">
+                        <select class="selectpicker" id="class-name" name="class-name" data-show-subtext="true" data-live-search="true" required value="<?php if (isset($course_name)) { echo $course_name;} ?>">
                             <option data-subtext="Communication Skills: Oral and Written" value="CSCI 2100" >CSCI 2100</option>
                                 <option data-subtext="Network Security" value="CSCI 4174">CSCI 4174</option>
                                 <option data-subtext="Introduction to web site creation" value="INFX 1606">INFX 1606</option>
@@ -101,7 +101,7 @@ include_once 'page.php';
                 <div class="form-group">
                     <label for="date" class="col-sm-3 control-label">Date of Alleged Offense:</label>
                     <div class="col-sm-9">
-                        <input class="form-control" placeholder="MM/DD/YYYY" name ="DateAlleged" id="date" value="<?php if (isset($date_alleg)) { echo $date_alleg;} ?>" >
+                        <input class="form-control" placeholder="MM/DD/YYYY" name="DateAlleged" id="date" value="<?php if (isset($date_alleg)) { echo $date_alleg;} ?>" >
                     </div>
                      </div>
 
@@ -143,7 +143,7 @@ include_once 'page.php';
     <script type="text/javascript">
 
         $("#addStudent").click(function () {
-            $("#students_group").append('<div class="input-group students" name="students"> <span class="input-group-addon">Student Name</span> <input type="text" class="form-control" aria-label="Name" required> <span class="input-group-addon">Banner Number</span> <input type="text" class="form-control" aria-label="B00" required> </div>');
+            $("#students_group").append('<div class="input-group students" name="students"> <span class="input-group-addon">Student Name</span> <input type="text" class="form-control" aria-label="Name" required name="Name[]"> <span class="input-group-addon">Banner Number</span> <input type="text" class="form-control" aria-label="B00" required name="B00[]"> </div>');
         });
 
         $("#removeStudent").click(function () {
@@ -152,7 +152,7 @@ include_once 'page.php';
                 students[students.length - 1].remove();
             }
         });
-        
+
         $(document).ready(function () {
             "use strict";
             var date_input1 = $('input[id="date"]');
@@ -170,6 +170,3 @@ include_once 'page.php';
         });
     </script>
 </html>
-
-
-
