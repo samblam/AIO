@@ -5,7 +5,7 @@ It is a web portal designed to ease the amount of emails being sent back and for
 Contains all the automated functional test scripts for the AIO-automate.
 It uses splinter and pytest-bdd libraries in python.
 
-## Requirements 
+## Requirements
 **Make sure you have python 2.7, virtualenv and pip-tools before proceeding to the next step**
 - python 2.7
 - virtualenv and virtualenvwrapper
@@ -23,9 +23,10 @@ $pip install pip-tools
 $pip-compile //will install all requirements in your virtualenv
 $pip-sync //must be in folder with requirements files
 ```
-- Don't forget to add corresponding info to the `.env` file
+- Don't forget to add corresponding info to the `.env` file before running the tests. Scripts won't work unless you fill the appropriate information.
 
 ### Setting up virtualenv:
+**Purpose of virtualenv**: creates an isolated environment when developing. Rather than installing libraries globally (ie. on your machine), you create these virtual environments and install them in here.
 ```
 $source /usr/local/bin/virtualenvwrapper.sh
 $mkvirtualenv aio-automate
@@ -71,6 +72,11 @@ $sh run_functional_tests.sh
 ```
 - All scripts should now run automatically
 
+When running scripts, you may use `-s` to see `print` statements as the script is being ran, example:
+
+```
+pytest tests/functional/test_filename.py -s
+```
 
 ## Working on test scripts
 ### Notes:
@@ -103,8 +109,27 @@ def function(browser):
     <do some stuff>
 ```
 
+### Additional information on conftest file:
+This `conftest.py` file contains all the setup for the webdriver. It also contains all the fixtures for different types of users that'll be using the site (ie. AIO/Admin/Professor).
+
+Essentially, these user fixtures are passed into the function parameters and allows scripts to quickly go to project's website, fill in user/pass and click enter. Rather than constantly repeating this visiting website/filling in user and password process in every script, just pass in the fixtures into function parameters.
+
+In addition, `conftest.py` also uses environmental variables and these are loaded from the `.env` file. If the file isn't filled in locally, then errors will occur as soon as you try running a script.
+
+### As of April 5, 2018:
+- There are 14 test scripts, 4 of them fails in the following files:
+- Note: Failures are from functionalities in the web portal not working (ie. buttons not working, etc.)
+
+```
+Fails:
+test_aio_can_view_active_cases_page
+test_aio_can_view_case
+test_aio_can_login_to_web_portal
+test_aio_can_logout_from_web_portal
+```
+
 ## Documentations of the libraries used/other resources
 - [Splinter] (https://splinter.readthedocs.io/en/latest/)
 - [Pytest-bdd (there are examples on how splinter is used along with feature files using Gherkin)] (https://pypi.python.org/pypi/pytest-bdd)
 - [Resource on Gherkin syntax/how to write it] (http://docs.behat.org/en/v2.5/guides/1.gherkin.html)
-- [Information about .env] (https://github.com/theskumar/python-dotenv)
+- [Information about environmental variables/.env] (https://github.com/theskumar/python-dotenv)

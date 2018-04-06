@@ -10,10 +10,12 @@ from pytest_bdd import (
 def test_professor_can_logout_from_web_portal(professor):
     """LOGOUT-0 Professor can logout from web portal."""
 
+# As of April 5, 2018: This is failing because login for AIO doesn't work, therefore logout button doesn't exists -> error thrown
 @scenario('logout.feature', 'LOGOUT-1 AIO can logout from web portal')
 def test_aio_can_logout_from_web_portal(aio):
     """LOGOUT-1 AIO can logout from web portal."""
 
+# As of April 5, 2018: This is failing because logout button doesn't work
 @scenario('logout.feature', 'LOGOUT-2 Admin can logout from web portal')
 def test_admin_can_logout_from_web_portal(admin):
     """LOGOUT-2 Admin can logout from web portal."""
