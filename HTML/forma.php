@@ -130,7 +130,11 @@ include_once 'page.php';
                     <div class="center-block text-center">
                         <button type="submit" class="btn btn-primary" name="SubmitFormC">Preview PDF</button>
                         <button type="submit" class="btn btn-primary" name="SaveFormA">Save</button>
-                        <button type="submit" class="btn btn-success" name="SubmitFormA">Submit</button>
+			<?php
+			  if($_SESSION['role']=="professor" /* add a condition here to check if the form has been submitted already(database check) */){
+			    echo"<button type=\"submit\" class=\"btn btn-success\" name=\"SubmitFormA\">Submit</button>";
+			  }
+			?>
                     </div>
                 </div>
             </form>
