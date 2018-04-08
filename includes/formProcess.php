@@ -34,6 +34,7 @@ if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
     $evidence = htmlspecialchars(trim(stripslashes($target_file)));
   }
 
+  $userId = $_SESSION['userId'];
   //Grabs all form data and sanatize it
   $prof = htmlspecialchars(trim(stripslashes($_POST['ProfessorName'])));
   $email = htmlspecialchars(trim(stripslashes($_POST['email'])));
@@ -44,7 +45,9 @@ if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
   //$boos = htmlspecialchars(trim(stripslashes($_POST['B00'])));
   $students = $_POST['Name'];
   $boos = $_POST['B00'];
-  $date = htmlspecialchars(trim(stripslashes($_POST['DateAlleged'])));
+  $stringDate = htmlspecialchars(trim(stripslashes($_POST['DateAlleged'])));
+  $formatDate = strtotime($stringDate);
+  $date = date('Y-m-d',$formatDate);
   $comments = htmlspecialchars(trim(stripslashes($_POST['additionalComments'])));
 
   //The case where a new Form A is created and is submitted
@@ -58,10 +61,12 @@ if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
     elseif(count($boos) != count(array_unique($boos)) && !isset($_GET['case_id'])){
       header("locaton: ../forma.php?multiIds=true");
     }
+    $submitDate = date('Y-m-d', time());
+    
 
     //Create new case entry
     $statement = $conn->prepare("INSERT INTO active_cases (prof_id, class_name_code, date_aware, description, form_a_submit_date) VALUES (?, ?, ?, ?, ?)");
-    $statement->bind_param("sssss",$_SESSION['userId'], $cname, $date, $comments, time()); //bind initial values to the prepared statements
+    $statement->bind_param("issss",$userId, $cname, $date, $comments, $submitDate); //bind initial values to the prepared statements
     if (!$statement->execute()) {
        echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
     }
@@ -78,7 +83,9 @@ if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
     for($i = 0; $i < sizeof($students); $i++) {
       if($students[$i] != NULL && $boos[$i] != NULL){
         $statement = $conn->prepare("INSERT INTO student (csid, case_id, fname) VALUES (?, ?, ?)");
-        $statement->bind_param("sis",htmlspecialchars(trim(stripslashes($boos[$i]))), $caseId, htmlspecialchars(trim(stripslashes($students[$i])))); //bind initial values to the prepared statements
+	$currB00 = htmlspecialchars(trim(stripslashes($boos[$i])));
+	$currStudent = htmlspecialchars(trim(stripslashes($students[$i])));
+        $statement->bind_param("sis", $currB00, $caseId, $currStudent); //bind initial values to the prepared statements
         if (!$statement->execute()) {
            echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
         }
@@ -164,7 +171,9 @@ if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
 
   //Gets the necessary directory location and then uploads the evidence to it
   $target_file = $target_dir.$caseId."/".$_FILES["fileInput"]["name"];
-  mkdir("../evidence/".$caseId);
+  if(!is_dir("../evidence/".$caseId)){
+    mkdir("../evidence/".$caseId);
+  }
 
   if ($uploadAllowed) {
     if (move_uploaded_file($_FILES["fileInput"]["tmp_name"], $target_file)) {
@@ -173,7 +182,7 @@ if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
     else {
       echo"Error uploading file.";
     }
-  }
+  }/*
   if($_SESSION['role'] == "professor"){
     header('location: ../HTML/ProfessorActiveCases.php');
   }
@@ -182,7 +191,7 @@ if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
   }
   else{
     header('location: ../HTML/AioActiveCases.php');
-  }
+  }*/
 }
 if(isset($_POST['SaveFormB']) || isset($_POST['SubmitFormB'])){
 
