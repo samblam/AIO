@@ -182,11 +182,11 @@ if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
     else {
       echo"Error uploading file.";
     }
-  }/*
+  }
   if($_SESSION['role'] == "professor"){
     header('location: ../HTML/ProfessorActiveCases.php');
   }
-  elseif ($_SESSION['role'] == "admin") {
+  /*elseif ($_SESSION['role'] == "admin") {
     header('location: ../HTML/AdminActiveCases.php');
   }
   else{
