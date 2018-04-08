@@ -2,17 +2,17 @@
 
 include "db.php";
 
-
 if(isset($_POST['LoginSubmit'])){
+  //gets the role and csid of the user
   $role=htmlspecialchars(trim(stripslashes($_POST['role'])));
   $csid=htmlspecialchars(trim(stripslashes($_POST['uname'])));
   $profExtraFields="";
-  
+
   //check if submitted role exists and redirect to login page if it doesn't
   if(!($role=="professor" || $role=="aio" || $role=="admin" || $role=="student")){
     header("location: ../index.php");
   }
-  
+
   //If the role is professor, the below query will also get faculty and department
   if($role=="professor"){
     $profExtraFields=", faculty, department";
@@ -25,8 +25,8 @@ if(isset($_POST['LoginSubmit'])){
   $statement->store_result(); //store result to access the number of rows in the result
   $num_rows = $statement->num_rows; //get number of rows in the result
 
-
-  /* If the csid exists start the session, set session variables depending on role,
+  /**
+   * If the csid exists start the session, set session variables depending on role,
    * and redirect to the role's active case page.
    *
    * If the csid doesn't exist redirect to index.php with a error query string
@@ -36,15 +36,15 @@ if(isset($_POST['LoginSubmit'])){
     session_start();
     $_SESSION['csid'] = $user;
     $_SESSION['role'] = $role;
-         
+
     if($role == "professor"){
-      $statement->bind_result($userId, $fname, $lname, $faculty, $department); //bind the variables to the statement      
+      $statement->bind_result($userId, $fname, $lname, $faculty, $department); //bind the query results to these variables
       while ($statement->fetch()) {
-	$_SESSION['userId'] = $userId;
-	$_SESSION['fname'] = $fname;
-	$_SESSION['lname'] = $lname;
-	$_SESSION['faculty'] = $faculty;
-	$_SESSION['department'] = $department;
+      	$_SESSION['userId'] = $userId;
+      	$_SESSION['fname'] = $fname;
+      	$_SESSION['lname'] = $lname;
+      	$_SESSION['faculty'] = $faculty;
+      	$_SESSION['department'] = $department;
       }
       header("location: ../HTML/ProfessorActiveCases.php");
     }
@@ -52,13 +52,12 @@ if(isset($_POST['LoginSubmit'])){
       $statement->bind_result($userId, $fname, $lname); //bind the variables to the statement
       while ($statement->fetch()) {
         $_SESSION['userId'] = $userId;
-	$_SESSION['fname'] = $fname;
-	$_SESSION['lname'] = $lname;
+      	$_SESSION['fname'] = $fname;
+      	$_SESSION['lname'] = $lname;
       }
       if($role == "aio"){
         header("location: ../HTML/AioActiveCases.php");
       }
-
       else{
         header("location: ../HTML/AdminActiveCases.php");
       }
@@ -67,7 +66,7 @@ if(isset($_POST['LoginSubmit'])){
       //Student section
     }
   }
-  else{
+  else{ // The notFound=true is there in case the future team wants to add a condition in index.php that displays an error message if this variable is set
     header("location: ../index.php?notFound=true");
   }
 
