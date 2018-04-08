@@ -42,15 +42,16 @@ include '../includes/formProcess.php';
                 </thead>
                 <tbody>
                     <?php
+                      //Get all active cases assigned to this AIO and bind the returned database fields to php variables
             		      $statement = $conn->prepare("SELECT professor.fname, professor.lname, student.fname, student.lname, student.csid, active_cases.case_id FROM professor, active_cases, student WHERE professor.professor_id = active_cases.prof_id AND student.case_id = active_cases.case_id AND active_cases.aio_id = ?");
-            		      $statement->bind_param("d", $id); //bind the csid to the prepared statements
-
+            		      $statement->bind_param("d", $id); //bind the csid to the prepared statement
                       $id = (int)$_SESSION['userId'];
-
             		      if(!$statement->execute()){
                  		    echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                       }
             		      $statement->bind_result($pfname, $plname, $sfname, $slname, $scsid, $caseId);
+
+                      //Fetches each query result, one by one, and prints out a row for each case assigned to this AIO
                       while($statement->fetch()){
                         echo <<<ViewAllPost
                         <tr>

@@ -1,6 +1,7 @@
 <?php
+  // Basic script to logout
   session_start();
-  $_SESSION = array();
+  $_SESSION = array(); // empties session variables
   if(ini_get("session.use_cookies")){
     $params=session_get_cookie_params();
     setcookie(session_name(),'',time()-42000,
@@ -10,6 +11,6 @@
     );
   }
   session_destroy();
-  header("location: ../index.php");
+  header("location: ../index.php"); //redirect to index.php
 
   ?>

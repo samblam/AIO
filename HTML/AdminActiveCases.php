@@ -49,12 +49,20 @@ include '../includes/formProcess.php';
                 </thead>
                 <tbody>
                   <?php
+                    //Get all active cases and bind the returned database fields to php variables
                     $statement = $conn->prepare("SELECT active_cases.case_id, active_cases.class_name_code, professor.fname, professor.lname, aio.fname, aio.lname  FROM active_cases LEFT JOIN professor ON professor.professor_id = active_cases.prof_id LEFT JOIN aio ON aio.aio_id = active_cases.aio_id");
-
                     if(!$statement->execute()){
                       echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                     }
                     $statement->bind_result($caseId, $className, $pfname, $plname, $afname, $alname);
+
+                    /**
+                     * Fetches each query result, one by one, and prints out a row for each case.
+                     *
+                     * Delete button uses the onclick attribute to create a confirm popup.
+                     * If you click yes, the form will continue and it will delete the case.
+                     * If you click no, nothing will happen.
+                     */
                     while($statement->fetch()){
                       echo <<<ViewAllPost
                       <tr>
