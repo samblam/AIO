@@ -27,7 +27,7 @@ include 'includes/formProcess.php';
         
         <h2>Login</h2>
         
-        <!-- Main Navagation tabs, each containing their own logins -->
+        <!-- Main Navigation tabs, each containing their own logins -->
         
         <!-- Login screen ready for backend php -->
 	<form action="includes/login.php" method="post">
@@ -54,7 +54,8 @@ include 'includes/formProcess.php';
                 Use the second commented out button for when PHP is enabled.-->
                 <!--<a href="HTML/ProfessorActiveCases.php" class="btn btn-info" role="button" name"LoginSubmit">Submit</a>-->
                 <!--<button class="btn btn-info" type="submit" name="LoginSubmit">Submit</button>-->
-               <input class="btn btn-info" type="submit" value="Submit" name="LoginSubmit">
+               <!--input class="btn btn-info" type="submit" value="Submit" name="LoginSubmit"-->
+			   <button class="btn btn-info" type="submit" value="Submit" name="LoginSubmit">Submit</button>
             </div>
         </form>
     </body>
