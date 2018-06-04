@@ -217,7 +217,7 @@ if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
   if($_SESSION['role'] == "professor"){
     header('location: ../HTML/ProfessorActiveCases.php');
   }
-  /*elseif ($_SESSION['role'] == "admin") {
+  elseif ($_SESSION['role'] == "admin") {
     header('location: ../HTML/AdminActiveCases.php');
   }
   else{
@@ -246,8 +246,5 @@ if(isset($_POST['deleteCase']) && isset($_POST['case_id']) && $_SESSION['role'] 
   $conn->query("DELETE FROM student WHERE case_id = \"$id\"");
   $conn->query("DELETE FROM active_cases WHERE case_id = \"$id\"");
 }
-
-
-
 
 ?>
