@@ -28,7 +28,7 @@ include 'includes/formProcess.php';
         
         <!-- Main Navigation tabs, each containing their own logins -->
         
-        <!-- Login screen ready for backend php -->
+        <!-- Login screen ready for back end php -->
 	<form action="includes/login.php" method="post">
 
             <div class="container">
@@ -51,10 +51,8 @@ include 'includes/formProcess.php';
                 <!-- 
                 Temp button links to the active case screen.
                 Use the second commented out button for when PHP is enabled.-->
-                <!--<a href="HTML/ProfessorActiveCases.php" class="btn btn-info" role="button" name"LoginSubmit">Submit</a>-->
-                <!--<button class="btn btn-info" type="submit" name="LoginSubmit">Submit</button>-->
-               <!--input class="btn btn-info" type="submit" value="Submit" name="LoginSubmit"-->
-			   <button class="btn btn-info" type="submit" value="Submit" name="LoginSubmit">Submit</button>
+                <!--<a href="HTML/ProfessorActiveCases.php" class="btn btn-info" role="button" name"LoginSubmit">Submit</a>-->            
+			   <button class="btn btn-info" type="submit" name="LoginSubmit">Submit   </button>
             </div>
         </form>
     </body>
