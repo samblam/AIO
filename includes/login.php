@@ -1,5 +1,5 @@
 <?php
-
+include 'session.php';
 include "db.php";
 
 if(isset($_POST['LoginSubmit'])){
@@ -33,7 +33,6 @@ if(isset($_POST['LoginSubmit'])){
    * that will allow an error to be displayed on the page.
    */
   if($num_rows == 1){ //If there is only one row in the result, the user exists.
-    session_start();
     $_SESSION['csid'] = $user;
     $_SESSION['role'] = $role;
 

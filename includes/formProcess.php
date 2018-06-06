@@ -19,9 +19,7 @@
  */
 
 //start the session and include the database connection file
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
+include_once 'session.php';
 include_once 'db.php';
 
 //Form A processing

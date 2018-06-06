@@ -1,4 +1,5 @@
 <?php
+include 'session.php';
 /**
  * This file is currently not included in any php page but should be when ready.
  * This deals with page security based the users role.
