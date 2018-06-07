@@ -23,7 +23,6 @@ include_once 'page.php';
 
         <div style="display: inline-block;">
             <h2>Case Information</h2>
-
         </div>
 
         <!-- Newcase button div -->
@@ -33,7 +32,6 @@ include_once 'page.php';
         <!-- TODO: Table will need to populate based on the entries in the DB(server side) -->
         <!-- TODO: I think to properly link the buttons, each row might have to be an input form(haven't looked it up) -->
         <div>
-
             <table class="table table-bordered" style="font-size: 14px;">
                 <tbody>
                     <tr>
@@ -52,13 +50,9 @@ include_once 'page.php';
                                 <ul class="dropdown-menu" onchange="warning()">
                                     <!-- needs to add an <li> tage for each student in the case upon loading page; BACKEND -->
                                     <li><a href="student-case-information.php"> TestStudent Name</a></li>
-
                                 </ul>
                             </div>
-
                         </td>
-
-
                     </tr>
                     <tr>
                         <td>Professor</td>
@@ -72,12 +66,10 @@ include_once 'page.php';
                         <td>Files</td>
                         <td><a href="#">Link.zip</a></td>
                     </tr>
-
                     <tr>
                         <td>Case status</td>
                         <td>Ongoing</td>
                     </tr>
-
                 </tbody>
             </table>
         </div>

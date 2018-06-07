@@ -17,6 +17,7 @@ include_once 'page.php';
         <title>Student Case</title>
         <link rel="stylesheet" href="../CSS/main.css">
         <script src="../JS/top-header-full.js"></script>
+        <script src="../JS/aio-case-info.js"></script>
     </head>
     <body style="margin: auto;">
         <!-- Headder div + Logout button -->
@@ -24,7 +25,6 @@ include_once 'page.php';
 
         <div style="display: inline-block;">
             <h2>Case Information - <p class="studentName"></p></h2>
-
         </div>
 
         <!-- Newcase button div -->
@@ -34,7 +34,6 @@ include_once 'page.php';
         <!-- TODO: Table will need to populate based on the entries in the DB(server side) -->
         <!-- TODO: I think to properly link the buttons, each row might have to be an input form(haven't looked it up) -->
         <div>
-
             <table class="table table-bordered" style="font-size: 14px;">
                 <tbody>
                     <tr>
@@ -56,10 +55,8 @@ include_once 'page.php';
                                     <!-- needs to add an <li> tage for other students in the case upon loading page; BACKEND -->
                                     <li><a href="student-case-information.html"> TestStudent Name</a></li>
                                     <li><a href="#"> TestStudent Name</a></li>
-
                                 </ul>
                             </div>
-
                         </td>
                     </tr>
                     <tr>
@@ -76,17 +73,37 @@ include_once 'page.php';
                         <!-- this needs evidence files -->
                         <td><a href="#">Link.zip</a></td>
                     </tr>
-
                     <tr>
                         <td>Case status</td>
                         <!-- needs to come from backend -->
                         <td>Waiting for student to confirm meeting date</td>
                     </tr>
-
                 </tbody>
-            </table>
+            </table>   
         </div>
-
+        <!-- TODO: Add verdict column to active cases table and pull the verdict for the case. If the verdict is null only show Insufficient evidence button, if the verdict is not null only show close case button and either delete or archive the case based on the verdict. -->
+        
+        <!-- CLose case and insufficient evidence buttons -->
+        <div class="center-block text-center">
+            <?php
+                //Gets case id from URL
+                $caseId = intval($_GET['case_id']);
+                
+                //Insufficient Evidence Button
+                echo <<<ViewAllPost
+                    <form class="delete_this_case" method="post" action="student-case-information.php" onclick="return confirm('Are you sure you want to remove this case for insufficient evidence? \\nClick OK to continue.')">
+                        <input type="text" name="case_id" value="$caseId" hidden>
+                        <a href="AioActiveCases.php"><button class="btn btn-danger" value="true" type="submit" name="insufficientEvidence">Insufficient Evidence</button></a>
+                    </form>
+                    
+                    <form class="delete_this_case" method="post" action="student-case-information.php" onclick="return confirm('Are you sure you want to close this case? \\nClick OK to continue.')">
+                        <input type="text" name="case_id" value="$caseId" hidden>
+                        <a href="AioActiveCases.php"><button class="btn btn-danger" value="true" type="submit" name="closeCase">Close Case</button></a>
+                    </form>
+ViewAllPost;
+            ?>
+            
+        </div>
 
         <!-- Form display div -->
         <div>

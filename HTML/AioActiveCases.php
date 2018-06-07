@@ -44,7 +44,7 @@ include '../includes/formProcess.php';
                     <?php
 
                       //Get all active cases assigned to this AIO and bind the returned database fields to php variables
-            		  $statement = $conn->prepare("SELECT professor.fname, professor.lname, student.fname, student.lname, student.csid, active_cases.case_id FROM professor LEFT JOIN active_cases ON professor.professor_id = active_cases.prof_id LEFT JOIN student ON student.case_id = active_cases.case_id WHERE active_cases.aio_id = ?");
+            		  $statement = $conn->prepare("SELECT professor.fname, professor.lname, student.fname, student.lname, student.csid, active_cases.case_id FROM professor LEFT JOIN active_cases ON professor.professor_id = active_cases.prof_id LEFT JOIN student ON student.case_id = active_cases.case_id WHERE active_cases.aio_id = ?"); 
             		  $statement->bind_param("d", $id); //bind the csid to the prepared statements
 
                       $id = (int)$_SESSION['userId'];

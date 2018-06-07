@@ -240,14 +240,25 @@ if(isset($_POST['SaveFormD']) || isset($_POST['SubmitFormD'])){
 
 }
 
-// deletes all students and active cases with the given case_id
+// deletes all students and active cases with the given case_id for admins
 if(isset($_POST['deleteCase']) && isset($_POST['case_id']) && $_SESSION['role'] == "admin") {
   $id = htmlspecialchars(trim(stripslashes($_POST['case_id'])));
   $conn->query("DELETE FROM student WHERE case_id = \"$id\"");
   $conn->query("DELETE FROM active_cases WHERE case_id = \"$id\"");
 }
 
+// deletes all students and active cases with the given case_id for insufficient evidence
+if(isset($_POST['insufficientEvidence']) && isset($_POST['case_id']) && $_SESSION['role'] == "aio") {
+  $id = htmlspecialchars(trim(stripslashes($_POST['case_id'])));
+  $conn->query("DELETE FROM student WHERE case_id = \"$id\"");
+  $conn->query("DELETE FROM active_cases WHERE case_id = \"$id\"");
+}
 
-
+// deletes all students and active cases with the given case_id for insufficient evidence
+if(isset($_POST['closeCase']) && isset($_POST['case_id']) && $_SESSION['role'] == "aio") {
+  $id = htmlspecialchars(trim(stripslashes($_POST['case_id'])));
+  $conn->query("DELETE FROM student WHERE case_id = \"$id\"");
+  $conn->query("DELETE FROM active_cases WHERE case_id = \"$id\"");
+}
 
 ?>
