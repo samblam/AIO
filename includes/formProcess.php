@@ -19,7 +19,7 @@
  */
 
 //start the session and include the database connection file
-include_once 'session.php';
+require_once 'session.php';
 include_once 'db.php';
 
 //Form A processing

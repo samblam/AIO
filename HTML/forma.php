@@ -1,5 +1,5 @@
 <?php
-include_once '../includes/session.php';
+require_once '../includes/session.php';
 //Open the db connection
 include_once '../includes/db.php';
 //Check if the form variables have been submitted, store them in the session variables
