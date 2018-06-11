@@ -91,12 +91,12 @@ include_once 'page.php';
                 
                 //Insufficient Evidence Button
                 echo <<<ViewAllPost
-                    <form class="delete_this_case" method="post" action="student-case-information.php" onclick="return confirm('Are you sure you want to remove this case for insufficient evidence? \\nClick OK to continue.')">
+                    <form class="delete_this_case" method="post" action="AioActiveCases.php" onclick="return confirm('Are you sure you want to remove this case for insufficient evidence? \\nClick OK to continue.')">
                         <input type="text" name="case_id" value="$caseId" hidden>
                         <a href="AioActiveCases.php"><button class="btn btn-danger" value="true" type="submit" name="insufficientEvidence">Insufficient Evidence</button></a>
                     </form>
                     
-                    <form class="delete_this_case" method="post" action="student-case-information.php" onclick="return confirm('Are you sure you want to close this case? \\nClick OK to continue.')">
+                    <form class="delete_this_case" method="post" action="AioActiveCases.php" onclick="return confirm('Are you sure you want to close this case? \\nClick OK to continue.')">
                         <input type="text" name="case_id" value="$caseId" hidden>
                         <a href="AioActiveCases.php"><button class="btn btn-danger" value="true" type="submit" name="closeCase">Close Case</button></a>
                     </form>
