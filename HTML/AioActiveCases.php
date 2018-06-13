@@ -83,21 +83,20 @@ ViewAllPost;
                         <th>Case ID</th>
                         <th>Class</th>
                         <th>Professor</th>
+                        <th>View</th>
                     </tr>
                 </thead>
                 
                 <tbody>
                     
                 <?php
-                    $query = $conn->prepare("SELECT  active_cases.case_id, active_cases.class_name_code, professor.fname, professor.lname,  FROM active_cases LEFT JOIN professor ON professor.professor_id = active_cases.prof_id LEFT JOIN aio ON aio.aio_id = active_cases.aio_id");
-                    $statement->bind_param("d", $id);
-                    if(!$statement->execute()){
+                    $query = $conn->prepare("SELECT active_cases.case_id, active_cases.class_name_code, professor.fname, professor.lname FROM professor LEFT JOIN active_cases ON professor.professor_id = active_cases.prof_id LEFT JOIN student ON student.case_id = active_cases.case_id WHERE active_cases.aio_id IS NULL");
+                    
+                    if(!$query->execute()){
                  		 echo "Execute failed: (" . $query->errno . ") " . $query->error;
                     }
                     
                     $query->bind_result($uCaseId, $uClassName, $uProfessorFN, $uProfessorLN);
-                    $query->execute();
-
                     
                     while($query->fetch()){
                       echo <<<ViewAllPost
@@ -105,7 +104,7 @@ ViewAllPost;
                           <td>$uCaseId</td>
                           <td>$uClassName</td>
                           <td>$uProfessorFN $uProfessorLN</td>
-                         
+                          <td><a href="student-case-information.php?case_id={$caseId}" class="btn btn-primary">View Case</a></td>
                       </tr>
                         
 ViewAllPost;
