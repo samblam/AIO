@@ -51,8 +51,7 @@ include 'includes/formProcess.php';
                 <!-- 
                 Temp button links to the active case screen.
                 Use the second commented out button for when PHP is enabled.-->
-                <!--<a href="HTML/ProfessorActiveCases.php" class="btn btn-info" role="button" name"LoginSubmit">Submit</a>-->            
-			   <button class="btn btn-info" type="submit" name="LoginSubmit">Submit   </button>
+			   <button class="btn btn-info" type="submit" name="LoginSubmit">Submit</button>
             </div>
         </form>
     </body>
