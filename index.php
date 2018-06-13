@@ -1,6 +1,5 @@
 <?php
-
-session_start();
+require_once 'includes/session.php';
 //Open the db connection
 include 'includes/db.php';
 //These are the variables that will later be converted to session variables
