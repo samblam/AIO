@@ -254,7 +254,7 @@ if(isset($_POST['insufficientEvidence']) && isset($_POST['case_id']) && $_SESSIO
   $conn->query("DELETE FROM active_cases WHERE case_id = \"$id\"");
 }
 
-// deletes all students and active cases with the given case_id for insufficient evidence
+// deletes all students and active cases with the given case_id for close case
 if(isset($_POST['closeCase']) && isset($_POST['case_id']) && $_SESSION['role'] == "aio") {
   $id = htmlspecialchars(trim(stripslashes($_POST['case_id'])));
   $conn->query("DELETE FROM student WHERE case_id = \"$id\"");

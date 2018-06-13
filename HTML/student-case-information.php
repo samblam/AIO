@@ -88,19 +88,36 @@ include_once 'page.php';
             <?php
                 //Gets case id from URL
                 $caseId = intval($_GET['case_id']);
+            
+                //Get case verdict from db
+                $statement = $conn->prepare("SELECT case_verdict FROM active_cases WHERE case_id = '$caseId' AND aio_id = ?"); 
+                $statement->bind_param("d", $id); //bind the csid to the prepared statements
+
+                $id = (int)$_SESSION['userId'];
+                    if(!$statement->execute()){
+                        echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+                    }
+            
+                $statement->bind_result($caseVerdict);
                 
-                //Insufficient Evidence Button
-                echo <<<ViewAllPost
-                    <form class="delete_this_case" method="post" action="AioActiveCases.php" onclick="return confirm('Are you sure you want to remove this case for insufficient evidence? \\nClick OK to continue.')">
-                        <input type="text" name="case_id" value="$caseId" hidden>
-                        <a href="AioActiveCases.php"><button class="btn btn-danger" value="true" type="submit" name="insufficientEvidence">Insufficient Evidence</button></a>
-                    </form>
-                    
-                    <form class="delete_this_case" method="post" action="AioActiveCases.php" onclick="return confirm('Are you sure you want to close this case? \\nClick OK to continue.')">
-                        <input type="text" name="case_id" value="$caseId" hidden>
-                        <a href="AioActiveCases.php"><button class="btn btn-danger" value="true" type="submit" name="closeCase">Close Case</button></a>
-                    </form>
+                if($caseVerdict == NULL){
+                    //Insufficient Evidence Button
+                    echo <<<ViewAllPost
+                        <form class="delete_this_case" method="post" action="AioActiveCases.php" onclick="return confirm('Are you sure you want to remove this case for insufficient evidence? \\nClick OK to continue.')">
+                            <input type="text" name="case_id" value="$caseId" hidden>
+                            <button class="btn btn-danger" value="true" type="submit" name="insufficientEvidence">Insufficient Evidence</button>
+                        </form>
 ViewAllPost;
+                }
+                else{
+                    //Close case Button
+                    echo <<<ViewAllPost
+                        <form class="delete_this_case" method="post" action="AioActiveCases.php" onclick="return confirm('Are you sure you want to close this case? \\nIf the verdict is guilty the case gets archived in our system, and if the verdict is not guilty the case is removed. \\nClick OK to continue.')">
+                            <input type="text" name="case_id" value="$caseId" hidden>
+                            <button class="btn btn-danger" value="true" type="submit" name="closeCase">Close Case</button>
+                        </form>
+ViewAllPost;
+                }
             ?>
             
         </div>
