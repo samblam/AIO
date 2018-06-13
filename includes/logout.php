@@ -1,6 +1,5 @@
 <?php
   // Basic script to logout
-  session_start();
   $_SESSION = array(); // empties session variables
   if(ini_get("session.use_cookies")){
     $params=session_get_cookie_params();
