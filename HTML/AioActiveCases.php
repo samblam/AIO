@@ -80,7 +80,6 @@ ViewAllPost;
                 
                 <thead class="cases-table">
                     <tr>
-                        <th>Case ID</th>
                         <th>Class</th>
                         <th>Professor</th>
                         <th>View</th>
@@ -90,7 +89,19 @@ ViewAllPost;
                 <tbody>
                     
                 <?php
-                    $query = $conn->prepare("SELECT active_cases.case_id, active_cases.class_name_code, professor.fname, professor.lname FROM professor LEFT JOIN active_cases ON professor.professor_id = active_cases.prof_id LEFT JOIN student ON student.case_id = active_cases.case_id WHERE active_cases.aio_id IS NULL");
+                    $query = $conn->prepare("
+                                            SELECT 
+                                                active_cases.case_id, 
+                                                active_cases.class_name_code, 
+                                                professor.fname, 
+                                                professor.lname 
+                                            FROM 
+                                                professor 
+                                                LEFT JOIN active_cases ON professor.professor_id = active_cases.prof_id 
+                                                LEFT JOIN student ON student.case_id = active_cases.case_id 
+                                            WHERE 
+                                                active_cases.aio_id IS NULL
+                                            ");
                     
                     if(!$query->execute()){
                  		 echo "Execute failed: (" . $query->errno . ") " . $query->error;
@@ -101,10 +112,9 @@ ViewAllPost;
                     while($query->fetch()){
                       echo <<<ViewAllPost
                       <tr>
-                          <td>$uCaseId</td>
                           <td>$uClassName</td>
                           <td>$uProfessorFN $uProfessorLN</td>
-                          <td><a href="student-case-information.php?case_id={$caseId}" class="btn btn-primary">View Case</a></td>
+                          <td align="center"><a href="student-case-information.php?case_id={$caseId}" class="btn btn-primary">View Case</a></td>
                       </tr>
                         
 ViewAllPost;
