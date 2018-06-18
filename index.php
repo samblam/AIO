@@ -3,13 +3,9 @@ require_once 'includes/session.php';
 //Open the db connection
 include 'includes/db.php';
 //These are the variables that will later be converted to session variables
-$role;
-$csid;
 //Check if the form variables have been submitted, store them in the session variables
 include 'includes/formProcess.php';
-
 ?>
-
 
 <!DOCTYPE html>
 <html>    
@@ -34,9 +30,9 @@ include 'includes/formProcess.php';
             <div class="container">
                 <label for="uname"><b>Enter CS ID and password</b></label>
                 <br>
-                <input type="text" placeholder="Enter CS ID" name="uname" required>
+                <input type="text" placeholder="Enter CS ID" name="uname" id = "unmame" required>
                 <br>
-                <input type="password" placeholder="Enter Password" name="psw" required>
+                <input type="password" placeholder="Enter Password" name="psw" id = "psw" required>
                 <br><br>
                 <!-- Roll select -->
                 <label> Login as:
@@ -57,5 +53,14 @@ include 'includes/formProcess.php';
             </div>
         </form>
     </body>
+    <!--Checks for Caps Lock and alerts user if on -->
+      <script type="text/javascript">
+        $('#psw').keypress(function(e) { 
+          var s = String.fromCharCode( e.which );
+           if ( s.toUpperCase() === s && s.toLowerCase() !== s && !e.shiftKey ) {
+                alert('Warning: Caps Lock is On!');
+           }
+        });
+    </script>
 </html>
 

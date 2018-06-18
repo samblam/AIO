@@ -33,7 +33,7 @@ include_once 'page.php';
                     <div class="col-sm-9">
                          <input type="text" class="form-control" placeholder="Name" id="ProfessorName" name="ProfessorName" required value="<?php if (isset($prof_name)) { echo $prof_name;} ?>">
                     </div>
-                </div>
+                </div> 
 
                 <div class="form-group">
                     <label for="email" class="col-sm-3 control-label">Email:</label>
