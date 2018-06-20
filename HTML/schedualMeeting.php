@@ -14,35 +14,62 @@ include_once 'page.php';
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Student Case</title>
+        <title>Schedule Meeting</title>
         <link rel="stylesheet" href="../CSS/main.css">
         <script src="../JS/top-header-full.js"></script>
     </head>
     <body style="margin: auto;">
-        <!-- Headder div + Logout button -->
+
         <div class="top-header-full"></div>
-		
-		<a href="../AioActiveCases.php">Back</a>
+
+		<!-- Remove this after we have an actual back button -->
+		<a href="AioActiveCases.php">Back</a>
 		<br>
-		
+
         <div style="display: inline-block;">
-            <h2>Case Information - <p class="studentName"></p></h2>
+			<!-- TODO: Show student's name -->
+            <h2>Schedule Meeting - <p class="studentName"></p></h2>
 
         </div>
     
-		<!-- TODO: If no case_ID is specified in URL, have list to select them -->
+		<!-- TODO: If no case_ID is specified in URL, show them an error message and stop loading the page. -->
+	
+		<?php
+
+			//Get all active cases assigned to this AIO and bind the returned database fields to php variables
+			$statement = $conn->prepare("
+									SELECT 
+										professor.fname, 
+										professor.lname, 
+										student.fname, 
+										student.lname, 
+										student.csid, 
+										active_cases.case_id 
+									FROM 
+										professor 
+										LEFT JOIN active_cases ON professor.professor_id = active_cases.prof_id 
+										LEFT JOIN student ON student.case_id = active_cases.case_id 
+									WHERE 
+										active_cases.aio_id = ?
+									");
+
+			print($statement);
+									
+			//$statement->bind_param("d", $id); //bind the csid to the prepared statements
+
+        ?>
 	
         <div>
 
             <table class="table table-bordered" style="font-size: 14px;">
                 <tbody>
                     <tr>
+                        <!-- needs to grab from backend -->
                         <td>Banner number</td>
                         <td>B00000000</td>
                     </tr>
                     <tr>
                         <td>Student name</td>
-                        <!-- needs to grab from backend -->
                         <td class="studentName">Mark Auto</td>
                     </tr>
                     <tr>
