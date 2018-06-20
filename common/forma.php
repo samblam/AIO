@@ -5,7 +5,7 @@ include_once '../includes/db.php';
 //Check if the form variables have been submitted, store them in the session variables
 include '../includes/formProcess.php';
 include '../includes/formFill.php';
-include_once 'page.php';
+include_once '../includes/page.php';
 
 ?>
 
