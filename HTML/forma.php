@@ -31,7 +31,7 @@ include_once 'page.php';
                 <div class="form-group">
                     <label for="ProfessorName" class="col-sm-3 control-label">Professor:</label>
                     <div class="col-sm-9">
-                         <input type="text" class="form-control" placeholder="Name" id="ProfessorName" name="ProfessorName" required value="<?php if (isset($prof_name)) { echo $prof_name;} ?>">
+                         <input type="text" class="form-control" placeholder="Name" id="ProfessorName" name="ProfessorName" required value="<?php if (isset($prof_name)&& !isset($_GET['ProfRequired'])) { echo $prof_name;} ?>">
                     </div>
                 </div>
 
@@ -116,6 +116,29 @@ include_once 'page.php';
                         <input type="file" id="fileInput" name="fileInput" multiple>
                     </div>
                 </div>
+                
+                
+                <!--When the casses are being added by an admin-->
+                
+                <?php
+                
+                    if(isset($_GET['ProfRequired'])){
+                        
+                        echo<<<DisplayProfForm
+                        
+                        <div class='form-group'>
+                        
+                        
+                        
+                        
+                        
+                        </div>
+                    
+                    
+DisplayProfForm;
+                    
+                    }
+                ?>
 
                 <!-- text input for additional comments-->
                 <div class="form-group">
@@ -123,7 +146,7 @@ include_once 'page.php';
                     <div class="col-sm-12">
                         <textarea class="form-control" rows="5" placeholder="Write additional comments here" id="additionalComments" name="additionalComments"></textarea>
                     </div>
-                </div>
+                </div>          
 
                 <!--save button, submit button-->
                 <div class="form-group">
