@@ -1,0 +1,8 @@
+When creating a new php file anywhere (include or other), you MUST include/require files in this order:
+
+File                       | Command       | Comment
+---------------------------|---------------|---------------------
+includes/session.php       | require_once  | all files
+./secure.php               | require_once  | if user-facing file
+includes/globalSecure.php  | require_once  | all files
+All others                 |               |
