@@ -34,7 +34,7 @@ include '../includes/formProcess.php';
         <!-- TODO: I think to properly link the buttons, each row might have to be an input form(haven't looked it up) -->
         <div>
             <span class="pull-right" style="display: inline-block;">
-                <button class="btn btn-success" onclick="location.href='forma.php'" style="font-size: 16px; vertical-align: bottom;">Submit new case</button>
+                <button class="btn btn-success" onclick="location.href='FormA.php'" style="font-size: 16px; vertical-align: bottom;">Submit new case</button>
             </span>
 
             <table class="table table-bordered" style="font-size: 12px;">
@@ -72,7 +72,7 @@ include '../includes/formProcess.php';
                         <td>$afname $alname</td>
                         <td><button class="custombtn btn btn-danger">Yes</button></td>
                         <td>$submitted</td>
-                        <td><a href="forma.php?case_id={$caseId}" class="btn btn-primary">View Case</a></td>
+                        <td><a href="FormA.php?case_id={$caseId}" class="btn btn-primary">View Case</a></td>
                       </tr>
 ViewAllPost;
                     }
