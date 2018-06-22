@@ -1,5 +1,5 @@
-<?php 
-require_once "../includes/session.php" // session handling
+<?php
+require_once '../includes/session.php';
 
-include "../common/student-case-information.php"
+include '../common/student-case-information.php'
 ?>
