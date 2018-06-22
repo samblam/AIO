@@ -11,6 +11,7 @@
     exit( 'Insufficient access level' );
   }
 
-  // overrides global_secure.php
+  // overrides globalSecure.php
   $security_override_active = TRUE;
+  require_once '../includes/globalSecure.php'
 ?>

@@ -7,15 +7,12 @@
  *   This is especially useful for includes, which should 
  *   never be viewed independently.
  *
- *    ***** INCLUDE AFTER ANY secure.php SCRIPTS *****
+ *    ***** INCLUDE ~AFTER~ ANY secure.php SCRIPTS *****
  */
 
-if( $security_override_active == TRUE ) {
-
-}
-else {
+if( !$security_override_active ) {
   header( 'HTTP/1.0 403 Forbidden' );
-  exit( '' );
+  exit( 'Insufficient access level' );
 }
 
 
