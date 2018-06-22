@@ -33,8 +33,10 @@ if(isset($_POST['LoginSubmit'])){
    * that will allow an error to be displayed on the page.
    */
   if($num_rows == 1){ //If there is only one row in the result, the user exists.
+    $_SESSION['loggedIn'] = true;
     $_SESSION['csid'] = $user;
     $_SESSION['role'] = $role;
+    $_SESSION['access_roles'] = array($_SESSION['role']); // Temporary. Should be replaced with full list of access roles once that gets implemented.
 
     if($role == "professor"){
       $statement->bind_result($userId, $fname, $lname, $faculty, $department); //bind the query results to these variables
