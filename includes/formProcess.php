@@ -213,13 +213,13 @@ if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
   // as the professors is pretty obvious but admin and aio might want to return
   // to the CaseInformation page rather than activescases (Ask the client)
   if($_SESSION['role'] == "professor"){
-    header('location: ../HTML/ProfessorActiveCases.php');
+    header('location: ../Instructor/ActiveCases.php');
   }
   elseif ($_SESSION['role'] == "admin") {
-    header('location: ../HTML/AdminActiveCases.php');
+    header('location: ../Admin/ActiveCases.php');
   }
   else{
-    header('location: ../HTML/AioActiveCases.php');
+    header('location: ../AIO/ActiveCases.php');
   }
 }
 
