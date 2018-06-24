@@ -131,10 +131,40 @@ include_once 'page.php';
                         <button type="submit" class="btn btn-primary" name="SubmitFormC">Preview PDF</button>
                         <button type="submit" class="btn btn-primary" name="SaveFormA">Save</button>
 			<?php
+
 			  if($_SESSION['role']=="professor" /* add a condition here to check if the form has been submitted already(database check) */){
-			    echo"<button type=\"submit\" class=\"btn btn-success\" name=\"SubmitFormA\">Submit</button>";
+			    echo"<button type=\"submit\" class=\"btn btn-primary\" name=\"SubmitFormA\">Submit</button>";
 			  }
 			?>
+            
+
+
+                    </div>
+                </div>
+                 <!--save button, submit button-->
+                <div class="form-group">
+                    <div class="center-block text-center">
+                        <?php
+
+
+              if($_SESSION['role']=="aio" && $_SESSION['active_cases.aio_id']==NULL /* add a condition here to check if the form has been submitted already(database check) */){
+                echo"<button type=\"submit\" class=\"btn btn-success\" name=\"SubmitFormC\">Accept</button>";
+         
+
+                  }
+
+            ?>
+
+            <?php
+              
+              if($_SESSION['role']=="aio" /* add a condition here to check if the form has been submitted already(database check) */){
+                
+                echo"<button type=\"submit\" class=\"btn btn-danger\" name=\"SaveFormA\">Deny</button>";
+              }
+            ?>
+
+
+                       
                     </div>
                 </div>
             </form>
