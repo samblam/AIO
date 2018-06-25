@@ -53,10 +53,12 @@ include_once 'page.php';
 										active_cases.aio_id = ?
 									");
 
-			print($statement);
+			//print($statement);
 									
-			//$statement->bind_param("d", $id); //bind the csid to the prepared statements
+			$statement->bind_result($Prof_fname, $Prof_lname, $Student_fname, $Student_lname);
 
+			print("\nHello World" . $Prof_fname);
+			
         ?>
 	
         <div>
