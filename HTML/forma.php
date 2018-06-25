@@ -7,6 +7,26 @@ include '../includes/formProcess.php';
 include '../includes/formFill.php';
 include_once 'page.php';
 
+$form_submission_date = "";
+$evidence_file_dir = "";
+
+// check if URL contains the case_id variable
+if(isset($_GET["case_id"])){
+    $statement = $conn->prepare("SELECT evidence_fileDir, form_a_submit_date FROM active_cases WHERE case_id = ?");
+    // get the case_id from the URL
+    $case_id = (int)$_GET["case_id"];
+    $statement->bind_param("d", $case_id);
+    if(!$statement->execute()){
+      echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+    }
+
+    // get the case information from the database
+    $statement->bind_result($evidence_file_dir, $form_submission_date);
+    $statement->fetch();
+    echo $evidence_file_dir . "\n";
+    echo $form_submission_date . "\n";
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -17,6 +37,7 @@ include_once 'page.php';
         <title>Portal</title>
         <link rel="stylesheet" href="../CSS/formA.css">
         <link rel="stylesheet" href="../CSS/main.css">
+        <script src="../JS/forma.js"></script>
     </head>
     <body style="margin:auto;">
 
@@ -101,9 +122,9 @@ include_once 'page.php';
                 <div class="form-group">
                     <label for="date" class="col-sm-3 control-label">Date of Alleged Offense:</label>
                     <div class="col-sm-9">
-                        <input class="form-control" placeholder="MM/DD/YYYY" name="DateAlleged" id="date" value="<?php if (isset($date_alleg)) { echo $date_alleg;} ?>" >
+                        <input class="form-control" placeholder="MM/DD/YYYY" name="DateAlleged" id="date" value="<?php if (isset($date_alleg)) { echo $date_alleg;} ?>" autocomplete="off">
                     </div>
-                     </div>
+                </div>
 
                 <div class="form-group">
                     <p class="col-sm-12">Please describe the incident below or attach a memo. Please attach the original piece of work in which the offence occurred, the class syllabus, and any supporting material. If there are comparisons to be noted between documents (e.g., sections of a paper assignment and Urkund results), instructors are asked to clearly mark relevant sections in ink or highlighter.</p>
@@ -113,7 +134,11 @@ include_once 'page.php';
                 <div class="form-group">
                     <label for="fileInput" class="col-sm-3 control-label">Evidence:</label>
                     <div class="col-sm-9">
-                        <input type="file" id="fileInput" name="fileInput" multiple>
+                        <input type="file" id="fileInput" name="fileInput[]" onchange="getFileInfo()" onload="getFileInfo()" multiple>
+                    </div>
+
+                    <div id="fileInfo">
+                        <!-- do some file verification here -->
                     </div>
                 </div>
 
@@ -128,23 +153,47 @@ include_once 'page.php';
                 <!--save button, submit button-->
                 <div class="form-group">
                     <div class="center-block text-center">
-                        <button type="submit" class="btn btn-primary" name="SubmitFormC">Preview PDF</button>
+                        <button type="submit" class="btn btn-primary" name="PreviewPDF">Preview PDF</button>
                         <button type="submit" class="btn btn-primary" name="SaveFormA">Save</button>
-			<?php
-			  if($_SESSION['role']=="professor" /* add a condition here to check if the form has been submitted already(database check) */){
-			    echo"<button type=\"submit\" class=\"btn btn-success\" name=\"SubmitFormA\">Submit</button>";
-			  }
-			?>
+            			<?php
+            			  if($_SESSION['role']=="professor" && $form_submission_date==""){
+            			    echo"<button type=\"submit\" class=\"btn btn-success\" id=\"SubmitFormA\" name=\"SubmitFormA\">Submit</button>";
+                            /*
+                                have some on click event for this button that checks the files uploaded
+                            */
+            			  } 
+
+                          elseif ($_SESSION['role']=="professor" && $form_submission_date!="") {
+                            // add submit button for adding more evidence to a previously submitted case
+                            echo "<button type=\"submit\" class=\"btn btn-success\" id=\"AddEvidence\" name=\"AddEvidence\" disabled>Upload Selected Evidence</button>";
+
+                            if($evidence_file_dir!=""){
+                              // add a hidden field that passes on the file directory in which to add the files
+                              echo "<input type=\"hidden\" name=\"EvidenceDirectory\" value=\"$evidence_file_dir\">";
+                            }
+                          }
+            			?>
                     </div>
                 </div>
             </form>
         </div>
-
-
     </body>
 
     <!-- adds student form on click -->
     <script type="text/javascript">
+
+        function getFileInfo(){
+            addEvidenceButton = document.getElementById("AddEvidence");
+            if(addEvidenceButton && document.getElementById("fileInput").value == ""){
+                addEvidenceButton.disabled = true;
+            }
+
+            else if(addEvidenceButton && document.getElementById("fileInput").value != ""){
+                addEvidenceButton.disabled = false;
+            }
+        }
+
+        getFileInfo();
 
         $("#addStudent").click(function () {
             $("#students_group").append('<div class="input-group students" name="students"> <span class="input-group-addon">Student Name</span> <input type="text" class="form-control" aria-label="Name" required name="Name[]"> <span class="input-group-addon">Banner Number</span> <input type="text" class="form-control" aria-label="B00" required name="B00[]"> </div>');
@@ -171,6 +220,7 @@ include_once 'page.php';
                 var rect = e.currentTarget.getBoundingClientRect();
                 $(this).data('datepicker').picker.css('left', rect.left);
             });
+
         });
     </script>
 </html>

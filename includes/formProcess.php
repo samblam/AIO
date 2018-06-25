@@ -22,30 +22,24 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
+
 include_once 'db.php';
+include 'fileFunctions.php';
+
+$base_evidence_dir = "../evidence/";
 
 //Form A processing
 if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
   //This block of code gets the file ready to upload but doesnt upload it yet because we don't yet know where to put it
-  $target_dir= "../evidence/";
-  $target_file= $target_dir.basename($_FILES["fileInput"]["name"]);
-  $evidence = htmlspecialchars(trim(stripslashes($target_file)));
-  $uploadAllowed = false; //boolean to determine if file should be uploaded
-  if($target_file != $target_dir){ //if they are equal then nothing uploaded
-    $finfo= finfo_open(FILEINFO_MIME_TYPE);
-    $mime = finfo_file($finfo, $_FILES["fileInput"]["tmp_name"]);
-    switch ($mime) { // Each case should be an allowed mime type. Check with Client to see which file types should be allowed.
-      /*case '':// Allowed mimes
-      case '':// Allowed mimes
-        $uploadAllowed = true;
-        break;*/
-      default:
-        $uploadAllowed = true;// Schange to false and uncomment above code block if there are file type restrictions
-    }
-    if($_FILES["fileInput"]["size"] >2097152) { // Check size of upload. 2097152 = 2MB. Will probably want to change based on Client's requirements
-      // code to go back to form
-    }
-  }
+
+
+
+  $all_files_are_valid = validateUploadedFiles();
+
+
+
+
+  
 
   $userId = $_SESSION['userId'];//first column of the current user's role table in the database
 
@@ -195,20 +189,13 @@ if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
     }
   }
 
-  // Creates the case directory and then uploads the evidence to it if allowed
-  // Future team might want add directory creation logic within if ($uploadAllowed) {}
-  $target_file = $target_dir.$caseId."/".$_FILES["fileInput"]["name"];
-  if(!is_dir("../evidence/".$caseId)){
-    mkdir("../evidence/".$caseId);
-  }
-  if ($uploadAllowed) {
-    if (move_uploaded_file($_FILES["fileInput"]["tmp_name"], $target_file)) {
-      echo"File uploaded successfully.";
-    }
-    else {
-      echo"Error uploading file.";
-    }
-  }
+  // Creates the case directory for uploading evidence
+  if(!is_dir($base_evidence_dir . $case_id)){
+      mkdir($base_evidence_dir . $case_id);
+  } 
+
+  $zip_file_location = $base_evidence_dir . $case_id; 
+  $uploadSuccessful = moveUploadedFilesToZip($all_files_are_valid, $caseId);
 
   // This returns you back to the role's active case page.
   // Might want to change admin and aio conditions and locations (elseif and else respectively)
@@ -238,6 +225,36 @@ if(isset($_POST['SaveFormC']) || isset($_POST['SubmitFormC'])){
 // form D processing
 if(isset($_POST['SaveFormD']) || isset($_POST['SubmitFormD'])){
 
+}
+
+
+
+
+
+
+
+// add evidence to previously submitted case
+if(isset($_POST['AddEvidence'])){
+
+  if(!isset($_POST['EvidenceDirectory'])){
+    echo "Error - there was no evidence directory in which to add the uploaded files.";
+  } 
+
+  else {
+    $evidence_dir = $base_evidence_dir . $_POST['EvidenceDirectory'];
+    // Creates the case directory for uploading evidence
+    if(!is_dir($evidence_dir)){
+      mkdir($evidence_dir);
+    } 
+
+    $all_files_are_valid = validateUploadedFiles();
+    $upload_successful = moveUploadedFilesToZip($all_files_are_valid, $evidence_dir);
+  }
+
+  $myfile = fopen("DEBUG_LOG2.txt", "w") or die("Unable to open file!");
+  fwrite($myfile, print_r($_POST, true) . "\n");  
+  fwrite($myfile, print_r($_GET, true) . "\n");  
+  fclose($myfile);
 }
 
 // deletes all students and active cases with the given case_id
