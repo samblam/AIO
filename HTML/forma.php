@@ -31,7 +31,37 @@ include_once 'page.php';
                 <div class="form-group">
                     <label for="ProfessorName" class="col-sm-3 control-label">Professor:</label>
                     <div class="col-sm-9">
-                         <input type="text" class="form-control" placeholder="Name" id="ProfessorName" name="ProfessorName" required value="<?php if (isset($prof_name)&& !isset($_GET['ProfRequired'])) { echo $prof_name;} ?>">
+                        
+                        <?php
+                        //this check is to see if the admin is submitting the form
+                            if(isset($_GET['ProfRequired'])){
+                            //show dropdown here
+                                echo "<select class='form-control'>";
+                                
+                                //grab all the professors
+                                $statement = $conn->prepare("SELECT professor.professor_id, professor.fname, professor.lname FROM professor");
+                                if(!$statement->execute()){
+                                  echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+                                }
+                                $statement->bind_result($profId, $pfname, $plname);
+                                while($statement->fetch()){
+                                    //add each professor to the dropdown
+                                    $profName = $pfname . ' ' . $plname;
+                                    echo"<option value='$profId'>$profName</option>";
+                                    
+                                }
+                                echo"</select>";
+                            
+                            }
+                                
+                            else{
+                            //else auto fill professor name
+                                echo "<input type='text' class='form-control' placeholder='Name' id='ProfessorName' name='ProfessorName' required value='";
+                                if (isset($prof_name)) { echo $prof_name;}
+                                echo"'>";
+                            }
+                           
+                        ?>                        
                     </div>
                 </div>
 
@@ -116,29 +146,6 @@ include_once 'page.php';
                         <input type="file" id="fileInput" name="fileInput" multiple>
                     </div>
                 </div>
-                
-                
-                <!--When the casses are being added by an admin-->
-                
-                <?php
-                
-                    if(isset($_GET['ProfRequired'])){
-                        
-                        echo<<<DisplayProfForm
-                        
-                        <div class='form-group'>
-                        
-                        
-                        
-                        
-                        
-                        </div>
-                    
-                    
-DisplayProfForm;
-                    
-                    }
-                ?>
 
                 <!-- text input for additional comments-->
                 <div class="form-group">
