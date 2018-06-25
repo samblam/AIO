@@ -238,9 +238,38 @@ if(isset($_POST['SaveFormD']) || isset($_POST['SubmitFormD'])){
 
 }
 
-// deletes all students and active cases with the given case_id
+// deletes all students and active cases with the given case_id for admins
 if(isset($_POST['deleteCase']) && isset($_POST['case_id']) && $_SESSION['role'] == "admin") {
   $id = htmlspecialchars(trim(stripslashes($_POST['case_id'])));
+  $conn->query("DELETE FROM student WHERE case_id = \"$id\"");
+  $conn->query("DELETE FROM active_cases WHERE case_id = \"$id\"");
+}
+
+// deletes all students and active cases with the given case_id for insufficient evidence
+if(isset($_POST['insufficientEvidence']) && isset($_POST['case_id']) && $_SESSION['role'] == "aio") {
+  $id = htmlspecialchars(trim(stripslashes($_POST['case_id'])));
+  /*$sql = "SELECT fname FROM student WHERE case_id = '$id'";
+  $name = mysql_query($sql);
+  $sql2 = "SELECT email FROM professor WHERE professor_id = ;
+  $email = mysql_query($sql2);
+  $msg = "Insufficient ividence provided for academic integrity violation.";
+  $msg = wordwrap($msg, 70);
+  mail("sr.mart@hotmail.com", "Insufficient Evidence", $msg);*/
+  $conn->query("DELETE FROM student WHERE case_id = \"$id\"");
+  $conn->query("DELETE FROM active_cases WHERE case_id = \"$id\"");
+}
+
+// deletes all students and active cases with the given case_id for close case
+if(isset($_POST['closeCaseNotGuilty']) && isset($_POST['case_id']) && $_SESSION['role'] == "aio") {
+  $id = htmlspecialchars(trim(stripslashes($_POST['case_id'])));
+  $conn->query("DELETE FROM student WHERE case_id = \"$id\"");
+  $conn->query("DELETE FROM active_cases WHERE case_id = \"$id\"");
+}
+
+// moves all students and active cases with the given case_id to archive
+if(isset($_POST['closeCaseGuilty']) && isset($_POST['case_id']) && $_SESSION['role'] == "aio") {
+  $id = htmlspecialchars(trim(stripslashes($_POST['case_id'])));
+  $conn->query("INSERT INTO history (class_name, verdict, date_allegation) SELECT class_name_code, case_verdict, date_aware FROM active_cases WHERE case_id = \"$id\"");
   $conn->query("DELETE FROM student WHERE case_id = \"$id\"");
   $conn->query("DELETE FROM active_cases WHERE case_id = \"$id\"");
 }

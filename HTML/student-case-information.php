@@ -24,7 +24,6 @@ include_once 'page.php';
 
         <div style="display: inline-block;">
             <h2>Case Information - <p class="studentName"></p></h2>
-
         </div>
 
         <!-- Newcase button div -->
@@ -34,7 +33,6 @@ include_once 'page.php';
         <!-- TODO: Table will need to populate based on the entries in the DB(server side) -->
         <!-- TODO: I think to properly link the buttons, each row might have to be an input form(haven't looked it up) -->
         <div>
-
             <table class="table table-bordered" style="font-size: 14px;">
                 <tbody>
                     <tr>
@@ -56,10 +54,8 @@ include_once 'page.php';
                                     <!-- needs to add an <li> tage for other students in the case upon loading page; BACKEND -->
                                     <li><a href="student-case-information.html"> TestStudent Name</a></li>
                                     <li><a href="#"> TestStudent Name</a></li>
-
                                 </ul>
                             </div>
-
                         </td>
                     </tr>
                     <tr>
@@ -76,17 +72,65 @@ include_once 'page.php';
                         <!-- this needs evidence files -->
                         <td><a href="#">Link.zip</a></td>
                     </tr>
-
                     <tr>
                         <td>Case status</td>
                         <!-- needs to come from backend -->
                         <td>Waiting for student to confirm meeting date</td>
                     </tr>
-
                 </tbody>
-            </table>
+            </table>   
         </div>
+        <!-- TODO: Add verdict column to active cases table and pull the verdict for the case. If the verdict is null only show Insufficient evidence button, if the verdict is not null only show close case button and either delete or archive the case based on the verdict. -->
+        
+        <!-- CLose case and insufficient evidence buttons -->
+        <div class="center-block text-center">
+            <?php
+                //Gets case id from URL
+                $caseId = intval($_GET['case_id']);
+            
+                //Get case verdict from db
+                $statement = $conn->prepare("SELECT case_verdict FROM active_cases WHERE case_id = '$caseId' AND aio_id = ?"); 
+                $statement->bind_param("d", $id); //bind the csid to the prepared statements
 
+                $id = (int)$_SESSION['userId'];
+                if(!$statement->execute()){
+                    echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+                }
+            
+                $statement->bind_result($caseVerdict);
+                
+                while($statement->fetch()){
+                    if($caseVerdict == NULL){
+                        // Insufficient Evidence Button
+                        echo <<<ViewAllPost
+                            <form class="delete_this_case" method="post" action="AioActiveCases.php" onclick="return confirm('Are you sure you want to remove this case for insufficient evidence? This will permanently delete the case.\\nClick OK to continue.')">
+                                <input type="text" name="case_id" value="$caseId" hidden>
+                                <button class="btn btn-danger" value="true" type="submit" name="insufficientEvidence">Insufficient Evidence</button>
+                            </form>
+ViewAllPost;
+                    }
+                    else if ($caseVerdict == "guilty"){
+                        // Close case Button guilty
+                        echo <<<ViewAllPost2
+                            <form class="delete_this_case" method="post" action="AioActiveCases.php" onclick="return confirm('Are you sure you want to close this case? \\nIf the verdict is guilty the case gets archived in our system, and if the verdict is not guilty the case is permanently deleted. \\nClick OK to continue.')">
+                                <input type="text" name="case_id" value="$caseId" hidden>
+                                <button class="btn btn-danger" value="true" type="submit" name="closeCaseGuilty">Close Case</button>
+                            </form>
+ViewAllPost2;
+                    }
+                    else if ($caseVerdict == "not guilty"){
+                        // Close case Button not guilty
+                        echo <<<ViewAllPost3
+                            <form class="delete_this_case" method="post" action="AioActiveCases.php" onclick="return confirm('Are you sure you want to close this case? \\nIf the verdict is guilty the case gets archived in our system, and if the verdict is not guilty the case is permanently deleted. \\nClick OK to continue.')">
+                                <input type="text" name="case_id" value="$caseId" hidden>
+                                <button class="btn btn-danger" value="true" type="submit" name="closeCaseNotGuilty">Close Case</button>
+                            </form>
+ViewAllPost3;
+                    }
+                }
+            ?>
+            
+        </div>
 
         <!-- Form display div -->
         <div>
