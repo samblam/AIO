@@ -42,11 +42,17 @@ include 'includes/db.php';
         
         <h2>Login</h2>
         
-        <!-- Main Navagation tabs, each containing their own logins -->
+        <!-- Main Navigation tabs, each containing their own logins -->
         
+<<<<<<< HEAD
         <!-- Login screen ready for backend php -->
     
         <form action="includes/login.php" method="post" enctype="multipart/form-data">
+=======
+        <!-- Login screen ready for back end php -->
+	<form action="includes/login.php" method="post">
+
+>>>>>>> a5498571f1710813c1434f57277df9a4f897481d
             <div class="container">
                 <div id = "message"><div>
                 <label for="uname"><b>Enter CS ID and password</b></label>
@@ -68,10 +74,14 @@ include 'includes/db.php';
                 <!-- 
                 Temp button links to the active case screen.
                 Use the second commented out button for when PHP is enabled.-->
+<<<<<<< HEAD
                 <!--<a href="HTML/ProfessorActiveCases.php" class="btn btn-info" role="button" name"LoginSubmit">Submit</a>-->
                 <!--<button class="btn btn-info" type="submit" name="LoginSubmit">Submit</button>-->
                <input class="btn btn-info" type="Submit" value="Submit" name="LoginSubmit" id="LoginSubmit">
                <div id = "caps_lock"><div>
+=======
+			   <button class="btn btn-info" type="submit" value="Submit" name="LoginSubmit">Submit</button>
+>>>>>>> a5498571f1710813c1434f57277df9a4f897481d
             </div>
         </from>
 
