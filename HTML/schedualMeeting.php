@@ -36,28 +36,28 @@ include_once 'page.php';
 	
 		<?php
 
-			//Get all active cases assigned to this AIO and bind the returned database fields to php variables
 			$statement = $conn->prepare("
 									SELECT 
-										professor.fname, 
-										professor.lname, 
-										student.fname, 
-										student.lname, 
-										student.csid, 
-										active_cases.case_id 
+										A.case_id,
+										A.description,
+										A.prof_id,
+										A.date_aware,
+										A.evidence_fileDir
 									FROM 
-										professor 
-										LEFT JOIN active_cases ON professor.professor_id = active_cases.prof_id 
-										LEFT JOIN student ON student.case_id = active_cases.case_id 
+										active_cases as A
 									WHERE 
-										active_cases.aio_id = ?
+										case_id = 2
 									");
-
-			//print($statement);
+			
+			if(!$statement->execute()){
+                echo "Execute failed: (" . $query->errno . ") " . $query->error;
+            }
 									
-			$statement->bind_result($Prof_fname, $Prof_lname, $Student_fname, $Student_lname);
+			$statement->bind_result($caseID, $description, $prof_id, $date_aware, $evidence_path);
+			
+			$statement->fetch();	//Pull just one row.
 
-			print("\nHello World" . $Prof_fname);
+			print("\nHello World" . $caseID . "\n" . $description . "\n" . $prof_id . "\n" . $date_aware . "\n" . $evidence_path);
 			
         ?>
 	
