@@ -1,6 +1,5 @@
 <?php
-
-session_start();
+require_once '../includes/session.php';
 //Open the db connection
 include '../includes/db.php';
 //Check if the form variables have been submitted, store them in the session variables
@@ -28,6 +27,7 @@ include '../includes/formProcess.php';
         <div>
             <h2>Active Cases</h2>
         </div>
+        
         <!-- Table div -->
         <div>
             <table class="table table-bordered" style="font-size: 12px;">
@@ -44,10 +44,25 @@ include '../includes/formProcess.php';
                     <?php
 
                       //Get all active cases assigned to this AIO and bind the returned database fields to php variables
-            		  $statement = $conn->prepare("SELECT professor.fname, professor.lname, student.fname, student.lname, student.csid, active_cases.case_id FROM professor LEFT JOIN active_cases ON professor.professor_id = active_cases.prof_id LEFT JOIN student ON student.case_id = active_cases.case_id WHERE active_cases.aio_id = ?");
+            		  $statement = $conn->prepare("
+                                                SELECT 
+                                                    professor.fname, 
+                                                    professor.lname, 
+                                                    student.fname, 
+                                                    student.lname, 
+                                                    student.csid, 
+                                                    active_cases.case_id 
+                                                FROM 
+                                                    professor 
+                                                    LEFT JOIN active_cases ON professor.professor_id = active_cases.prof_id 
+                                                    LEFT JOIN student ON student.case_id = active_cases.case_id 
+                                                WHERE 
+                                                    active_cases.aio_id = ?
+                                                ");
+
             		  $statement->bind_param("d", $id); //bind the csid to the prepared statements
 
-                      $id = (int)$_SESSION['userId'];
+                      $id = (int)$_SESSION['userId'];//should be 'userId'
             		      if(!$statement->execute()){
                  		    echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                       }
@@ -67,6 +82,61 @@ ViewAllPost;
                       }
                       ?>
                 </tbody>
+                
+                <br>
+                
+            </table>
+        </div>
+        
+        <div>
+            <h3>Unassigned cases</h3>
+            
+            <table class="table table-bordered" style="font-size: 12px;">
+                
+                <thead class="cases-table">
+                    <tr>
+                        <th>Class</th>
+                        <th>Professor</th>
+                        <th>View</th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    
+                <?php
+                    $query = $conn->prepare("
+                                            SELECT 
+                                                active_cases.case_id, 
+                                                active_cases.class_name_code, 
+                                                professor.fname, 
+                                                professor.lname 
+                                            FROM 
+                                                professor 
+                                                LEFT JOIN active_cases ON professor.professor_id = active_cases.prof_id 
+                                                LEFT JOIN student ON student.case_id = active_cases.case_id 
+                                            WHERE 
+                                                active_cases.aio_id IS NULL
+                                            ");
+                    
+                    if(!$query->execute()){
+                 		 echo "Execute failed: (" . $query->errno . ") " . $query->error;
+                    }
+                    
+                    $query->bind_result($uCaseId, $uClassName, $uProfessorFN, $uProfessorLN);
+                    
+                    while($query->fetch()){
+                      echo <<<ViewAllPost
+                      <tr>
+                          <td>$uClassName</td>
+                          <td>$uProfessorFN $uProfessorLN</td>
+                          <td align="center"><a href="student-case-information.php?case_id={$caseId}" class="btn btn-primary">View Case</a></td>
+                      </tr>
+                        
+ViewAllPost;
+                    }
+                 ?>
+                    
+                </tbody> 
             </table>
         </div>
     </body>
