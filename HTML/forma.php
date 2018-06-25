@@ -9,6 +9,28 @@ include_once 'page.php';
 
 ?>
 
+<script> 
+    
+    function autoFillProf(profId,profName,profEmail, profPhone) {
+                
+        document.getElementById('ProfessorName').value = profName;
+        document.getElementById('email').value = profEmail;
+        document.getElementById('phoneNum').value = profPhone;
+
+      }
+    
+</script>
+
+
+<script>
+    document.getElementById("profSelect").onchange = function() {
+        if (this.selectedIndex!==0) {
+            autoFillProf(this.value);
+        }        
+    };
+</script>
+
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -36,22 +58,21 @@ include_once 'page.php';
                         //this check is to see if the admin is submitting the form
                             if(isset($_GET['ProfRequired'])){
                             //show dropdown here
-                                echo "<select class='form-control'>";
+                                echo "<select id='profSelect' class='form-control'>";
                                 
                                 //grab all the professors
-                                $statement = $conn->prepare("SELECT professor.professor_id, professor.fname, professor.lname FROM professor");
+                                $statement = $conn->prepare("SELECT professor_id, fname, lname, phone FROM professor");
                                 if(!$statement->execute()){
                                   echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                                 }
-                                $statement->bind_result($profId, $pfname, $plname);
+                                $statement->bind_result($profId, $pfname, $plname, $phone);
                                 while($statement->fetch()){
                                     //add each professor to the dropdown
                                     $profName = $pfname . ' ' . $plname;
-                                    echo"<option value='$profId'>$profName</option>";
+                                    echo"<option value='(\'' + $profId + '\',\'' +  $profName + '\',\'' +  $phone+ '\')')>$profName</option>";
                                     
                                 }
                                 echo"</select>";
-                            
                             }
                                 
                             else{
@@ -60,8 +81,7 @@ include_once 'page.php';
                                 if (isset($prof_name)) { echo $prof_name;}
                                 echo"'>";
                             }
-                           
-                        ?>                        
+                        ?>                   
                     </div>
                 </div>
 
