@@ -4,7 +4,6 @@ require_once 'includes/session.php';
 include 'includes/db.php';
 //These are the variables that will later be converted to session variables
 //Check if the form variables have been submitted, store them in the session variables
-include 'includes/formProcess.php';
 ?>
 
 <!DOCTYPE html>
@@ -15,8 +14,29 @@ include 'includes/formProcess.php';
         <title>Portal</title>
         <link rel="stylesheet" href="CSS/main.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script type="text/javascript">
+       $(document).ready(function(){
+           event.preventDefault();
+           $("#LoginSubmit").click(function(){
+           $.ajax({
+               url:'includes/login.php',
+               type:'post',
+               data:formData,
+               contentType: false,
+               processData: false,
+               success:function(data){
+                   var msg = "";
+                   if("error" in data){
+                       msg = data['error'];
+                       $("#message").html(msg);
+                   }
+               }
+           });
+           });
+       });
+        </script>
     </head>
     <body style="margin: auto;">
         
@@ -25,12 +45,13 @@ include 'includes/formProcess.php';
         <!-- Main Navagation tabs, each containing their own logins -->
         
         <!-- Login screen ready for backend php -->
-	<form action="includes/login.php" method="post">
-
+    
+        <form action="includes/login.php" method="post" enctype="multipart/form-data">
             <div class="container">
+                <div id = "message"><div>
                 <label for="uname"><b>Enter CS ID and password</b></label>
                 <br>
-                <input type="text" placeholder="Enter CS ID" name="uname" id = "unmame" required>
+                <input type="text" placeholder="Enter CS ID" name="uname" id = "uname" required>
                 <br>
                 <input type="password" placeholder="Enter Password" name="psw" id = "psw" required>
                 <br><br>
@@ -49,16 +70,21 @@ include 'includes/formProcess.php';
                 Use the second commented out button for when PHP is enabled.-->
                 <!--<a href="HTML/ProfessorActiveCases.php" class="btn btn-info" role="button" name"LoginSubmit">Submit</a>-->
                 <!--<button class="btn btn-info" type="submit" name="LoginSubmit">Submit</button>-->
-               <input class="btn btn-info" type="submit" value="Submit" name="LoginSubmit">
+               <input class="btn btn-info" type="Submit" value="Submit" name="LoginSubmit" id="LoginSubmit">
+               <div id = "caps_lock"><div>
             </div>
-        </form>
+        </from>
+
     </body>
     <!--Checks for Caps Lock and alerts user if on -->
-      <script type="text/javascript">
+    <script type="text/javascript">
         $('#psw').keypress(function(e) { 
           var s = String.fromCharCode( e.which );
            if ( s.toUpperCase() === s && s.toLowerCase() !== s && !e.shiftKey ) {
-                alert('Warning: Caps Lock is On!');
+                 $('#caps_lock').html("<span class='text-warning'>Warning: Caps Lock is On!</span>");
+           }
+           else{
+            $('#caps_lock').css('visibility', 'hidden');
            }
         });
     </script>

@@ -45,6 +45,7 @@ if(isset($_POST['LoginSubmit'])){
       	$_SESSION['faculty'] = $faculty;
       	$_SESSION['department'] = $department;
       }
+      
       header("location: ../HTML/ProfessorActiveCases.php");
     }
     elseif($role == "aio" || $role == "admin"){
@@ -58,6 +59,7 @@ if(isset($_POST['LoginSubmit'])){
         header("location: ../HTML/AioActiveCases.php");
       }
       else{
+        
         header("location: ../HTML/AdminActiveCases.php");
       }
     }
@@ -66,8 +68,9 @@ if(isset($_POST['LoginSubmit'])){
     }
   }
   else{ // The notFound=true is there in case the future team wants to add a condition in index.php that displays an error message if this variable is set
-    header("location: ../index.php?notFound=true");
+    echo "{\"error\": \"Login Failure, Username or Password incorrect!\"}";
+    /*header("location: ../index.php?notFound=true");*/
   }
 
 }
-?>
+

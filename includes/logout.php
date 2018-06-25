@@ -11,5 +11,4 @@
   }
   session_destroy();
   header("location: ../index.php"); //redirect to index.php
-
   ?>
