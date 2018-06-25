@@ -76,7 +76,6 @@ include 'includes/db.php';
                 <!--<button class="btn btn-info" type="submit" name="LoginSubmit">Submit</button>-->
                <input class="btn btn-info" type="Submit" value="Submit" name="LoginSubmit" id="LoginSubmit">
                <div id = "caps_lock"><div>
-			   <button class="btn btn-info" type="submit" value="Submit" name="LoginSubmit">Submit</button>
             </div>
         </from>
 
