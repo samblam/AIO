@@ -6,30 +6,8 @@ include_once '../includes/db.php';
 include '../includes/formProcess.php';
 include '../includes/formFill.php';
 include_once '../includes/page.php';
-
+include '../JS/profAutoFill.js'
 ?>
-
-<script> 
-    
-    function autoFillProf(profId,profName,profEmail, profPhone) {
-                
-        document.getElementById('ProfessorName').value = profName;
-        document.getElementById('email').value = profEmail;
-        document.getElementById('phoneNum').value = profPhone;
-
-      }
-    
-</script>
-
-
-<script>
-    document.getElementById("profSelect").onchange = function() {
-        if (this.selectedIndex!==0) {
-            autoFillProf(this.value);
-        }        
-    };
-</script>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -58,18 +36,18 @@ include_once '../includes/page.php';
                         //this check is to see if the admin is submitting the form
                             if(isset($_GET['ProfRequired'])){
                             //show dropdown here
-                                echo "<select id='profSelect' class='form-control'>";
+                                echo "<select id='profSelect' class='form-control' onchange='fillProf()''>";
                                 
                                 //grab all the professors
-                                $statement = $conn->prepare("SELECT professor_id, fname, lname, phone FROM professor");
+                                $statement = $conn->prepare("SELECT professor_id, fname, lname, email, phone FROM professor");
                                 if(!$statement->execute()){
                                   echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                                 }
-                                $statement->bind_result($profId, $pfname, $plname, $phone);
+                                $statement->bind_result($profId, $pfname, $plname, $email, $phone);
                                 while($statement->fetch()){
-                                    //add each professor to the dropdown
+                                    //add each professor to the dropdown, and tie the email/phone number to the value in order to suto fill
                                     $profName = $pfname . ' ' . $plname;
-                                    echo"<option value='(\'' + $profId + '\',\'' +  $profName + '\',\'' +  $phone+ '\')')>$profName</option>";
+                                    echo"<option value='$email,$phone'>$profName</option>";
                                     
                                 }
                                 echo"</select>";
