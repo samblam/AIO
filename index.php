@@ -49,7 +49,6 @@ include 'includes/db.php';
     
         <form action="includes/login.php" method="post" enctype="multipart/form-data">
         <!-- Login screen ready for back end php -->
-	<form action="includes/login.php" method="post">
 
             <div class="container">
                 <div id = "message"><div>
