@@ -94,7 +94,31 @@ ViewReleventPeople;
 
         ?>
 
-		<input class="form-control" placeholder="MM/DD/YYYY" name="DateAlleged" id="date" value="">
+		<div class="form-group">
+			<label for="date" class="col-sm-3 control-label">Meeting date:</label>
+			<div class="col-sm-9">
+				<input class="form-control" placeholder="MM/DD/YYYY" name="MeetingDate" id="date">
+            </div>
+        </div>
 
     </body>
+
+	<script type="text/javascript">
+		//TODO: Test this.
+		$(document).ready(function () {
+            "use strict";
+            var date_input1 = $('input[id="date"]');
+            var options = {
+                format: 'mm/dd/yyyy',
+                todayHighlight: true,
+                autoclose: true
+            };
+
+            var datepicker = date_input1.datepicker(options)
+            datepicker.on('show', function(e) {
+                var rect = e.currentTarget.getBoundingClientRect();
+                $(this).data('datepicker').picker.css('left', rect.left);
+            });
+        });
+	</script>
 </html>
