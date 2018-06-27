@@ -58,62 +58,43 @@ include_once '../includes/page.php';
 			$statement->fetch();	//Pull just one row.
 
 			print("\nHello World" . $caseID . "\n" . $description . "\n" . $prof_id . "\n" . $date_aware . "\n" . $evidence_path);
-			
-        ?>
-	
-        <div>
 
+			//Make the table.
+			echo <<<ViewReleventPeople
+
+			<div>
             <table class="table table-bordered" style="font-size: 14px;">
                 <tbody>
                     <tr>
-                        <!-- needs to grab from backend -->
-                        <td>Banner number</td>
-                        <td>B00000000</td>
+                        <td>Case description</td>
+                        <td>$description</td>
                     </tr>
                     <tr>
                         <td>Student name</td>
-                        <td class="studentName">Mark Auto</td>
-                    </tr>
-                    <tr>
-                        <td>Other Students</td>
-                        <td>
-                             <div class="dropdown">
-                                <button class="btn btn-default dropdown-toggle" type="button" style="font-size: 12px;" data-toggle="dropdown">Other Students
-                                <span class="caret"></span></button>
-                                <ul class="dropdown-menu" onchange="warning()">
-                                    <!-- needs to add an <li> tage for other students in the case upon loading page; BACKEND -->
-                                    <li><a href="student-case-information.html"> TestStudent Name</a></li>
-                                    <li><a href="#"> TestStudent Name</a></li>
-
-                                </ul>
-                            </div>
-
-                        </td>
+                        <td class="studentName">Case ID: $caseID</td>
                     </tr>
                     <tr>
                         <td>Professor</td>
-                        <td>Fred</td>
+                        <td>ID: $prof_id</td>
                     </tr>
                     <tr>
                         <td>Date</td>
-                        <!-- is this current date or case submitted date or allegation date? needs backend-->
-                        <td class="date">Jan 31st 2017</td>
+                        <td class="date">$date_aware</td>
                     </tr>
                     <tr>
                         <td>Files</td>
-                        <!-- this needs evidence files -->
-                        <td><a href="#">Link.zip</a></td>
+						<!-- What will we want to show here? -->
+                        <td><a href="$evidence_path">$evidence_path</a></td>
                     </tr>
-
-                    <tr>
-                        <td>Case status</td>
-                        <!-- needs to come from backend -->
-                        <td>Waiting for student to confirm meeting date</td>
-                    </tr>
-
                 </tbody>
             </table>
         </div>
+
+ViewReleventPeople;
+
+        ?>
+
+		<input class="form-control" placeholder="MM/DD/YYYY" name="DateAlleged" id="date" value="">
 
     </body>
 </html>
