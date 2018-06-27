@@ -6,6 +6,13 @@ function fillProf(){
     var selectedValue = selectBox.options[selectBox.selectedIndex].value;
     var res = selectedValue.split(",");
     document.getElementById('email').value = res[0];
-    document.getElementById('phoneNum').value = res[1];
+    var phoneNumber = res[1].split("");
+    //gross way to format numbers.
+    //will break if phone number format changes
+    var formattedNumber= 
+    phoneNumber[0] + phoneNumber[1] + phoneNumber[2] + "-" +
+    phoneNumber[3] + phoneNumber[4] + phoneNumber[5] + "-" +
+    phoneNumber[6] + phoneNumber[7] + phoneNumber[8];
+    document.getElementById('phoneNum').value = formattedNumber;
 };
 </script>

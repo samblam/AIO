@@ -36,18 +36,19 @@ include '../JS/profAutoFill.js'
                         //this check is to see if the admin is submitting the form
                             if(isset($_GET['ProfRequired'])){
                             //show dropdown here
-                                echo "<select id='profSelect' class='form-control' onchange='fillProf()''>";
+                                echo "<select data-live-search='true' id='profSelect' class='selectpicker form-control' onchange='fillProf()''>";
+                                echo "<option disabled selected value> -- select an option -- </option>";
                                 
                                 //grab all the professors
-                                $statement = $conn->prepare("SELECT professor_id, fname, lname, email, phone FROM professor");
+                                $statement = $conn->prepare("SELECT fname, lname, email, phone FROM professor");
                                 if(!$statement->execute()){
                                   echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                                 }
-                                $statement->bind_result($profId, $pfname, $plname, $email, $phone);
+                                $statement->bind_result( $pfname, $plname, $email, $phone);
                                 while($statement->fetch()){
-                                    //add each professor to the dropdown, and tie the email/phone number to the value in order to suto fill
+                                    //add each professor to the dropdown, and tie the email/phone number to the value in order to auto fill
                                     $profName = $pfname . ' ' . $plname;
-                                    echo"<option value='$email,$phone'>$profName</option>";
+                                    echo"<option value='$email,$phone' data-tokens='$pfname,$plname'>$profName</option>";
                                     
                                 }
                                 echo"</select>";
