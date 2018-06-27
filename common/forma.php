@@ -152,7 +152,7 @@ include '../JS/profAutoFill.js'
                     <div class="col-sm-12">
                         <textarea class="form-control" rows="5" placeholder="Write additional comments here" id="additionalComments" name="additionalComments"></textarea>
                     </div>
-                </div>          
+                </div>
 
                 <!--save button, submit button-->
                 <div class="form-group">
