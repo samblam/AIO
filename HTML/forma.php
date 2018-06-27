@@ -7,7 +7,10 @@ include '../includes/formProcess.php';
 include '../includes/formFill.php';
 include_once 'page.php';
 
+
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -132,6 +135,8 @@ include_once 'page.php';
                         <button type="submit" class="btn btn-primary" name="SaveFormA">Save</button>
 			<?php
 
+
+
 			  if($_SESSION['role']=="professor" /* add a condition here to check if the form has been submitted already(database check) */){
 			    echo"<button type=\"submit\" class=\"btn btn-primary\" name=\"SubmitFormA\">Submit</button>";
 			  }
@@ -146,22 +151,48 @@ include_once 'page.php';
                     <div class="center-block text-center">
                         <?php
 
+                        //check the query string to see if there is saved data
+  //if(isset($_GET['saved']) && $_GET['saved'] == "true") {
+    //$id = (int)$_GET['aio_id'];
 
-              if($_SESSION['role']=="aio" && $_SESSION['active_cases.aio_id']==NULL /* add a condition here to check if the form has been submitted already(database check) */){
-                echo"<button type=\"submit\" class=\"btn btn-success\" name=\"SubmitFormC\">Accept</button>";
+          //form A data is rettieved at this point.
+$aio_id="";
+                        // check if URL contains the case_id variable
+if(isset($_GET["case_id"])){
+   $statement = $conn->prepare("SELECT aio_id FROM active_cases WHERE case_id = ?");
+   //SELECT aio_id FROM active_cases WHERE case_id = ?
+   // get the case_id from the URL
+   $case_id = (int)$_GET["case_id"];
+   $statement->bind_param("d", $case_id);
+   if(!$statement->execute()){
+     echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+   }
+
+   // get the case information from the database
+   $statement->bind_result($aio_id);
+   $statement->fetch();
+
+
+   if($_SESSION['role']=="aio" && $aio_id=="" /*add a condition here to check if the form has been submitted already(database check) */){
+                echo"<button type=\"submit\" class=\"btn btn-success\" name=\"AcceptFormA\">Accept</button>";
          
 
-                  }
+    }
 
-            ?>
 
-            <?php
-              
-              if($_SESSION['role']=="aio" /* add a condition here to check if the form has been submitted already(database check) */){
+    if($_SESSION['role']=="aio" && $aio_id=="" /* add a condition here to check if the form has been submitted already(database check) */){
                 
-                echo"<button type=\"submit\" class=\"btn btn-danger\" name=\"SaveFormA\">Deny</button>";
+                echo"<button type=\"submit\" class=\"btn btn-danger\" name=\"DenyFormA\">Deny</button>";
               }
+
+
+}
+
+  //}
+
             ?>
+
+           
 
 
                        

@@ -146,6 +146,61 @@ if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
     }
   }
 
+  //The case where this Form A set aio_id 
+  if(isset($_POST['AcceptFormA'])){
+
+    //Create new case entry
+    $statement = $conn->prepare("INSERT INTO active_cases (prof_id, class_name_code, date_aware, description) VALUES (?, ?, ?, ?)");
+    $statement->bind_param("ssss",$userId, $cname, $date, $comments); //bind initial values to the prepared statements
+    if (!$statement->execute()) {
+       echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+    }
+
+    // Grabs case_id of the just inserted case and uses it to create the evidence directory name for this case in the database
+    // This step might be unnecessary if the value is just the same as the case_id. If its a combo of values then it might be necessary.
+    $caseId = $conn->insert_id;
+    $updateEvidence = $conn->prepare("UPDATE active_cases SET aio_id = 1 WHERE case_id = ".$caseId);
+    //$updateEvidence->bind_param("s", $caseId); //bind evidence folder name to the prepared statements
+    if (!$updateEvidence->execute()) {
+       echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+    }
+
+    //Insert students into student table
+    /**
+     * For each set of students and b00s, check if both entries are not null.
+     * If not prepare the insert statement, sanatize the current name and B00,
+     * bind the values to the insert statement and execute;\.
+     */
+    
+  }
+
+  if(isset($_POST['DenyFormA'])){
+
+    //Create new case entry
+    $statement = $conn->prepare("INSERT INTO active_cases (prof_id, class_name_code, date_aware, description) VALUES (?, ?, ?, ?)");
+    $statement->bind_param("ssss",$userId, $cname, $date, $comments); //bind initial values to the prepared statements
+    if (!$statement->execute()) {
+       echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+    }
+
+    // Grabs case_id of the just inserted case and uses it to create the evidence directory name for this case in the database
+    // This step might be unnecessary if the value is just the same as the case_id. If its a combo of values then it might be necessary.
+    $caseId = $conn->insert_id;
+    $updateEvidence = $conn->prepare("UPDATE active_cases SET aio_id = NULL WHERE case_id = ".$caseId);
+    //$updateEvidence->bind_param("s", $caseId); //bind evidence folder name to the prepared statements
+    if (!$updateEvidence->execute()) {
+       echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+    }
+
+    //Insert students into student table
+    /**
+     * For each set of students and b00s, check if both entries are not null.
+     * If not prepare the insert statement, sanatize the current name and B00,
+     * bind the values to the insert statement and execute;\.
+     */
+    
+  }
+
   //The case where a new Form A is created but saved instead of submitted
   if(isset($_POST['SaveFormA']) && isset($_POST['case_id'])){
     //Create new case entry
