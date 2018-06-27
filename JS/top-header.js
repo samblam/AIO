@@ -1,4 +1,4 @@
 $(document).ready(function() {
     "use strict";
-    $(".top-header").load("top-header.php");
+    $(".top-header").load("/includes/top-header.php");
 });
