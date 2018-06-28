@@ -22,7 +22,6 @@ include '../includes/formProcess.php';
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 
-
         <!-- the header; logout and back buttons -->
         <script src="../JS/top-header.js"></script>
     </head>
@@ -33,6 +32,13 @@ include '../includes/formProcess.php';
         <div>
             <h2>Active Cases</h2>
         </div>
+         
+         <div>
+            <span class="pull-right" style="display: inline-block;"> 
+                <button class="btn btn-success" onclick="location.href='forma.php?ProfRequired=true'" style="font-size: 16px; vertical-align: bottom;">Submit new case</button>
+            </span>
+         </div>
+         
         <div>
             <table class="table table-bordered" style="font-size: 12px;">
                 <thead class="cases-table">
