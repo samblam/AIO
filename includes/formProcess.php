@@ -245,6 +245,19 @@ if(isset($_POST['deleteCase']) && isset($_POST['case_id']) && $_SESSION['role'] 
   $conn->query("DELETE FROM active_cases WHERE case_id = \"$id\"");
 }
 
+// ALlows the admin to change the AIO of a case
+if(isset($_POST['submitChangeAIO']) && isset($_POST['case_id']) && $_SESSION['role'] == "admin") {
+  $id = htmlspecialchars(trim(stripslashes($_POST['case_id'])));
+  $newAIO = htmlspecialchars(trim(stripslashes($_POST['selectedAIO']))); //Gets selected AIO from dropdown
+  $statement = $conn->prepare("SELECT aio_id FROM aio WHERE CONCAT(TRIM(fname), ' ', TRIM(lname)) LIKE '$newAIO'"); //Gets AIO id from db
+  if(!$statement->execute()){
+    echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+  }
+  $statement->bind_result($aioId);
+  while($statement->fetch()){ }
+  $conn->query("UPDATE active_cases SET aio_id = '$aioId' WHERE case_id = '$id'"); //Updates AIO in active cases table
+}
+
 // deletes all students and active cases with the given case_id for insufficient evidence
 if(isset($_POST['insufficientEvidence']) && isset($_POST['case_id']) && $_SESSION['role'] == "aio") {
   $id = htmlspecialchars(trim(stripslashes($_POST['case_id'])));
