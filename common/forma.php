@@ -5,7 +5,8 @@ include_once '../includes/db.php';
 //Check if the form variables have been submitted, store them in the session variables
 include '../includes/formProcess.php';
 include '../includes/formFill.php';
-include_once 'page.php';
+include_once '../includes/page.php';
+include '../JS/profAutoFill.js';
 
 $form_submission_date = "";
 $evidence_file_dir = "";
@@ -26,7 +27,6 @@ if(isset($_GET["case_id"])){
     echo $evidence_file_dir . "\n";
     echo $form_submission_date . "\n";
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -52,7 +52,36 @@ if(isset($_GET["case_id"])){
                 <div class="form-group">
                     <label for="ProfessorName" class="col-sm-3 control-label">Professor:</label>
                     <div class="col-sm-9">
-                         <input type="text" class="form-control" placeholder="Name" id="ProfessorName" name="ProfessorName" required value="<?php if (isset($prof_name)) { echo $prof_name;} ?>">
+                        
+                        <?php
+                        //this check is to see if the admin is submitting the form
+                            if(isset($_GET['ProfRequired'])){
+                            //show dropdown here
+                                echo "<select data-live-search='true' id='profSelect' class='selectpicker form-control' onchange='fillProf()''>";
+                                echo "<option disabled selected value> -- select an option -- </option>";
+                                
+                                //grab all the professors
+                                $statement = $conn->prepare("SELECT fname, lname, email, phone FROM professor");
+                                if(!$statement->execute()){
+                                  echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+                                }
+                                $statement->bind_result( $pfname, $plname, $email, $phone);
+                                while($statement->fetch()){
+                                    //add each professor to the dropdown, and tie the email/phone number to the value in order to auto fill
+                                    $profName = $pfname . ' ' . $plname;
+                                    echo"<option value='$email,$phone' data-tokens='$pfname,$plname'>$profName</option>";
+                                    
+                                }
+                                echo"</select>";
+                            }
+                                
+                            else{
+                            //else auto fill professor name
+                                echo "<input type='text' class='form-control' placeholder='Name' id='ProfessorName' name='ProfessorName' required value='";
+                                if (isset($prof_name)) { echo $prof_name;}
+                                echo"'>";
+                            }
+                        ?>                   
                     </div>
                 </div>
 

@@ -45,7 +45,7 @@ if(isset($_POST['LoginSubmit'])){
       	$_SESSION['faculty'] = $faculty;
       	$_SESSION['department'] = $department;
       }
-      header("location: ../HTML/ProfessorActiveCases.php");
+      header("location: ../Instructor/ActiveCases.php");
     }
     elseif($role == "aio" || $role == "admin"){
       $statement->bind_result($userId, $fname, $lname); //bind the variables to the statement
@@ -55,10 +55,10 @@ if(isset($_POST['LoginSubmit'])){
       	$_SESSION['lname'] = $lname;
       }
       if($role == "aio"){
-        header("location: ../HTML/AioActiveCases.php");
+        header("location: ../AIO/ActiveCases.php");
       }
       else{
-        header("location: ../HTML/AdminActiveCases.php");
+        header("location: ../Admin/ActiveCases.php");
       }
     }
     else{
