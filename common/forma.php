@@ -10,6 +10,7 @@ include '../JS/profAutoFill.js';
 
 $formSubmissionDate = "";
 $evidenceFileDir = "";
+$case_id = "";
 
 // check if URL contains the case_id variable
 if(isset($_GET["case_id"])){
@@ -45,6 +46,13 @@ if(isset($_GET["case_id"])){
 
         <div class="form-container">
             <form class="form-horizontal" method="post" action="../includes/formProcess.php" enctype="multipart/form-data">
+
+                <?php
+                    if($case_id != ""){
+                        // add a hidden field that passes on the case id value if it is set in the URL
+                        echo "<input type=\"hidden\" name=\"case_id\" value=\"$case_id\">";
+                    }
+                ?>
 
                 <div class="form-group">
                     <label for="ProfessorName" class="col-sm-3 control-label">Professor:</label>
@@ -251,7 +259,6 @@ if(isset($_GET["case_id"])){
         }
 
         function isValidFileType(file){
-            return true;
             var disallowedFileTypes = ["application/x-msdownload"];
 
             for(var i = 0; i < disallowedFileTypes.length; i++) {

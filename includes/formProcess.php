@@ -43,10 +43,6 @@ function sendUserHome(){
   }
 }
 
-$myfile = fopen("test.txt", "w");
-fwrite($myfile, print_r($_POST, true));
-fclose($myfile);
-
 //Form A processing
 if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
 
@@ -71,30 +67,47 @@ if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
 
     // If you are submitting a form A, it cant have multiple students with the same csid. So, return to the form.
     // The "multiIds" query string might be useful for displaying an error message once you return to the form page.
-    if(count($boos) != count(array_unique($boos)) && isset($_GET['case_id'])){
-      header("locaton: ../forma.php?multiIds=true&case_id={$_GET['case_id']}");
+    if(count($boos) != count(array_unique($boos)) && isset($_POST['case_id'])){
+      header("locaton: ../common/forma.php?multiIds=true&case_id={$_POST['case_id']}");
     }
-    elseif(count($boos) != count(array_unique($boos)) && !isset($_GET['case_id'])){
-      header("locaton: ../forma.php?multiIds=true");
-    }
-
-    //Create new case entry
-    $statement = $conn->prepare("INSERT INTO active_cases (prof_id, class_name_code, date_aware, description, form_a_submit_date) VALUES (?, ?, ?, ?, ?)");
-    $statement->bind_param("issss",$userId, $cname, $date, $comments, $submitDate); //bind the values to be inserted to the query
-    if(!$statement->execute()) {
-      //might want to replace this with header("location: ../forma.php"); so that you aren't executing the script further if there is an error
-      echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
-      $processSuccessful = false;
+    elseif(count($boos) != count(array_unique($boos)) && !isset($_POST['case_id'])){
+      header("locaton: ../common/forma.php?multiIds=true");
     }
 
-    // Grabs case_id of the just inserted case and uses it to create the evidence directory name for this case in the database
-    // This step might be unnecessary if the value is just the same as the case_id. If its a combo of values then it might be necessary.
-    $caseId = $conn->insert_id;
-    $updateEvidence = $conn->prepare("UPDATE active_cases SET evidence_fileDir = ? WHERE case_id = ".$caseId);
-    $updateEvidence->bind_param("s", $caseId); //bind evidence folder name to the prepared statements
-    if(!$updateEvidence->execute()) {
-      echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
-      $processSuccessful = false;
+    $caseId;
+
+    if(isset($_POST['case_id'])){
+      // form was previously saved and is now being submitted
+      $caseId = (int)$_POST['case_id'];
+      $statement = $conn->prepare("UPDATE active_cases SET prof_id = ?, class_name_code = ?, date_aware = ?, description = ?, form_a_submit_date = ? WHERE case_id = ?");
+      $statement->bind_param("issssd",$userId, $cname, $date, $comments, $submitDate, $caseId); //bind the values to be inserted to the query
+      if(!$statement->execute()) {
+        //might want to replace this with header("location: ../forma.php"); so that you aren't executing the script further if there is an error
+        echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+        $processSuccessful = false;
+      }
+    } 
+
+    else {
+      //Create new case entry
+      $statement = $conn->prepare("INSERT INTO active_cases (prof_id, class_name_code, date_aware, description, form_a_submit_date) VALUES (?, ?, ?, ?, ?)");
+      $statement->bind_param("issss",$userId, $cname, $date, $comments, $submitDate); //bind the values to be inserted to the query
+      if(!$statement->execute()) {
+        //might want to replace this with header("location: ../forma.php"); so that you aren't executing the script further if there is an error
+        echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+        $processSuccessful = false;
+      }
+
+      // Grabs case_id of the just inserted case and uses it to create the evidence directory name for this case in the database
+      // This step might be unnecessary if the value is just the same as the case_id. If its a combo of values then it might be necessary.
+      $caseId = $conn->insert_id;
+      $updateEvidence = $conn->prepare("UPDATE active_cases SET evidence_fileDir = ? WHERE case_id = ".$caseId);
+      $updateEvidence->bind_param("s", $caseId); //bind evidence folder name to the prepared statements
+      if(!$updateEvidence->execute()) {
+        echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+        $processSuccessful = false;
+      }
+
     }
 
     //Insert students into student table
@@ -106,8 +119,8 @@ if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
     for($i = 0; $i < sizeof($students); $i++) {
       if($students[$i] != NULL && $boos[$i] != NULL){
         $statement = $conn->prepare("INSERT INTO student (csid, case_id, fname) VALUES (?, ?, ?)");
-	      $currB00 = htmlspecialchars(trim(stripslashes($boos[$i])));
-	      $currStudent = htmlspecialchars(trim(stripslashes($students[$i])));
+        $currB00 = htmlspecialchars(trim(stripslashes($boos[$i])));
+        $currStudent = htmlspecialchars(trim(stripslashes($students[$i])));
         $statement->bind_param("sis", $currB00, $caseId, $currStudent); //bind initial values to the prepared statements
         if (!$statement->execute()) {
            echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
@@ -125,9 +138,7 @@ if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
     } 
 
     $zipFileLocation = $baseEvidenceDir . $caseId; 
-    $myfile = fopen("test2.txt", "w");
-    fwrite($myfile, $zipFileLocation);
-    fclose($myfile);
+
     $uploadSuccessful = moveUploadedFilesToZip($allFilesAreValid, $zipFileLocation);
 
     if(!$uploadSuccessful){
@@ -182,8 +193,8 @@ if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
   //The case where a new Form A is created but saved instead of submitted
   if(isset($_POST['SaveFormA']) && isset($_POST['case_id'])){
     //Create new case entry
-    $statement = $conn->prepare("UPDATE active_cases SET prof_id = ?, class_name_code = ?, date_aware = ?, description = ? WHERE case_id = {$_GET['case_id']}");
-    $statement->bind_param("ssss",$userId, $cname, $date, $comments); //bind initial values to the prepared statements
+    $statement = $conn->prepare("UPDATE active_cases SET prof_id = ?, class_name_code = ?, date_aware = ?, description = ? WHERE case_id = ?");
+    $statement->bind_param("isssd",$userId, $cname, $date, $comments, (int)$_POST['case_id']); //bind initial values to the prepared statements
     if (!$statement->execute()) {
        echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
     }
@@ -208,7 +219,7 @@ if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
       if($students[$i] != NULL && $boos[$i] != NULL){
         //Update a student if the csid exists already
         if(array_key_exists("{$boos[$i]}", $currStudents) && $currStudents[$csid] != $students[$i]){
-          $statement = $conn->prepare("UPDATE student SET fname = ?, WHERE case_id = {$_GET['case_id']} AND csid = {$boos[$i]}");
+          $statement = $conn->prepare("UPDATE student SET fname = ?, WHERE case_id = {$_POST['case_id']} AND csid = {$boos[$i]}");
           $statement->bind_param("s", $student[$i]);
         }
         elseif(!array_key_exists("{$boos[$i]}", $currStudents)) {
@@ -216,7 +227,7 @@ if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
           $statement->bind_param("sss", $boos[$i], $caseId, $students[$i]); //bind initial values to the prepared statements
         }
         elseif(!in_array($currStudents[$boos[$i]], $students)){
-          $statement = $conn->prepare("DELETE FROM student WHERE case_id = {$_GET['case_id']} AND csid = {$boos[$i]}");
+          $statement = $conn->prepare("DELETE FROM student WHERE case_id = {$_POST['case_id']} AND csid = {$boos[$i]}");
         }
 
         if (!$statement->execute()) {
@@ -262,7 +273,11 @@ if(isset($_POST['AddEvidence'])){
     $allFilesAreValid = validateUploadedFiles();
     $uploadSuccessful = moveUploadedFilesToZip($allFilesAreValid, $evidenceDir);
 
-    sendUserHome();
+    if($uploadSuccessful){
+      sendUserHome();
+    } else {
+      echo "Failed to upload the given files";
+    }
   }
 }
 

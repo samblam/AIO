@@ -8,7 +8,7 @@
 
 		for($i = 0; $i < $numUploadedFiles; $i++){
 		    // Check if there was an error uploading the file
-		    if($_FILES["fileInput"]["error"][$i] == 0){
+		    if($_FILES["fileInput"]["error"][$i] == 1){
 		        $allUploadedFilesAreValid = false;
 		    }
 		}
