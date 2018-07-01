@@ -24,20 +24,31 @@ require_once 'session.php';
 include_once 'db.php';
 include 'fileFunctions.php';
 
-$base_evidence_dir = "../evidence/";
+$baseEvidenceDir = "../evidence/";
+$processSuccessful = true;
+
+function sendUserHome(){
+  // This returns you back to the role's active case page.
+  // Might want to change admin and aio conditions and locations (elseif and else respectively)
+  // as the professors is pretty obvious but admin and aio might want to return
+  // to the CaseInformation page rather than activescases (Ask the client)
+  if($_SESSION['role'] == "professor"){
+    header('location: ../Instructor/ActiveCases.php');
+  }
+  elseif ($_SESSION['role'] == "admin") {
+    header('location: ../Admin/ActiveCases.php');
+  }
+  else{
+    header('location: ../AIO/ActiveCases.php');
+  }
+}
+
+$myfile = fopen("test.txt", "w");
+fwrite($myfile, print_r($_POST, true));
+fclose($myfile);
 
 //Form A processing
 if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
-  //This block of code gets the file ready to upload but doesnt upload it yet because we don't yet know where to put it
-
-
-
-  $all_files_are_valid = validateUploadedFiles();
-
-
-
-
-  
 
   $userId = $_SESSION['userId'];//first column of the current user's role table in the database
 
@@ -73,6 +84,7 @@ if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
     if(!$statement->execute()) {
       //might want to replace this with header("location: ../forma.php"); so that you aren't executing the script further if there is an error
       echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+      $processSuccessful = false;
     }
 
     // Grabs case_id of the just inserted case and uses it to create the evidence directory name for this case in the database
@@ -82,6 +94,7 @@ if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
     $updateEvidence->bind_param("s", $caseId); //bind evidence folder name to the prepared statements
     if(!$updateEvidence->execute()) {
       echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+      $processSuccessful = false;
     }
 
     //Insert students into student table
@@ -98,8 +111,32 @@ if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
         $statement->bind_param("sis", $currB00, $caseId, $currStudent); //bind initial values to the prepared statements
         if (!$statement->execute()) {
            echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+           $processSuccessful = false;
         }
       }
+    }
+
+    // validate uploaded files
+    $allFilesAreValid = validateUploadedFiles();
+
+    // Creates the case directory for uploading evidence
+    if(!is_dir($baseEvidenceDir . $caseId)){
+        mkdir($baseEvidenceDir . $caseId);
+    } 
+
+    $zipFileLocation = $baseEvidenceDir . $caseId; 
+    $myfile = fopen("test2.txt", "w");
+    fwrite($myfile, $zipFileLocation);
+    fclose($myfile);
+    $uploadSuccessful = moveUploadedFilesToZip($allFilesAreValid, $zipFileLocation);
+
+    if(!$uploadSuccessful){
+      echo "Failed to upload the given files";
+      $processSuccessful = false;
+    }
+
+    if($processSuccessful){
+      sendUserHome();
     }
   }
 
@@ -138,6 +175,8 @@ if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
         }
       }
     }
+
+    sendUserHome();
   }
 
   //The case where a new Form A is created but saved instead of submitted
@@ -185,28 +224,8 @@ if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
         }
       }
     }
-  }
 
-  // Creates the case directory for uploading evidence
-  if(!is_dir($base_evidence_dir . $case_id)){
-      mkdir($base_evidence_dir . $case_id);
-  } 
-
-  $zip_file_location = $base_evidence_dir . $case_id; 
-  $uploadSuccessful = moveUploadedFilesToZip($all_files_are_valid, $caseId);
-
-  // This returns you back to the role's active case page.
-  // Might want to change admin and aio conditions and locations (elseif and else respectively)
-  // as the professors is pretty obvious but admin and aio might want to return
-  // to the CaseInformation page rather than activescases (Ask the client)
-  if($_SESSION['role'] == "professor"){
-    header('location: ../Instructor/ActiveCases.php');
-  }
-  elseif ($_SESSION['role'] == "admin") {
-    header('location: ../Admin/ActiveCases.php');
-  }
-  else{
-    header('location: ../AIO/ActiveCases.php');
+    sendUserHome();
   }
 }
 
@@ -226,8 +245,6 @@ if(isset($_POST['SaveFormD']) || isset($_POST['SubmitFormD'])){
 }
 
 
-
-
 // add evidence to previously submitted case
 if(isset($_POST['AddEvidence'])){
 
@@ -236,20 +253,17 @@ if(isset($_POST['AddEvidence'])){
   } 
 
   else {
-    $evidence_dir = $base_evidence_dir . $_POST['EvidenceDirectory'];
+    $evidenceDir = $baseEvidenceDir . $_POST['EvidenceDirectory'];
     // Creates the case directory for uploading evidence
-    if(!is_dir($evidence_dir)){
-      mkdir($evidence_dir);
+    if(!is_dir($evidenceDir)){
+      mkdir($evidenceDir);
     } 
 
-    $all_files_are_valid = validateUploadedFiles();
-    $upload_successful = moveUploadedFilesToZip($all_files_are_valid, $evidence_dir);
-  }
+    $allFilesAreValid = validateUploadedFiles();
+    $uploadSuccessful = moveUploadedFilesToZip($allFilesAreValid, $evidenceDir);
 
-  $myfile = fopen("DEBUG_LOG2.txt", "w") or die("Unable to open file!");
-  fwrite($myfile, print_r($_POST, true) . "\n");  
-  fwrite($myfile, print_r($_GET, true) . "\n");  
-  fclose($myfile);
+    sendUserHome();
+  }
 }
 
 // deletes all students and active cases with the given case_id for admins

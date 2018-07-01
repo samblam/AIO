@@ -8,8 +8,8 @@ include '../includes/formFill.php';
 include_once '../includes/page.php';
 include '../JS/profAutoFill.js';
 
-$form_submission_date = "";
-$evidence_file_dir = "";
+$formSubmissionDate = "";
+$evidenceFileDir = "";
 
 // check if URL contains the case_id variable
 if(isset($_GET["case_id"])){
@@ -22,10 +22,8 @@ if(isset($_GET["case_id"])){
     }
 
     // get the case information from the database
-    $statement->bind_result($evidence_file_dir, $form_submission_date);
+    $statement->bind_result($evidenceFileDir, $formSubmissionDate);
     $statement->fetch();
-    echo $evidence_file_dir . "\n";
-    echo $form_submission_date . "\n";
 }
 ?>
 
@@ -37,7 +35,6 @@ if(isset($_GET["case_id"])){
         <title>Portal</title>
         <link rel="stylesheet" href="../CSS/formA.css">
         <link rel="stylesheet" href="../CSS/main.css">
-        <script src="../JS/forma.js"></script>
     </head>
     <body style="margin:auto;">
 
@@ -163,12 +160,10 @@ if(isset($_GET["case_id"])){
                 <div class="form-group">
                     <label for="fileInput" class="col-sm-3 control-label">Evidence:</label>
                     <div class="col-sm-9">
-                        <input type="file" id="fileInput" name="fileInput[]" onchange="getFileInfo()" onload="getFileInfo()" multiple>
+                        <input type="file" id="fileInput" name="fileInput[]" onchange="getFileInfo()" multiple>
                     </div>
 
-                    <div id="fileInfo">
-                        <!-- do some file verification here -->
-                    </div>
+                    <div id="fileInfo" class="col-sm-12"/>
                 </div>
 
                 <!-- text input for additional comments-->
@@ -185,20 +180,17 @@ if(isset($_GET["case_id"])){
                         <button type="submit" class="btn btn-primary" name="PreviewPDF">Preview PDF</button>
                         <button type="submit" class="btn btn-primary" name="SaveFormA">Save</button>
             			<?php
-            			  if($_SESSION['role']=="professor" && $form_submission_date==""){
+            			  if($_SESSION['role']=="professor" && $formSubmissionDate==""){
             			    echo"<button type=\"submit\" class=\"btn btn-success\" id=\"SubmitFormA\" name=\"SubmitFormA\">Submit</button>";
-                            /*
-                                have some on click event for this button that checks the files uploaded
-                            */
             			  } 
 
-                          elseif ($_SESSION['role']=="professor" && $form_submission_date!="") {
+                          elseif ($_SESSION['role']=="professor" && $formSubmissionDate!="") {
                             // add submit button for adding more evidence to a previously submitted case
                             echo "<button type=\"submit\" class=\"btn btn-success\" id=\"AddEvidence\" name=\"AddEvidence\" disabled>Upload Selected Evidence</button>";
 
-                            if($evidence_file_dir!=""){
+                            if($evidenceFileDir!=""){
                               // add a hidden field that passes on the file directory in which to add the files
-                              echo "<input type=\"hidden\" name=\"EvidenceDirectory\" value=\"$evidence_file_dir\">";
+                              echo "<input type=\"hidden\" name=\"EvidenceDirectory\" value=\"$evidenceFileDir\">";
                             }
                           }
             			?>
@@ -213,12 +205,71 @@ if(isset($_GET["case_id"])){
 
         function getFileInfo(){
             addEvidenceButton = document.getElementById("AddEvidence");
-            if(addEvidenceButton && document.getElementById("fileInput").value == ""){
-                addEvidenceButton.disabled = true;
+            submitFormAButton = document.getElementById("SubmitFormA");
+
+            uploadedFiles = document.getElementById("fileInput").files;
+            fileInfoElement = document.getElementById("fileInfo");
+            allFilesValid = true;
+
+            while (fileInfoElement.firstChild) {
+                // clear the file info from last selection
+                fileInfoElement.removeChild(fileInfoElement.firstChild);
             }
 
-            else if(addEvidenceButton && document.getElementById("fileInput").value != ""){
-                addEvidenceButton.disabled = false;
+            if(uploadedFiles.length != 0){
+                var fileList = document.createElement('ul');
+                fileInfoElement.appendChild(fileList);
+
+                for(var i = 0; i < uploadedFiles.length; i++) {
+                    var fileListItem = document.createElement('li');
+                    var p = document.createElement('p');
+
+                    if(isValidFileType(uploadedFiles[i])){
+                        p.textContent = uploadedFiles[i].name + ' (' + getFileSizeString(uploadedFiles[i].size) + ') ';
+                    } else {
+                        p.textContent = uploadedFiles[i].name + " - file type is not allowed"
+                        p.style.color = "red";
+                        allFilesValid = false;
+                    }
+
+                    fileListItem.appendChild(p);
+                    fileList.appendChild(fileListItem);
+                }
+
+            } else if (addEvidenceButton) {
+                // disable the add evidence button when no evidence is selected
+                allFilesValid = false;
+            }
+
+            if (addEvidenceButton){
+                addEvidenceButton.disabled = !allFilesValid;
+            }
+
+            if (submitFormAButton){
+                submitFormAButton.disabled = !allFilesValid;
+            }
+        }
+
+        function isValidFileType(file){
+            return true;
+            var disallowedFileTypes = ["application/x-msdownload"];
+
+            for(var i = 0; i < disallowedFileTypes.length; i++) {
+                if(file.type === disallowedFileTypes[i]) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        function getFileSizeString(number) {
+            if(number < 1024) {
+                return number + ' bytes';
+            } else if(number >= 1024 && number < 1048576) {
+                return (number/1024).toFixed(1) + ' KB';
+            } else if(number >= 1048576) {
+                return (number/1048576).toFixed(1) + ' MB';
             }
         }
 
