@@ -212,6 +212,9 @@ if(isset($_GET["case_id"])){
     <script type="text/javascript">
 
         function getFileInfo(){
+            maxNumberOfFiles = 20;
+            maxFileSize = 2097152;
+
             addEvidenceButton = document.getElementById("AddEvidence");
             submitFormAButton = document.getElementById("SubmitFormA");
 
@@ -224,7 +227,21 @@ if(isset($_GET["case_id"])){
                 fileInfoElement.removeChild(fileInfoElement.firstChild);
             }
 
-            if(uploadedFiles.length != 0){
+            if(uploadedFiles.length > maxNumberOfFiles) {
+                var fileList = document.createElement('ul');
+                fileInfoElement.appendChild(fileList);
+
+                var fileListItem = document.createElement('li');
+
+                var p = document.createElement('p');
+                p.textContent = "Too many files were selected. Maximum number of files is " + maxNumberOfFiles;
+                p.style.color = "red";
+                
+                fileListItem.appendChild(p);
+                fileList.appendChild(fileListItem);
+                allFilesValid = false;
+
+            } else if(uploadedFiles.length > 0){
                 var fileList = document.createElement('ul');
                 fileInfoElement.appendChild(fileList);
 
@@ -232,10 +249,10 @@ if(isset($_GET["case_id"])){
                     var fileListItem = document.createElement('li');
                     var p = document.createElement('p');
 
-                    if(isValidFileType(uploadedFiles[i])){
+                    if(isValidFileSize(uploadedFiles[i].size, maxFileSize)){
                         p.textContent = uploadedFiles[i].name + ' (' + getFileSizeString(uploadedFiles[i].size) + ') ';
                     } else {
-                        p.textContent = uploadedFiles[i].name + " - file type is not allowed"
+                        p.textContent = uploadedFiles[i].name + ' (' + getFileSizeString(uploadedFiles[i].size) + ') - file exceeds maximum file size (' + getFileSizeString(maxFileSize) + ')';
                         p.style.color = "red";
                         allFilesValid = false;
                     }
@@ -258,25 +275,23 @@ if(isset($_GET["case_id"])){
             }
         }
 
-        function isValidFileType(file){
-            var disallowedFileTypes = ["application/x-msdownload"];
 
-            for(var i = 0; i < disallowedFileTypes.length; i++) {
-                if(file.type === disallowedFileTypes[i]) {
-                    return false;
-                }
+        function isValidFileSize(fileSize, maxFileSize) {
+            if (fileSize > maxFileSize){
+                return false;
             }
 
             return true;
         }
 
-        function getFileSizeString(number) {
-            if(number < 1024) {
-                return number + ' bytes';
-            } else if(number >= 1024 && number < 1048576) {
-                return (number/1024).toFixed(1) + ' KB';
-            } else if(number >= 1048576) {
-                return (number/1048576).toFixed(1) + ' MB';
+
+        function getFileSizeString(fileSize) {
+            if(fileSize < 1024) {
+                return fileSize + ' bytes';
+            } else if(fileSize >= 1024 && fileSize < 1048576) {
+                return (fileSize/1024).toFixed(1) + ' KB';
+            } else if(fileSize >= 1048576) {
+                return (fileSize/1048576).toFixed(1) + ' MB';
             }
         }
 
