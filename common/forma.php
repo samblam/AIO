@@ -3,7 +3,7 @@ require_once '../includes/session.php';
 //Open the db connection
 include_once '../includes/db.php';
 //Check if the form variables have been submitted, store them in the session variables
-include '../includes/formProcess.php';
+include_once '../includes/formProcess.php';
 include '../includes/formFill.php';
 include_once '../includes/page.php';
 include '../JS/profAutoFill.js';
@@ -36,6 +36,7 @@ if(isset($_GET["case_id"])){
         <title>Portal</title>
         <link rel="stylesheet" href="../CSS/formA.css">
         <link rel="stylesheet" href="../CSS/main.css">
+        <script src="../JS/forma.js"></script>
     </head>
     <body style="margin:auto;">
 
@@ -187,20 +188,20 @@ if(isset($_GET["case_id"])){
                     <div class="center-block text-center">
                         <button type="submit" class="btn btn-primary" name="PreviewPDF">Preview PDF</button>
                         <button type="submit" class="btn btn-primary" name="SaveFormA">Save</button>
-            			<?php
-            			  if($_SESSION['role']=="professor" && $formSubmissionDate==""){
-            			    echo"<button type=\"submit\" class=\"btn btn-success\" id=\"SubmitFormA\" name=\"SubmitFormA\">Submit</button>";
-            			  } 
+                        <?php
+                            if($_SESSION['role']=="professor" && $formSubmissionDate==""){
+                	            echo"<button type=\"submit\" class=\"btn btn-success\" id=\"SubmitFormA\" name=\"SubmitFormA\">Submit</button>";
+                            } 
 
-                          elseif ($_SESSION['role']=="professor" && $formSubmissionDate!="") {
-                            // add submit button for adding more evidence to a previously submitted case
-                            echo "<button type=\"submit\" class=\"btn btn-success\" id=\"AddEvidence\" name=\"AddEvidence\" disabled>Upload Selected Evidence</button>";
+                            elseif ($_SESSION['role']=="professor" && $formSubmissionDate!="") {
+                                // add submit button for adding more evidence to a previously submitted case
+                                echo "<button type=\"submit\" class=\"btn btn-success\" id=\"AddEvidence\" name=\"AddEvidence\" disabled>Upload Selected Evidence</button>";
 
-                            if($evidenceFileDir!=""){
-                              // add a hidden field that passes on the file directory in which to add the files
-                              echo "<input type=\"hidden\" name=\"EvidenceDirectory\" value=\"$evidenceFileDir\">";
+                                if($evidenceFileDir!=""){
+                                    // add a hidden field that passes on the file directory in which to add the files
+                                    echo "<input type=\"hidden\" name=\"EvidenceDirectory\" value=\"$evidenceFileDir\">";
+                                }
                             }
-                          }
             			?>
                     </div>
                 </div>
@@ -210,95 +211,15 @@ if(isset($_GET["case_id"])){
 
     <!-- adds student form on click -->
     <script type="text/javascript">
-
-        function getFileInfo(){
-            maxNumberOfFiles = 20;
-            maxFileSize = 2097152;
-
-            addEvidenceButton = document.getElementById("AddEvidence");
-            submitFormAButton = document.getElementById("SubmitFormA");
-
-            uploadedFiles = document.getElementById("fileInput").files;
-            fileInfoElement = document.getElementById("fileInfo");
-            allFilesValid = true;
-
-            while (fileInfoElement.firstChild) {
-                // clear the file info from last selection
-                fileInfoElement.removeChild(fileInfoElement.firstChild);
-            }
-
-            if(uploadedFiles.length > maxNumberOfFiles) {
-                var fileList = document.createElement('ul');
-                fileInfoElement.appendChild(fileList);
-
-                var fileListItem = document.createElement('li');
-
-                var p = document.createElement('p');
-                p.textContent = "Too many files were selected. Maximum number of files is " + maxNumberOfFiles;
-                p.style.color = "red";
-                
-                fileListItem.appendChild(p);
-                fileList.appendChild(fileListItem);
-                allFilesValid = false;
-
-            } else if(uploadedFiles.length > 0){
-                var fileList = document.createElement('ul');
-                fileInfoElement.appendChild(fileList);
-
-                for(var i = 0; i < uploadedFiles.length; i++) {
-                    var fileListItem = document.createElement('li');
-                    var p = document.createElement('p');
-
-                    if(isValidFileSize(uploadedFiles[i].size, maxFileSize)){
-                        p.textContent = uploadedFiles[i].name + ' (' + getFileSizeString(uploadedFiles[i].size) + ') ';
-                    } else {
-                        p.textContent = uploadedFiles[i].name + ' (' + getFileSizeString(uploadedFiles[i].size) + ') - file exceeds maximum file size (' + getFileSizeString(maxFileSize) + ')';
-                        p.style.color = "red";
-                        allFilesValid = false;
-                    }
-
-                    fileListItem.appendChild(p);
-                    fileList.appendChild(fileListItem);
-                }
-
-            } else if (addEvidenceButton) {
-                // disable the add evidence button when no evidence is selected
-                allFilesValid = false;
-            }
-
-            if (addEvidenceButton){
-                addEvidenceButton.disabled = !allFilesValid;
-            }
-
-            if (submitFormAButton){
-                submitFormAButton.disabled = !allFilesValid;
-            }
-        }
-
-
-        function isValidFileSize(fileSize, maxFileSize) {
-            if (fileSize > maxFileSize){
-                return false;
-            }
-
-            return true;
-        }
-
-
-        function getFileSizeString(fileSize) {
-            if(fileSize < 1024) {
-                return fileSize + ' bytes';
-            } else if(fileSize >= 1024 && fileSize < 1048576) {
-                return (fileSize/1024).toFixed(1) + ' KB';
-            } else if(fileSize >= 1048576) {
-                return (fileSize/1048576).toFixed(1) + ' MB';
-            }
-        }
-
         getFileInfo();
 
         $("#addStudent").click(function () {
-            $("#students_group").append('<div class="input-group students" name="students"> <span class="input-group-addon">Student Name</span> <input type="text" class="form-control" aria-label="Name" required name="Name[]"> <span class="input-group-addon">Banner Number</span> <input type="text" class="form-control" aria-label="B00" required name="B00[]"> </div>');
+            $("#students_group").append('<div class="input-group students" name="students"> \
+                                             <span class="input-group-addon">Student Name</span> \
+                                             <input type="text" class="form-control" aria-label="Name" required name="Name[]"> \
+                                             <span class="input-group-addon">Banner Number</span> \
+                                             <input type="text" class="form-control" aria-label="B00" required name="B00[]"> \
+                                        </div>');
         });
 
         $("#removeStudent").click(function () {

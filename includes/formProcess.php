@@ -22,7 +22,7 @@
 
 require_once 'session.php';
 include_once 'db.php';
-include 'fileFunctions.php';
+include_once 'fileFunctions.php';
 
 $baseEvidenceDir = "../evidence/";
 $processSuccessful = true;
@@ -38,8 +38,11 @@ function sendUserHome(){
   elseif ($_SESSION['role'] == "admin") {
     header('location: ../Admin/ActiveCases.php');
   }
-  else{
+  elseif ($_SESSION['role'] == "aio"){
     header('location: ../AIO/ActiveCases.php');
+  }
+  else{
+    header('location: ../index.php');
   }
 }
 
@@ -193,15 +196,14 @@ if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
   //The case where a new Form A is created but saved instead of submitted
   if(isset($_POST['SaveFormA']) && isset($_POST['case_id'])){
     //Create new case entry
-    $statement = $conn->prepare("UPDATE active_cases SET prof_id = ?, class_name_code = ?, date_aware = ?, description = ? WHERE case_id = ?");
-    $statement->bind_param("isssd",$userId, $cname, $date, $comments, (int)$_POST['case_id']); //bind initial values to the prepared statements
+    $statement = $conn->prepare("UPDATE active_cases SET prof_id = ?, class_name_code = ?, date_aware = ?, description = ? WHERE case_id = " . (int)$_POST['case_id']);
+    $statement->bind_param("isss",$userId, $cname, $date, $comments); //bind initial values to the prepared statements
     if (!$statement->execute()) {
        echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
     }
 
     //Select students from this case
-    $statement = $conn->prepare("SELECT fname, csid FROM student WHERE case_id = ?");
-    $statement->bind_param("d", (int)$_POST['case_id']);
+    $statement = $conn->prepare("SELECT fname, csid FROM student WHERE case_id = " . (int)$_POST['case_id']);
     if(!$statement->execute()){
       echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
     }

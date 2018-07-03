@@ -8,7 +8,8 @@
 				'upload_max_filesize'
 
 			the smallest of these values should be used as the max filesize.
-			these values can be retrieved using ini_get('var_name'), however they are reported as strings with letters in them and would require complex parsing.
+			these values can be retrieved using ini_get('var_name'), however they are reported as strings with letters 
+			in them and would require complex parsing.
 		*/
 
 		// max file size in bytes
@@ -48,7 +49,8 @@
 		    else {
 		        // move the uploaded files from the temporary directory to the evidence zip file
 		        for($i = 0; $i < $numUploadedFiles; $i++){
-		            $zip->addFile($_FILES["fileInput"]["tmp_name"][$i], $_FILES["fileInput"]["name"][$i]);
+		        	// sanitize the file name to remove unwanted characters. Replace non valid characters with an underscore
+		            $zip->addFile($_FILES["fileInput"]["tmp_name"][$i], preg_replace('/[^A-Za-z0-9.]+/', '_', $_FILES["fileInput"]["name"][$i]));
 		        }
 
 		        $zip->close();
