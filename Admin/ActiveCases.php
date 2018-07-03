@@ -86,7 +86,7 @@ include '../includes/formProcess.php';
                                   <ul class="dropdown-menu">
 
                                       <li><a href="CaseInformation.php?case_id={$caseId}">View</a></li>
-                                      <li><a href="ChangeAIO.php">Change AIO</a></li>
+                                      <li><a href="ChangeAIO.php?case_id={$caseId}">Change AIO</a></li>
                                       <li>
                                       <form class="delete_this_case" method="post" action="AdminActiveCases.php" onclick="return confirm('Are you sure you want to remove this case? This will permanently delete this case.\\nClick OK to continue.')">
                                         <input type="text" name="case_id" value="$caseId" hidden>
