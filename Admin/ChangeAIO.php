@@ -81,14 +81,14 @@ include '../includes/formProcess.php';
                 $statement->bind_result($aioId, $aioFName, $aioLName);
                 while($statement->fetch()){
                     if($aioId == NULL){
-                        echo <<<ViewAllPost
+                        echo <<<NoAIO
                             No AIO is assigned to this case. <br><br>
-ViewAllPost;
+NoAIO;
                     }
                     else{
-                        echo <<<ViewAllPost2
+                        echo <<<CurrentAIO
                             Current AIO: $aioFName $aioLName <br><br>
-ViewAllPost2;
+CurrentAIO;
                     }
                 }
             ?>
@@ -101,29 +101,29 @@ ViewAllPost2;
                     echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                 }
                 // Start of form, and drop down select
-                echo <<<ViewAllPost3
+                echo <<<SelectNew
                     New AIO: 
                     <form class="submit_new_aio" method="post" action="ActiveCases.php">
                         <select class="border border-dark" name="selectedAIO">
                             <option selected >Select New</option>
-ViewAllPost3;
+SelectNew;
                 $statement->bind_result($aioFName, $aioLName);
                 while($statement->fetch()){
                     // Drop down options for each AIO in the DB
-                    echo <<<ViewAllPost4
+                    echo <<<OptionAIO
                         <option>$aioFName $aioLName</option>      
-ViewAllPost4;
+OptionAIO;
                 }
                 //Gets case id from URL
                 $caseId = intval($_GET['case_id']);
                 // Submit button, and End of form
-                echo <<<ViewAllPost5
+                echo <<<Button
                     </select>
                     <br><br>
                         <input type="text" name="case_id" value="$caseId" hidden>
                         <button class="btn btn-success" value="true" type="submit" name="submitChangeAIO">Submit</button>
                     </form>
-ViewAllPost5;
+Button;
             ?>
         </div>
     </body>
