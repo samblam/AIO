@@ -129,11 +129,9 @@ ViewAllPost;
                       <tr>
                           <td>$uClassName</td>
                           <td>$uProfessorFN $uProfessorLN</td>
-<<<<<<< HEAD:HTML/AioActiveCases.php
-                          <td align="center"><a href="student-case-information.php?case_id={$uCaseId}" class="btn btn-primary">View Case</a></td>
-=======
-                          <td align="center"><a href="CaseInformation.php?case_id={$caseId}" class="btn btn-primary">View Case</a></td>
->>>>>>> master:AIO/ActiveCases.php
+
+                          <td align="center"><a href="CaseInformation.php?case_id={$uCaseId}" class="btn btn-primary">View Case</a></td>
+
                       </tr>
                         
 ViewAllPost;

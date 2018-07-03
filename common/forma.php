@@ -151,17 +151,13 @@ include_once '../includes/page.php';
                     <div class="center-block text-center">
                         <?php
 
-                        //check the query string to see if there is saved data
-  //if(isset($_GET['saved']) && $_GET['saved'] == "true") {
-    //$id = (int)$_GET['aio_id'];
-
-          //form A data is rettieved at this point.
+ //form A data is rettieved at this point.
 $aio_id="";
-                        // check if URL contains the case_id variable
+// check if URL contains the case_id variable
 if(isset($_GET["case_id"])){
    $statement = $conn->prepare("SELECT aio_id FROM active_cases WHERE case_id = ?");
-   //SELECT aio_id FROM active_cases WHERE case_id = ?
    // get the case_id from the URL
+   
    $case_id = (int)$_GET["case_id"];
    $statement->bind_param("d", $case_id);
    if(!$statement->execute()){
@@ -175,15 +171,12 @@ if(isset($_GET["case_id"])){
 
    if($_SESSION['role']=="aio" && $aio_id=="" /*add a condition here to check if the form has been submitted already(database check) */){
                 echo"<button type=\"submit\" class=\"btn btn-success\" name=\"AcceptFormA\">Accept</button>";
-         
+                echo"<button type=\"submit\" class=\"btn btn-danger\" name=\"DenyFormA\">Deny</button>";
+                echo"<input type=\"hidden\" name=\"CurrCaseId\" value=\"$case_id\"></input>";
+
 
     }
 
-
-    if($_SESSION['role']=="aio" && $aio_id=="" /* add a condition here to check if the form has been submitted already(database check) */){
-                
-                echo"<button type=\"submit\" class=\"btn btn-danger\" name=\"DenyFormA\">Deny</button>";
-              }
 
 
 }

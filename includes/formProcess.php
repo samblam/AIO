@@ -146,60 +146,7 @@ if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
     }
   }
 
-  //The case where this Form A set aio_id 
-  if(isset($_POST['AcceptFormA'])){
 
-    //Create new case entry
-    $statement = $conn->prepare("INSERT INTO active_cases (prof_id, class_name_code, date_aware, description) VALUES (?, ?, ?, ?)");
-    $statement->bind_param("ssss",$userId, $cname, $date, $comments); //bind initial values to the prepared statements
-    if (!$statement->execute()) {
-       echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
-    }
-
-    // Grabs case_id of the just inserted case and uses it to create the evidence directory name for this case in the database
-    // This step might be unnecessary if the value is just the same as the case_id. If its a combo of values then it might be necessary.
-    $caseId = $conn->insert_id;
-    $updateEvidence = $conn->prepare("UPDATE active_cases SET aio_id = 1 WHERE case_id = ".$caseId);
-    //$updateEvidence->bind_param("s", $caseId); //bind evidence folder name to the prepared statements
-    if (!$updateEvidence->execute()) {
-       echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
-    }
-
-    //Insert students into student table
-    /**
-     * For each set of students and b00s, check if both entries are not null.
-     * If not prepare the insert statement, sanatize the current name and B00,
-     * bind the values to the insert statement and execute;\.
-     */
-    
-  }
-
-  if(isset($_POST['DenyFormA'])){
-
-    //Create new case entry
-    $statement = $conn->prepare("INSERT INTO active_cases (prof_id, class_name_code, date_aware, description) VALUES (?, ?, ?, ?)");
-    $statement->bind_param("ssss",$userId, $cname, $date, $comments); //bind initial values to the prepared statements
-    if (!$statement->execute()) {
-       echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
-    }
-
-    // Grabs case_id of the just inserted case and uses it to create the evidence directory name for this case in the database
-    // This step might be unnecessary if the value is just the same as the case_id. If its a combo of values then it might be necessary.
-    $caseId = $conn->insert_id;
-    $updateEvidence = $conn->prepare("UPDATE active_cases SET aio_id = NULL WHERE case_id = ".$caseId);
-    //$updateEvidence->bind_param("s", $caseId); //bind evidence folder name to the prepared statements
-    if (!$updateEvidence->execute()) {
-       echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
-    }
-
-    //Insert students into student table
-    /**
-     * For each set of students and b00s, check if both entries are not null.
-     * If not prepare the insert statement, sanatize the current name and B00,
-     * bind the values to the insert statement and execute;\.
-     */
-    
-  }
 
   //The case where a new Form A is created but saved instead of submitted
   if(isset($_POST['SaveFormA']) && isset($_POST['case_id'])){
@@ -263,6 +210,8 @@ if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
     }
   }
 
+
+
   // This returns you back to the role's active case page.
   // Might want to change admin and aio conditions and locations (elseif and else respectively)
   // as the professors is pretty obvious but admin and aio might want to return
@@ -277,6 +226,46 @@ if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
     header('location: ../AIO/ActiveCases.php');
   }
 }
+
+//The case where this Form A set aio_id 
+  if(isset($_POST['AcceptFormA'])){
+    
+    //header('location: ../AIO/ActiveCases.php');
+
+    // Grabs case_id of the just inserted case and uses it to set aio_id to current aio
+    $userId =(int)$_SESSION['userId'];
+
+    $CurrCaseId=(int)$_POST['CurrCaseId'];
+    
+    $AcceptCase = $conn->prepare("UPDATE active_cases SET aio_id = ?  WHERE case_id = ?");
+    $AcceptCase->bind_param("dd", $userId,$CurrCaseId); //bind evidence folder name to the prepared statements
+    if (!$AcceptCase->execute()) {
+       echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+    }
+
+    header('location: ../AIO/ActiveCases.php');
+    
+  }
+
+//The case where this Form A set aio_id null
+  if(isset($_POST['DenyFormA'])){
+    
+    //header('location: ../AIO/ActiveCases.php');
+
+    // Grabs case_id of the just inserted case and uses it to set aio id to null! 
+    $userId =(int)$_SESSION['userId'];
+
+    $CurrCaseId=(int)$_POST['CurrCaseId'];
+    
+    $AcceptCase = $conn->prepare("UPDATE active_cases SET aio_id = NULL  WHERE case_id = ?");
+    $AcceptCase->bind_param("d",$CurrCaseId); //bind evidence folder name to the prepared statements
+    if (!$AcceptCase->execute()) {
+       echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+    }
+
+    header('location: ../AIO/ActiveCases.php');
+    
+  }
 
 // form B processing
 if(isset($_POST['SaveFormB']) || isset($_POST['SubmitFormB'])){
