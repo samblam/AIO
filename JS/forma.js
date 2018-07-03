@@ -36,10 +36,12 @@ function getFileInfo(){
             var fileListItem = document.createElement('li');
             var p = document.createElement('p');
 
+            var cleanFileName = sanitizeFileName(uploadedFiles[i].name);
+
             if(uploadedFiles[i].size <= maxFileSize){
-                p.textContent = uploadedFiles[i].name + ' (' + getFileSizeString(uploadedFiles[i].size) + ') ';
+                p.textContent = cleanFileName + ' (' + getFileSizeString(uploadedFiles[i].size) + ') ';
             } else {
-                p.textContent = uploadedFiles[i].name + ' (' + getFileSizeString(uploadedFiles[i].size) + ') - file exceeds maximum file size (' + getFileSizeString(maxFileSize) + ')';
+                p.textContent = cleanFileName + ' (' + getFileSizeString(uploadedFiles[i].size) + ') - file exceeds maximum file size (' + getFileSizeString(maxFileSize) + ')';
                 p.style.color = "red";
                 allFilesValid = false;
             }
@@ -71,4 +73,9 @@ function getFileSizeString(fileSize) {
     } else if(fileSize >= 1048576) {
         return (fileSize/1048576).toFixed(1) + ' MB';
     }
+}
+
+function sanitizeFileName(fileName){
+    // replace invalid characters in the file name with an underscore
+    return fileName.replace(/[^A-Za-z0-9.]+/g, '_');
 }
