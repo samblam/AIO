@@ -5,9 +5,11 @@ include 'includes/db.php';
 //These are the variables that will later be converted to session variables
 $role;
 $csid;
+
+/* This should not be on login page - session should always be empty when on this page
 //Check if the form variables have been submitted, store them in the session variables
 include 'includes/formProcess.php';
-
+*/
 ?>
 
 

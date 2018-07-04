@@ -1,4 +1,5 @@
 <?php
+  require_once 'session.php'
   // Basic script to logout
   $_SESSION = array(); // empties session variables
   if(ini_get("session.use_cookies")){
@@ -9,6 +10,7 @@
       $params["httponly"]
     );
   }
+  session_unset(); 
   session_destroy();
   header("location: ../index.php"); //redirect to index.php
 
