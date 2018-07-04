@@ -57,5 +57,16 @@ include 'includes/formProcess.php';
             </div>
         </form>
     </body>
+    <script type="text/javascript">
+        $('#psw').keypress(function(e) { 
+            var s = String.fromCharCode( e.which );
+            if ( s.toUpperCase() === s && s.toLowerCase() !== s && !e.shiftKey ) {
+                $('#caps_lock').html("<span class='text-warning'>Warning: Caps Lock is On!</span>");
+            }
+            else{
+            $('#caps_lock').css('visibility', 'hidden');
+            }
+        });
+    </script>
 </html>
 
