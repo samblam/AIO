@@ -151,7 +151,7 @@ include_once '../includes/page.php';
                     <div class="center-block text-center">
                         <?php
 
- //form A data is rettieved at this point.
+
 $aio_id="";
 // check if URL contains the case_id variable
 if(isset($_GET["case_id"])){
@@ -169,7 +169,7 @@ if(isset($_GET["case_id"])){
    $statement->fetch();
 
 
-   if($_SESSION['role']=="aio" && $aio_id=="" /*add a condition here to check if the form has been submitted already(database check) */){
+   if($_SESSION['role']=="aio" && $aio_id=="" ){
                 echo"<button type=\"submit\" class=\"btn btn-success\" name=\"AcceptFormA\">Accept</button>";
                 echo"<button type=\"submit\" class=\"btn btn-danger\" name=\"DenyFormA\">Deny</button>";
                 echo"<input type=\"hidden\" name=\"CurrCaseId\" value=\"$case_id\"></input>";
@@ -180,9 +180,6 @@ if(isset($_GET["case_id"])){
 
 
 }
-
-  //}
-
             ?>
 
            
