@@ -1,13 +1,34 @@
 <?php
 require_once '../includes/session.php';
+
+require_once 'secure.php';
 //Open the db connection
 include_once '../includes/db.php';
 //Check if the form variables have been submitted, store them in the session variables
-include '../includes/formProcess.php';
+include_once '../includes/formProcess.php';
 include '../includes/formFill.php';
 include_once '../includes/page.php';
 
+include '../JS/profAutoFill.js';
 
+$formSubmissionDate = "";
+$evidenceFileDir = "";
+$case_id = "";
+
+// check if URL contains the case_id variable
+if(isset($_GET["case_id"])){
+    $statement = $conn->prepare("SELECT evidence_fileDir, form_a_submit_date FROM active_cases WHERE case_id = ?");
+    // get the case_id from the URL
+    $case_id = (int)$_GET["case_id"];
+    $statement->bind_param("d", $case_id);
+    if(!$statement->execute()){
+      echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+    }
+
+    // get the case information from the database
+    $statement->bind_result($evidenceFileDir, $formSubmissionDate);
+    $statement->fetch();
+}
 
 ?>
 
@@ -20,6 +41,7 @@ include_once '../includes/page.php';
         <title>Portal</title>
         <link rel="stylesheet" href="../CSS/formA.css">
         <link rel="stylesheet" href="../CSS/main.css">
+        <script src="../JS/forma.js"></script>
     </head>
     <body style="margin:auto;">
 
@@ -31,10 +53,46 @@ include_once '../includes/page.php';
         <div class="form-container">
             <form class="form-horizontal" method="post" action="../includes/formProcess.php" enctype="multipart/form-data">
 
+                <?php
+                    if($case_id != ""){
+                        // add a hidden field that passes on the case id value if it is set in the URL
+                        echo "<input type=\"hidden\" name=\"case_id\" value=\"$case_id\">";
+                    }
+                ?>
+
                 <div class="form-group">
                     <label for="ProfessorName" class="col-sm-3 control-label">Professor:</label>
                     <div class="col-sm-9">
-                         <input type="text" class="form-control" placeholder="Name" id="ProfessorName" name="ProfessorName" required value="<?php if (isset($prof_name)) { echo $prof_name;} ?>">
+                        
+                        <?php
+                        //this check is to see if the admin is submitting the form
+                            if(isset($_GET['ProfRequired'])){
+                            //show dropdown here
+                                echo "<select data-live-search='true' id='profSelect' class='selectpicker form-control' onchange='fillProf()''>";
+                                echo "<option disabled selected value> -- select an option -- </option>";
+                                
+                                //grab all the professors
+                                $statement = $conn->prepare("SELECT fname, lname, email, phone FROM professor");
+                                if(!$statement->execute()){
+                                  echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+                                }
+                                $statement->bind_result( $pfname, $plname, $email, $phone);
+                                while($statement->fetch()){
+                                    //add each professor to the dropdown, and tie the email/phone number to the value in order to auto fill
+                                    $profName = $pfname . ' ' . $plname;
+                                    echo"<option value='$email,$phone' data-tokens='$pfname,$plname'>$profName</option>";
+                                    
+                                }
+                                echo"</select>";
+                            }
+                                
+                            else{
+                            //else auto fill professor name
+                                echo "<input type='text' class='form-control' placeholder='Name' id='ProfessorName' name='ProfessorName' required value='";
+                                if (isset($prof_name)) { echo $prof_name;}
+                                echo"'>";
+                            }
+                        ?>                   
                     </div>
                 </div>
 
@@ -104,9 +162,9 @@ include_once '../includes/page.php';
                 <div class="form-group">
                     <label for="date" class="col-sm-3 control-label">Date of Alleged Offense:</label>
                     <div class="col-sm-9">
-                        <input class="form-control" placeholder="MM/DD/YYYY" name="DateAlleged" id="date" value="<?php if (isset($date_alleg)) { echo $date_alleg;} ?>" >
+                        <input class="form-control" placeholder="MM/DD/YYYY" name="DateAlleged" id="date" value="<?php if (isset($date_alleg)) { echo $date_alleg;} ?>" autocomplete="off">
                     </div>
-                     </div>
+                </div>
 
                 <div class="form-group">
                     <p class="col-sm-12">Please describe the incident below or attach a memo. Please attach the original piece of work in which the offence occurred, the class syllabus, and any supporting material. If there are comparisons to be noted between documents (e.g., sections of a paper assignment and Urkund results), instructors are asked to clearly mark relevant sections in ink or highlighter.</p>
@@ -116,8 +174,10 @@ include_once '../includes/page.php';
                 <div class="form-group">
                     <label for="fileInput" class="col-sm-3 control-label">Evidence:</label>
                     <div class="col-sm-9">
-                        <input type="file" id="fileInput" name="fileInput" multiple>
+                        <input type="file" id="fileInput" name="fileInput[]" onchange="getFileInfo()" multiple>
                     </div>
+
+                    <div id="fileInfo" class="col-sm-12"/>
                 </div>
 
                 <!-- text input for additional comments-->
@@ -131,8 +191,9 @@ include_once '../includes/page.php';
                 <!--save button, submit button-->
                 <div class="form-group">
                     <div class="center-block text-center">
-                        <button type="submit" class="btn btn-primary" name="SubmitFormC">Preview PDF</button>
+                        <button type="submit" class="btn btn-primary" name="PreviewPDF">Preview PDF</button>
                         <button type="submit" class="btn btn-primary" name="SaveFormA">Save</button>
+
 			<?php
 
 
@@ -186,19 +247,40 @@ if(isset($_GET["case_id"])){
 
 
                        
+
+                        <?php
+                            if($_SESSION['role']=="professor" && $formSubmissionDate==""){
+                	            echo"<button type=\"submit\" class=\"btn btn-success\" id=\"SubmitFormA\" name=\"SubmitFormA\">Submit</button>";
+                            } 
+
+                            elseif ($_SESSION['role']=="professor" && $formSubmissionDate!="") {
+                                // add submit button for adding more evidence to a previously submitted case
+                                echo "<button type=\"submit\" class=\"btn btn-success\" id=\"AddEvidence\" name=\"AddEvidence\" disabled>Upload Selected Evidence</button>";
+
+                                if($evidenceFileDir!=""){
+                                    // add a hidden field that passes on the file directory in which to add the files
+                                    echo "<input type=\"hidden\" name=\"EvidenceDirectory\" value=\"$evidenceFileDir\">";
+                                }
+                            }
+            			?>
+
                     </div>
                 </div>
             </form>
         </div>
-
-
     </body>
 
     <!-- adds student form on click -->
     <script type="text/javascript">
+        getFileInfo();
 
         $("#addStudent").click(function () {
-            $("#students_group").append('<div class="input-group students" name="students"> <span class="input-group-addon">Student Name</span> <input type="text" class="form-control" aria-label="Name" required name="Name[]"> <span class="input-group-addon">Banner Number</span> <input type="text" class="form-control" aria-label="B00" required name="B00[]"> </div>');
+            $("#students_group").append('<div class="input-group students" name="students"> \
+                                             <span class="input-group-addon">Student Name</span> \
+                                             <input type="text" class="form-control" aria-label="Name" required name="Name[]"> \
+                                             <span class="input-group-addon">Banner Number</span> \
+                                             <input type="text" class="form-control" aria-label="B00" required name="B00[]"> \
+                                        </div>');
         });
 
         $("#removeStudent").click(function () {
@@ -222,6 +304,7 @@ if(isset($_GET["case_id"])){
                 var rect = e.currentTarget.getBoundingClientRect();
                 $(this).data('datepicker').picker.css('left', rect.left);
             });
+
         });
     </script>
 </html>

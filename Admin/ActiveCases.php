@@ -1,5 +1,7 @@
 <?php
 require_once '../includes/session.php';
+
+require_once 'secure.php';
 //Open the db connection
 include '../includes/db.php';
 //Check if the form variables have been submitted, store them in the session variables
@@ -22,7 +24,6 @@ include '../includes/formProcess.php';
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 
-
         <!-- the header; logout and back buttons -->
         <script src="../JS/top-header.js"></script>
     </head>
@@ -33,6 +34,13 @@ include '../includes/formProcess.php';
         <div>
             <h2>Active Cases</h2>
         </div>
+         
+         <div>
+            <span class="pull-right" style="display: inline-block;"> 
+                <button class="btn btn-success" onclick="location.href='forma.php?ProfRequired=true'" style="font-size: 16px; vertical-align: bottom;">Submit new case</button>
+            </span>
+         </div>
+         
         <div>
             <table class="table table-bordered" style="font-size: 12px;">
                 <thead class="cases-table">
@@ -80,7 +88,7 @@ include '../includes/formProcess.php';
                                   <ul class="dropdown-menu">
 
                                       <li><a href="CaseInformation.php?case_id={$caseId}">View</a></li>
-                                      <li><a href="ChangeAIO.php">Change AIO</a></li>
+                                      <li><a href="ChangeAIO.php?case_id={$caseId}">Change AIO</a></li>
                                       <li>
                                       <form class="delete_this_case" method="post" action="AdminActiveCases.php" onclick="return confirm('Are you sure you want to remove this case? This will permanently delete this case.\\nClick OK to continue.')">
                                         <input type="text" name="case_id" value="$caseId" hidden>

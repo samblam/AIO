@@ -1,5 +1,7 @@
 <?php
 require_once '../includes/session.php';
+
+require_once 'secure.php';
 //Open the db connection
 include '../includes/db.php';
 //Check if the form variables have been submitted, store them in the session variables
@@ -36,7 +38,6 @@ include '../includes/formProcess.php';
         <!-- TODO: Table will need to populate based on the entries in the DB(server side) -->
         <!-- TODO: I think to properly link the buttons, each row might have to be an input form(haven't looked it up) -->
         <div>   
-        
             <table class="table table-bordered" style="font-size: 14px;">
                 <tbody>
                     <tr>
@@ -70,15 +71,62 @@ include '../includes/formProcess.php';
         </div>
         
         <div>
-            Current AIO: Fred <br><br>
-            New AIO: 
-                    <select class="border border-dark">
-                        <option selected>Select New</option>
-                        <option>AIO 1</option>
-                        <option>AIO 2</option>
+            <!-- Displays the current AIO, or that there isn't one. -->
+            <?php
+                //Gets case id from URL
+                $caseId = intval($_GET['case_id']);
+                //Get aio_id and aio name.
+                $statement = $conn->prepare("SELECT active_cases.aio_id, aio.fname, aio.lname FROM active_cases LEFT JOIN aio ON aio.aio_id = active_cases.aio_id WHERE active_cases.case_id = '$caseId' "); 
+                if(!$statement->execute()){
+                    echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+                }
+                $statement->bind_result($aioId, $aioFName, $aioLName);
+                while($statement->fetch()){
+                    if($aioId == NULL){
+                        echo <<<NoAIO
+                            No AIO is assigned to this case. <br><br>
+NoAIO;
+                    }
+                    else{
+                        echo <<<CurrentAIO
+                            Current AIO: $aioFName $aioLName <br><br>
+CurrentAIO;
+                    }
+                }
+            ?>
+            
+            <!-- Dropdown for selecting AIO-->    
+            <?php
+                //Get aio_id and aio name.
+                $statement = $conn->prepare("SELECT fname, lname FROM aio"); 
+                if(!$statement->execute()){
+                    echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+                }
+                // Start of form, and drop down select
+                echo <<<SelectNew
+                    New AIO: 
+                    <form class="submit_new_aio" method="post" action="ActiveCases.php">
+                        <select class="border border-dark" name="selectedAIO">
+                            <option selected >Select New</option>
+SelectNew;
+                $statement->bind_result($aioFName, $aioLName);
+                while($statement->fetch()){
+                    // Drop down options for each AIO in the DB
+                    echo <<<OptionAIO
+                        <option>$aioFName $aioLName</option>      
+OptionAIO;
+                }
+                //Gets case id from URL
+                $caseId = intval($_GET['case_id']);
+                // Submit button, and End of form
+                echo <<<Button
                     </select>
-            <button class="btn btn-success">Submit</button>
+                    <br><br>
+                        <input type="text" name="case_id" value="$caseId" hidden>
+                        <button class="btn btn-success" value="true" type="submit" name="submitChangeAIO">Submit</button>
+                    </form>
+Button;
+            ?>
         </div>
-        
     </body>
 </html>

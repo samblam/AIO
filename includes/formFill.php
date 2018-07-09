@@ -1,5 +1,6 @@
 <?php
-
+  require_once "globalSecure.php";
+  
   // Creates the variables for professor info to be automatically inputed into form A
   if(basename($_SERVER['PHP_SELF']) == "forma.php" && $_SESSION['role'] == "professor"){
     $query = $conn->prepare("SELECT fname, lname, phone, email, department FROM professor WHERE professor_id = ?");
