@@ -4,9 +4,8 @@ require_once '../includes/session.php';
 require_once 'secure.php';
 //Open the db connection
 include '../includes/db.php';
-//Check if the form variables have been submitted, store them in the session variables
-include '../includes/formProcess.php';
 
+include '../includes/formProcess.php';
 ?>
 <!DOCTYPE html>
 <html>
@@ -23,7 +22,7 @@ include '../includes/formProcess.php';
 
     </head>
     <body style="margin: auto;">
-        <!-- Headder div + Logout button -->
+        <!-- Header div + Logout button -->
         <div class="top-header-full"></div>
 
         <div style="display: inline-block;">
