@@ -326,14 +326,10 @@ if(isset($_POST['insufficientEvidence']) && isset($_POST['case_id']) && $_SESSIO
   }
   $statement->bind_result($email);
   while($statement->fetch()){
-    //$headers = "From: no-reply@projects.cs.dal.ca" . "\r\n" . "X-Mailer: PHP/" . phpversion();
-    echo "<script>console.log( 'Debug Objects: " . $name . "' );</script>";
-    echo "<script>console.log( 'Debug Objects: " . $email . "' );</script>";
-    echo "<script>console.log( 'Debug Objects: " . $msg . "' );</script>";
-    mail($email, "Insufficient Evidence provided for academic integrity case.", $msg);
+    mail($email, "Insufficient evidence provided for academic integrity case.", $msg);
   }
-  /*$conn->query("DELETE FROM student WHERE case_id = \"$id\"");
-  $conn->query("DELETE FROM active_cases WHERE case_id = \"$id\"");*/
+  $conn->query("DELETE FROM student WHERE case_id = \"$id\"");
+  $conn->query("DELETE FROM active_cases WHERE case_id = \"$id\"");
 }
 
 // deletes all students and active cases with the given case_id for close case
