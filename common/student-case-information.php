@@ -81,12 +81,20 @@ include_once '../includes/page.php';
         </div>
         <!-- TODO: Add verdict column to active cases table and pull the verdict for the case. If the verdict is null only show Insufficient evidence button, if the verdict is not null only show close case button and either delete or archive the case based on the verdict. -->
         
-        <!-- CLose case and insufficient evidence buttons -->
+        <!-- Close case and insufficient evidence buttons -->
         <div class="center-block text-center">
             <?php
                 //Gets case id from URL
-                $caseId = intval($_GET['case_id']);
-            
+                if(isset($_GET["case_id"])){
+                    $caseId = intval($_GET['case_id']);
+                } else {
+                    echo <<<NoIDError
+                        <p>Error: Case ID not set.</p>
+                        <a href="ActiveCases.php?" class="btn btn-primary">Active Cases</a>
+NoIDError;
+                    exit();
+                }
+
                 //Get case verdict from db
                 $statement = $conn->prepare("SELECT case_verdict FROM active_cases WHERE case_id = '$caseId' AND aio_id = ?"); 
                 $statement->bind_param("d", $id); //bind the csid to the prepared statements
@@ -95,6 +103,13 @@ include_once '../includes/page.php';
                 if(!$statement->execute()){
                     echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                 }
+
+				//TODO: Have button only show is user is admin.
+				if (true){
+					echo <<<SchedualMeetingButton
+						<a href="SchedualMeeting.php?case_id={$caseId}" class="btn btn-primary">Scedule Meeting</a>
+SchedualMeetingButton;
+				}
             
                 $statement->bind_result($caseVerdict);
                 

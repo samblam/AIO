@@ -38,6 +38,16 @@ include_once '../includes/page.php';
 		<!-- TODO: If no case_ID is specified in URL, show them an error message and stop loading the page. -->
 	
 		<?php
+			//Gets case id from URL
+			if(isset($_GET["case_id"])){
+				$caseId = intval($_GET['case_id']);
+			} else {
+				echo <<<NoIDError
+					<p>Error: Case ID not set.</p>
+					<a href="ActiveCases.php?" class="btn btn-primary">Active Cases</a>
+NoIDError;
+				exit();
+			}
 
 			$statement = $conn->prepare("
 									SELECT 
