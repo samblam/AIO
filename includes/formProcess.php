@@ -317,7 +317,7 @@ if(isset($_POST['insufficientEvidence']) && isset($_POST['case_id']) && $_SESSIO
   $statement->bind_result($fname, $lname, $id);
   while($statement->fetch()){
     $msg = "Insufficient evidence provided for academic integrity case involving " . $fname . " " . $lname . " (" . $id . "). The case has been closed.";
-    //$msg = wordwrap($msg, 70);
+    $msg = wordwrap($msg, 70);
   }
   //Get prof email from db
   $statement = $conn->prepare("SELECT professor.email FROM active_cases LEFT JOIN professor ON active_cases.prof_id = professor.professor_id WHERE active_cases.case_id = '$caseId'"); 
@@ -326,15 +326,10 @@ if(isset($_POST['insufficientEvidence']) && isset($_POST['case_id']) && $_SESSIO
   }
   $statement->bind_result($email);
   while($statement->fetch()){
-    echo "<script>console.log( 'Debug Objects: " . $fname . "' );</script>";
-    echo "<script>console.log( 'Debug Objects: " . $lname . "' );</script>";
-    echo "<script>console.log( 'Debug Objects: " . $id . "' );</script>";
-    echo "<script>console.log( 'Debug Objects: " . $msg . "' );</script>";
-    echo "<script>console.log( 'Debug Objects: " . $email . "' );</script>";
     mail($email, "Insufficient evidence provided for academic integrity case.", $msg);
   }
-  //$conn->query("DELETE FROM student WHERE case_id = \"$id\"");
-  //$conn->query("DELETE FROM active_cases WHERE case_id = \"$id\"");
+  $conn->query("DELETE FROM student WHERE case_id = \"$id\"");
+  $conn->query("DELETE FROM active_cases WHERE case_id = \"$id\"");
 }
 
 // deletes all students and active cases with the given case_id for close case
