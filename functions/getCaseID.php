@@ -3,6 +3,7 @@
 /**
  * This function should be included by any PHP page
  * that deals with individual cases, and requires that there be a case ID.
+ * Does not check that the case ID is a valid one, only that it exists and is a number
  *
  * Returns the case_id variable after checking that it is present.
  *
