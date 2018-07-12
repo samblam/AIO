@@ -3,8 +3,7 @@ require_once '../includes/session.php';
 
 require_once 'secure.php';
 
-//Get the case_Id and set it as $case_Id
-include '../includes/requireCaseId.php';
+include '../functions/getCaseID.php';
 //Open the db connection
 include_once '../includes/db.php';
 //Check if the form variables have been submitted, store them in the session variables
@@ -89,6 +88,7 @@ include_once '../includes/page.php';
             <?php
                 //Gets case id from URL
                 //$caseId = intval($_GET['case_id']);
+                $caseId = getCaseID();
             
                 //Get case verdict from db
                 $statement = $conn->prepare("SELECT case_verdict FROM active_cases WHERE case_id = '$caseId' AND aio_id = ?"); 
@@ -130,6 +130,14 @@ ViewAllPost2;
 ViewAllPost3;
                     }
                 }
+
+				//TODO: Have button only show is user is admin.
+				if (true){
+					echo <<<SchedualMeetingButton
+						<a href="ScheduleMeeting.php?case_id={$caseId}" class="btn btn-primary">Scedule Meeting</a>
+SchedualMeetingButton;
+				}
+
             ?>
             
         </div>
