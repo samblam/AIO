@@ -23,7 +23,7 @@ include '../includes/formProcess.php';
 
     </head>
     <body style="margin: auto;">
-        <!-- Headder div + Logout button -->
+        <!-- Header div + Logout button -->
         <div class="top-header-full"></div>
 
         <div style="display: inline-block;">
@@ -31,7 +31,7 @@ include '../includes/formProcess.php';
 
         </div>
             
-        <!-- Newcase button div -->
+        <!-- New case button div -->
         <!-- TODO: Should link to from A? -->
 
         <!-- Table div -->
