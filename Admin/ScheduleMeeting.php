@@ -29,12 +29,40 @@ include '../includes/formProcess.php';
         <!-- Header div + Logout button -->
         <div class="top-header-full"></div>
 		
+		<!-- Remove this after we have an actual back button -->
+		<a href="ActiveCases.php">Active Cases</a>
+		<br>
+
+
         <div style="display: inline-block;">
             <h2>Schedule Meeting</h2>
         </div>
 		
 		<?php
 			$caseId = getCaseID();
+
+			$statement = $conn->prepare("
+									SELECT
+										A.case_id,
+										A.description,
+										A.prof_id,
+										A.date_aware,
+										A.evidence_fileDir
+									FROM
+										active_cases as A
+									WHERE
+										case_id = 2
+									");
+
+			if(!$statement->execute()){
+                echo "Execute failed: (" . $query->errno . ") " . $query->error;
+            }
+
+			$statement->bind_result($caseID, $description, $prof_id, $date_aware, $evidence_path);
+
+			$statement->fetch();	//Pull just one row.
+
+			print("\nHello World" . $caseID . "\n" . $description . "\n" . $prof_id . "\n" . $date_aware . "\n" . $evidence_path);
 		?>	
 
         <div>   
@@ -69,7 +97,7 @@ include '../includes/formProcess.php';
                 </tbody>
             </table>
         </div>
-        
+
         <div>
             <!-- Displays the current AIO, or that there isn't one. -->
 
