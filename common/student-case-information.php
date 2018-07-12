@@ -2,6 +2,9 @@
 require_once '../includes/session.php';
 
 require_once 'secure.php';
+
+//Get the case_Id and set it as $case_Id
+include '../includes/requireCaseId.php';
 //Open the db connection
 include_once '../includes/db.php';
 //Check if the form variables have been submitted, store them in the session variables
@@ -85,7 +88,7 @@ include_once '../includes/page.php';
         <div class="center-block text-center">
             <?php
                 //Gets case id from URL
-                $caseId = intval($_GET['case_id']);
+                //$caseId = intval($_GET['case_id']);
             
                 //Get case verdict from db
                 $statement = $conn->prepare("SELECT case_verdict FROM active_cases WHERE case_id = '$caseId' AND aio_id = ?"); 
