@@ -2,6 +2,9 @@
 require_once '../includes/session.php';
 
 require_once 'secure.php';
+
+include '../functions/getCaseID.php';
+
 //Open the db connection
 include '../includes/db.php';
 //Check if the form variables have been submitted, store them in the session variables
@@ -31,16 +34,7 @@ include '../includes/formProcess.php';
         </div>
 		
 		<?php
-			//Gets case id from URL
-			if(isset($_GET["case_id"])){
-				$caseId = intval($_GET['case_id']);
-			} else {
-				echo <<<NoIDError
-					<p>Error: Case ID not set.</p>
-					<a href="ActiveCases.php?" class="btn btn-primary">back to Active Cases</a>
-NoIDError;
-				exit();
-			}
+			$caseId = getCaseID();
 		?>	
 
         <div>   

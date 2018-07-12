@@ -3,9 +3,7 @@ require_once '../includes/session.php';
 
 require_once 'secure.php';
 
-//Get the case_Id and set it as $case_Id
-include '../includes/requireCaseId.php';
-
+include '../functions/getCaseID.php';
 //Open the db connection
 include_once '../includes/db.php';
 //Check if the form variables have been submitted, store them in the session variables
@@ -89,11 +87,59 @@ include_once '../includes/page.php';
             <?php
                 //Gets case id from URL
                 //$caseId = intval($_GET['case_id']);
+                $caseId = getCaseID();
             
                 //Get case verdict from db
                 $statement = $conn->prepare("SELECT case_verdict FROM active_cases WHERE case_id = '$caseId' AND aio_id = ?"); 
                 $statement->bind_param("d", $id); //bind the csid to the prepared statements
-			?>
+
+                $id = (int)$_SESSION['userId'];
+                if(!$statement->execute()){
+                    echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+                }
+            
+                $statement->bind_result($caseVerdict);
+                
+                while($statement->fetch()){
+                    if($caseVerdict == NULL){
+                        // Insufficient Evidence Button
+                        echo <<<ViewAllPost
+                            <form class="delete_this_case" method="post" action="../AIO/ActiveCases.php" onclick="return confirm('Are you sure you want to remove this case for insufficient evidence? This will permanently delete the case.\\nClick OK to continue.')">
+                                <input type="text" name="case_id" value="$caseId" hidden>
+                                <button class="btn btn-danger" value="true" type="submit" name="insufficientEvidence">Insufficient Evidence</button>
+                            </form>
+ViewAllPost;
+                    }
+                    else if ($caseVerdict == "guilty"){
+                        // Close case Button guilty
+                        echo <<<ViewAllPost2
+                            <form class="delete_this_case" method="post" action="../AIO/ActiveCases.php" onclick="return confirm('Are you sure you want to close this case? \\nIf the verdict is guilty the case gets archived in our system, and if the verdict is not guilty the case is permanently deleted. \\nClick OK to continue.')">
+                                <input type="text" name="case_id" value="$caseId" hidden>
+                                <button class="btn btn-danger" value="true" type="submit" name="closeCaseGuilty">Close Case</button>
+                            </form>
+ViewAllPost2;
+                    }
+                    else if ($caseVerdict == "not guilty"){
+                        // Close case Button not guilty
+                        echo <<<ViewAllPost3
+                            <form class="delete_this_case" method="post" action="../AIO/ActiveCases.php" onclick="return confirm('Are you sure you want to close this case? \\nIf the verdict is guilty the case gets archived in our system, and if the verdict is not guilty the case is permanently deleted. \\nClick OK to continue.')">
+                                <input type="text" name="case_id" value="$caseId" hidden>
+                                <button class="btn btn-danger" value="true" type="submit" name="closeCaseNotGuilty">Close Case</button>
+                            </form>
+ViewAllPost3;
+                    }
+                }
+
+				//TODO: Have button only show is user is admin.
+				if (true){
+					echo <<<SchedualMeetingButton
+						<a href="ScheduleMeeting.php?case_id={$caseId}" class="btn btn-primary">Scedule Meeting</a>
+SchedualMeetingButton;
+				}
+
+            ?>
+            
+        </div>
 
         <!-- Form display div -->
         
