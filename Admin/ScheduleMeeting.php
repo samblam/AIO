@@ -28,7 +28,7 @@ include '../includes/formProcess.php';
     <body style="margin: auto;">
         <!-- Header div + Logout button -->
         <div class="top-header-full"></div>
-		
+
 		<!-- Remove this after we have an actual back button -->
 		<a href="ActiveCases.php">Active Cases</a>
 		<br>
@@ -37,11 +37,11 @@ include '../includes/formProcess.php';
         <div style="display: inline-block;">
             <h2>Schedule Meeting</h2>
         </div>
-		
+
 		<?php
 			$caseId = getCaseID();
 
-			$statement = $conn->prepare("
+			$getCaseInfo = $conn->prepare("
 									SELECT
 										A.case_id,
 										A.description,
@@ -51,7 +51,8 @@ include '../includes/formProcess.php';
 										P.fname,
 										P.lname,
 										P.email,
-										P.alt_email
+										P.alt_email,
+                                        A.aio_id
 									FROM
 										active_cases as A
 									INNER JOIN
@@ -60,60 +61,64 @@ include '../includes/formProcess.php';
 										case_id = $caseId
 									");
 
-			if(!$statement->execute()){
+			if(!$getCaseInfo->execute()){
                 echo "Execute failed: (" . $query->errno . ") " . $query->error;
             }
 
-			$statement->bind_result($caseID, $description, $prof_id, $date_aware, $evidence_path, $prof_fname, $prof_lname, $prof_email_1, $prof_email_2);
+			$getCaseInfo->bind_result($caseID, $description, $prof_id, $date_aware, $evidence_path, $prof_fname, $prof_lname, $prof_email_1, $prof_email_2, $aio);
 
-			$statement->fetch();	//Pull just one row.
+			$getCaseInfo->fetch();	//Pull just one row.
+
+			CloseCon($getCaseInfo);
 
 			if (!$description){
 				$description = "N/A";
 			}
 
-			//Get Student information
-			/*
-			$statement = $conn->prepare("
+			/**
+			* Use the AIO ID to either show error or show name.
+			* Not done in above due to an INNER JOIN with the aio table
+			* not working when there is no AIO.
+			*/
+			if (!$aio){
+				$aio = "No AIO assigned<br><a href='ChangeAIO.php?case_id=" . $caseId . "'>Assign AIO</a>";
+			} else {
+
+				$getAIO = $conn->prepare("
 									SELECT
-										A.case_id
+										fname,
+										lname
 									FROM
-										active_cases as A
+										aio
 									WHERE
-										case_id = $caseId
+										aio_id = $aio
 									");
 
-			if(!$statement->execute()){
-                echo "Execute failed: (" . $query->errno . ") " . $query->error;
-            }
+				if(!$getAIO->execute()){
+					echo "Execute failed: (" . $query->errno . ") " . $query->error;
+				}
 
-			$statement->bind_result($caseID);
+				$getAIO->bind_result($aio_fname, $aio_lname);
 
-			$statement->fetch();	//TODO: Loop to pull the rows of all relevant students.
-			*/
+				$getAIO->fetch();	//Pull just one row.
 
-			//Make the table.
+				CloseCon($getAIO);
+
+				$aio = ($aio_fname . " " . $aio_lname);
+			}
+
+			//Make the main information table.
 			echo <<<ViewCaseInfo
 				<table class="table table-bordered" style="font-size: 14px;">
+					<caption>Case Information</caption>
 					<tbody>
 						<tr>
 							<td>Case description</td>
 							<td>$description</td>
 						</tr>
 						<tr>
-							<td>Student name</td>
-							<td class="studentName">Case ID: $caseID</td>
-						</tr>
-						<tr>
 							<td>Professor</td>
 							<td>$prof_fname $prof_lname</td>
-						</tr>
-							<td>Professor email 1</td>
-							<td>$prof_email_1</td>
-						</tr>
-							<td>Professor email 2</td>
-							<td>$prof_email_2</td>
-						</tr>
 						<tr>
 							<td>Date</td>
 							<td class="date">$date_aware</td>
@@ -123,9 +128,68 @@ include '../includes/formProcess.php';
 							<!-- What will we want to show here? -->
 							<td><a href="$evidence_path">$evidence_path</a></td>
 						</tr>
+						<tr>
+							<td>AIO</td>
+							<td>$aio</td>
+						</tr>
 					</tbody>
 				</table>
 ViewCaseInfo;
+
+			/**
+			* Get information on the 1 or more students involved in the case.
+			*/
+			$getStudents = $conn->prepare("
+									SELECT
+										fname,
+										lname,
+										csid,
+										email
+									FROM
+										student
+									WHERE
+										case_id = $caseId
+									");
+
+			if(!$getStudents->execute()){
+                echo "Execute failed: (" . $query->errno . ") " . $query->error;
+            }
+
+			$getStudents->bind_result($student_fname, $student_lname, $student_id, $student_email);
+
+			//TODO: Figure out why <th>s are not in the correct places.
+			echo <<<ContactTable1
+				<table class="table table-bordered" style="font-size: 14px;">
+					<caption>Send to</caption>
+					<tbody>
+						<tr>
+							<th>Role<th>
+							<th>Name<th>
+							<th>Email<th>
+						</tr>
+						<tr>
+							<td>Professor</td>
+							<td>$prof_fname $prof_lname</td>
+							<td>$prof_email_1</td>		<!--  What about their alt emails? -->
+						</tr>
+ContactTable1;
+
+			$i = 0;
+			while($getStudents->fetch()){
+				$i++;
+				echo <<<ContactTable2
+					<tr>
+						<td>Student #$i</td>
+						<td>$student_fname $student_lname</td>
+						<td>$student_email</td>
+					</tr>
+ContactTable2;
+			}
+
+			echo <<<ContactTable3
+					</tbody>
+				</table>
+ContactTable3
 		?>
 
     </body>

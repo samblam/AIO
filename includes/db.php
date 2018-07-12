@@ -27,6 +27,7 @@
     return $conn;
   }
 
+  //Closing of previous connection is required before making a new one.
   function CloseCon($conn)
   {
     $conn -> close();
