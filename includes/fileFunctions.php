@@ -14,8 +14,6 @@
 
 		// max file size (100MB) in bytes
 		$maxFileSize = 104857600;
-		// memory limit (128 MB) in bytes
-		$memoryLimit = 134217728;
 
 		$numUploadedFiles = count($_FILES['fileInput']['name']);
 
@@ -32,14 +30,6 @@
 		    if($_FILES["fileInput"]["error"][$i] == 1 || $_FILES["fileInput"]["size"][$i] > $maxFileSize){
 		        $allUploadedFilesAreValid = false;
 		        break;
-		    }
-
-		    $memorySum += (int) $_FILES["fileInput"]["size"][$i];
-		    echo $memorySum . " ";
-
-		    if($memorySum >= $memoryLimit){
-		    	$allUploadedFilesAreValid = false;
-		    	break;
 		    }
 		}
 
