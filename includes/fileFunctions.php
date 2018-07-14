@@ -23,7 +23,6 @@
 
 		// assume all files are valid
 		$allUploadedFilesAreValid = true;
-		$memorySum = 0;
 
 		for($i = 0; $i < $numUploadedFiles; $i++){
 		    // Check if there was an error uploading the file or if the file size exceeds the max size allowed 
