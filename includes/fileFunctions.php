@@ -12,8 +12,10 @@
 			in them and would require complex parsing.
 		*/
 
-		// max file size in bytes
-		$maxFileSize = 2097152;
+		// max file size (100MB) in bytes
+		$maxFileSize = 104857600;
+		// memory limit (128 MB) in bytes
+		$memoryLimit = 134217728;
 
 		$numUploadedFiles = count($_FILES['fileInput']['name']);
 
@@ -23,11 +25,21 @@
 
 		// assume all files are valid
 		$allUploadedFilesAreValid = true;
+		$memorySum = 0;
 
 		for($i = 0; $i < $numUploadedFiles; $i++){
-		    // Check if there was an error uploading the file and check the file size 
+		    // Check if there was an error uploading the file or if the file size exceeds the max size allowed 
 		    if($_FILES["fileInput"]["error"][$i] == 1 || $_FILES["fileInput"]["size"][$i] > $maxFileSize){
 		        $allUploadedFilesAreValid = false;
+		        break;
+		    }
+
+		    $memorySum += (int) $_FILES["fileInput"]["size"][$i];
+		    echo $memorySum . " ";
+
+		    if($memorySum >= $memoryLimit){
+		    	$allUploadedFilesAreValid = false;
+		    	break;
 		    }
 		}
 

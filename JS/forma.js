@@ -1,8 +1,8 @@
 function getFileInfo(){
     // These file requirement values are based on the values set in the php.ini file on the server.
-    // Therefore, these requirement values should match those found in the php file validation methods.
-    maxNumberOfFiles = 20;
-    maxFileSize = 2097152;
+    // Therefore, these requirement values should match those found in the php file validation methods in fileFunctions.php.
+    maxNumberOfFiles = 50;
+    maxFileSize = 104857600;
 
     addEvidenceButton = document.getElementById("AddEvidence");
     submitFormAButton = document.getElementById("SubmitFormA");
@@ -32,22 +32,43 @@ function getFileInfo(){
         var fileList = document.createElement('ul');
         fileInfoElement.appendChild(fileList);
 
-        for(var i = 0; i < uploadedFiles.length; i++) {
-            var fileListItem = document.createElement('li');
-            var p = document.createElement('p');
+        // check if the total sum of the file sizes exceeds the php limit
+        var fileSizeSum = 0;
+        for (var i = 0; i < uploadedFiles.length; i++) {
+            fileSizeSum += uploadedFiles[i].size;
+            if (fileSizeSum > maxFileSize){
+                var fileListItem = document.createElement('li');
 
-            var cleanFileName = sanitizeFileName(uploadedFiles[i].name);
-
-            if(uploadedFiles[i].size <= maxFileSize){
-                p.textContent = cleanFileName + ' (' + getFileSizeString(uploadedFiles[i].size) + ') ';
-            } else {
-                p.textContent = cleanFileName + ' (' + getFileSizeString(uploadedFiles[i].size) + ') - file exceeds maximum file size (' + getFileSizeString(maxFileSize) + ')';
+                var p = document.createElement('p');
+                p.textContent = "The sum of the file sizes selected exceeded the maximum upload size (" + getFileSizeString(maxFileSize) + ")";
                 p.style.color = "red";
+                
+                fileListItem.appendChild(p);
+                fileList.appendChild(fileListItem);
                 allFilesValid = false;
+                break;
             }
+        }
 
-            fileListItem.appendChild(p);
-            fileList.appendChild(fileListItem);
+        if(allFilesValid){
+            // check if any single file exceeds the max file size and inform the user which file is too big
+            for (var i = 0; i < uploadedFiles.length; i++) {
+                var fileListItem = document.createElement('li');
+                var p = document.createElement('p');
+
+                var cleanFileName = sanitizeFileName(uploadedFiles[i].name);
+
+                if(uploadedFiles[i].size <= maxFileSize){
+                    p.textContent = cleanFileName + ' (' + getFileSizeString(uploadedFiles[i].size) + ') ';
+                } else {
+                    p.textContent = cleanFileName + ' (' + getFileSizeString(uploadedFiles[i].size) + ') - file exceeds maximum file size (' + getFileSizeString(maxFileSize) + ')';
+                    p.style.color = "red";
+                    allFilesValid = false;
+                }
+
+                fileListItem.appendChild(p);
+                fileList.appendChild(fileListItem);
+            }
         }
 
     } else if (addEvidenceButton) {

@@ -1,5 +1,5 @@
 <?php
-    require_once "globalSecure.php";
+  require_once "globalSecure.php";
 /**
  * This file is included in each page. It is where the form processing logic is located.
  * The future group that is developing this might want to think about whether they
