@@ -36,7 +36,7 @@ function getFileInfo(){
         var fileSizeSum = 0;
         for (var i = 0; i < uploadedFiles.length; i++) {
             fileSizeSum += uploadedFiles[i].size;
-            if (fileSizeSum > maxFileSize){
+            if (fileSizeSum >= maxFileSize){
                 var fileListItem = document.createElement('li');
 
                 var p = document.createElement('p');
@@ -58,7 +58,7 @@ function getFileInfo(){
 
                 var cleanFileName = sanitizeFileName(uploadedFiles[i].name);
 
-                if(uploadedFiles[i].size <= maxFileSize){
+                if(uploadedFiles[i].size < maxFileSize){
                     p.textContent = cleanFileName + ' (' + getFileSizeString(uploadedFiles[i].size) + ') ';
                 } else {
                     p.textContent = cleanFileName + ' (' + getFileSizeString(uploadedFiles[i].size) + ') - file exceeds maximum file size (' + getFileSizeString(maxFileSize) + ')';
