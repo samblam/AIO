@@ -157,26 +157,27 @@ ViewCaseInfo;
 
 			$getStudents->bind_result($student_fname, $student_lname, $student_id, $student_email);
 
-			//TODO: Figure out why <th>s are not in the correct places.
 			echo <<<ContactTable1
 				<table class="table table-bordered" style="font-size: 14px;">
 					<caption>Send to</caption>
-					<tbody>
-						<tr>
-							<th>Role<th>
-							<th>Name<th>
-							<th>Email<th>
-						</tr>
-						<tr>
-							<td>Professor</td>
-							<td>$prof_fname $prof_lname</td>
-							<td>$prof_email_1</td>		<!--  What about their alt emails? -->
-						</tr>
+					<tr>
+						<th>Role</th>
+						<th>Name</th>
+						<th>Email</th>
+					</tr>
+					<tr>
+						<td>Professor</td>
+						<td>$prof_fname $prof_lname</td>
+						<td>$prof_email_1</td>
+					</tr>
 ContactTable1;
 
 			$i = 0;
 			while($getStudents->fetch()){
 				$i++;
+				if (!$student_email){
+					$student_email = "<font color='red'>Error - no email found.</font>";
+				}
 				echo <<<ContactTable2
 					<tr>
 						<td>Student #$i</td>
@@ -187,9 +188,10 @@ ContactTable2;
 			}
 
 			echo <<<ContactTable3
-					</tbody>
 				</table>
-ContactTable3
+ContactTable3;
+
+			CloseCon($getStudents);
 		?>
 
     </body>

@@ -130,8 +130,8 @@ ViewAllPost3;
                     }
                 }
 
-				//TODO: Have button only show is user is admin.
-				if (true){
+				//If user is an admin, allow them to schedule a meeting.
+				if ($_SESSION['role']== "admin"){
 					echo <<<SchedualMeetingButton
 						<a href="ScheduleMeeting.php?case_id={$caseId}" class="btn btn-primary">Scedule Meeting</a>
 SchedualMeetingButton;
