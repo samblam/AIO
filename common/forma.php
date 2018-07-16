@@ -48,7 +48,7 @@ if(isset($_GET["case_id"])){
         </div>
 
         <div class="form-container">
-            <form class="form-horizontal" method="post" action="../includes/formProcess.php" enctype="multipart/form-data">
+            <form class="form-horizontal" method="post" action="../includes/processFormA.php" enctype="multipart/form-data">
 
                 <?php
                     if($case_id != ""){
