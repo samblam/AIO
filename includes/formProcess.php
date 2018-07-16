@@ -1,4 +1,5 @@
 <?php
+    require_once "globalSecure.php";
 /**
  * This file is included in each page. It is where the form processing logic is located.
  * The future group that is developing this might want to think about whether they
@@ -294,25 +295,39 @@ if(isset($_POST['deleteCase']) && isset($_POST['case_id']) && $_SESSION['role'] 
 if(isset($_POST['submitChangeAIO']) && isset($_POST['case_id']) && $_SESSION['role'] == "admin") {
   $id = htmlspecialchars(trim(stripslashes($_POST['case_id'])));
   $newAIO = htmlspecialchars(trim(stripslashes($_POST['selectedAIO']))); //Gets selected AIO from dropdown
-  $statement = $conn->prepare("SELECT aio_id FROM aio WHERE CONCAT(TRIM(fname), ' ', TRIM(lname)) LIKE '$newAIO'"); //Gets AIO id from db
-  if(!$statement->execute()){
-    echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+  if($newAIO != "Select New"){
+    $statement = $conn->prepare("SELECT aio_id FROM aio WHERE CONCAT(TRIM(fname), ' ', TRIM(lname)) LIKE '$newAIO'"); //Gets AIO id from db
+    if(!$statement->execute()){
+        echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+    }
+    $statement->bind_result($aioId);
+    while($statement->fetch()){ }
+    $conn->query("UPDATE active_cases SET aio_id = '$aioId' WHERE case_id = '$id'"); //Updates AIO in active cases table
   }
-  $statement->bind_result($aioId);
-  while($statement->fetch()){ }
-  $conn->query("UPDATE active_cases SET aio_id = '$aioId' WHERE case_id = '$id'"); //Updates AIO in active cases table
 }
 
 // deletes all students and active cases with the given case_id for insufficient evidence
 if(isset($_POST['insufficientEvidence']) && isset($_POST['case_id']) && $_SESSION['role'] == "aio") {
-  $id = htmlspecialchars(trim(stripslashes($_POST['case_id'])));
-  /*$sql = "SELECT fname FROM student WHERE case_id = '$id'";
-  $name = mysql_query($sql);
-  $sql2 = "SELECT email FROM professor WHERE professor_id = ;
-  $email = mysql_query($sql2);
-  $msg = "Insufficient ividence provided for academic integrity violation.";
-  $msg = wordwrap($msg, 70);
-  mail("sr.mart@hotmail.com", "Insufficient Evidence", $msg);*/
+  $caseId = htmlspecialchars(trim(stripslashes($_POST['case_id'])));
+  //Get student name from db
+  $statement = $conn->prepare("SELECT fname, lname, csid FROM student WHERE case_id = '$caseId'"); 
+  if(!$statement->execute()){
+    echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+  }
+  $statement->bind_result($fname, $lname, $id);
+  while($statement->fetch()){
+    $msg = "Insufficient evidence provided for academic integrity case involving " . $fname . " " . $lname . " (" . $id . "). The case has been closed.";
+    $msg = wordwrap($msg, 70);
+  }
+  //Get prof email from db
+  $statement = $conn->prepare("SELECT professor.email FROM active_cases LEFT JOIN professor ON active_cases.prof_id = professor.professor_id WHERE active_cases.case_id = '$caseId'"); 
+  if(!$statement->execute()){
+    echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+  }
+  $statement->bind_result($email);
+  while($statement->fetch()){
+    mail($email, "Insufficient evidence provided for academic integrity case.", $msg);
+  }
   $conn->query("DELETE FROM student WHERE case_id = \"$id\"");
   $conn->query("DELETE FROM active_cases WHERE case_id = \"$id\"");
 }
