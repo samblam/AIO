@@ -1,6 +1,5 @@
 <?php
 require_once '../includes/session.php';
-
 require_once 'secure.php';
 //Open the db connection
 include '../includes/db.php';

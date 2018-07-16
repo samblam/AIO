@@ -141,7 +141,7 @@ DisplayInfo;
                 $statement->bind_result($caseVerdict);
                 
                 while($statement->fetch()){
-                    echo"<h1> case verdict: $caseVerdict";
+                    
                     if($caseVerdict == NULL){
                         // Insufficient Evidence Button
                         echo <<<ViewAllPost
