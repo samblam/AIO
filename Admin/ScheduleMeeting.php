@@ -148,7 +148,35 @@ include '../includes/formProcess.php';
 					</tbody>
 				</table>
 ViewCaseInfo;
+			?>
 
+			<!--Meeting date. Uses PHP to set the $date_meeting variable. -->
+			<div class="form-group">
+				<label for="date" class="col-sm-3 control-label">Meeting date:</label>
+				<div class="col-sm-9">
+					<input class="form-control" placeholder="MM/DD/YYYY" name="DateAlleged" id="date" value="<?php if (isset($date_meeting)) { echo $date_meeting;} ?>" autocomplete="off">
+				</div>
+			</div>
+
+		    <script type="text/javascript">
+				$(document).ready(function () {
+					"use strict";
+					var date_input1 = $('input[id="date"]');
+					var options = {
+						format: 'mm/dd/yyyy',
+						todayHighlight: true,
+						autoclose: true
+					};
+
+					var datepicker = date_input1.datepicker(options)
+					datepicker.on('show', function(e) {
+						var rect = e.currentTarget.getBoundingClientRect();
+						$(this).data('datepicker').picker.css('left', rect.left);
+					});
+				});
+			</script>
+
+			<?php
 			/**
 			* Get information on the 1 or more students involved in the case.
 			*/
@@ -207,11 +235,14 @@ ContactTable1;
 ContactTable2;
 			}
 
+			CloseCon($getStudents);
+
 			echo <<<ContactTable3
 				</table>
+				<br>
+				<br>
+				<button id="Send">Schedule and Send</button>
 ContactTable3;
-
-			CloseCon($getStudents);
 		?>
 
     </body>
