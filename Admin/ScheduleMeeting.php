@@ -41,6 +41,9 @@ include '../includes/formProcess.php';
 		<?php
 			$caseId = getCaseID();
 
+			//Will warn user if something is wrong before they send the email.
+			$caseErrors = false;
+
 			$getCaseInfo = $conn->prepare("
 									SELECT
 										A.case_id,
@@ -83,7 +86,6 @@ include '../includes/formProcess.php';
 			if (!$aio){
 				$aio = "No AIO assigned<br><a href='ChangeAIO.php?case_id=" . $caseId . "'>Assign AIO</a>";
 			} else {
-
 				$getAIO = $conn->prepare("
 									SELECT
 										fname,
@@ -99,12 +101,23 @@ include '../includes/formProcess.php';
 				}
 
 				$getAIO->bind_result($aio_fname, $aio_lname);
-
 				$getAIO->fetch();	//Pull just one row.
 
-				CloseCon($getAIO);
-
 				$aio = ($aio_fname . " " . $aio_lname);
+				CloseCon($getAIO);
+			}
+
+			//Start building the list of people to send emails to
+			$sendTo_Emails = array();
+			$sendTo_Name = array();
+
+			if (!$prof_email_1){
+				$prof_email_1 = "<font color='red'>Error - no email found.</font>";
+				$caseErrors = true;
+			} else{
+				//Adds to the arrays.
+				$sendTo_Emails[] = $prof_email_1;
+				$sendTo_Name[] = ($prof_fname . " " . $prof_lname);
 			}
 
 			//Make the main information table.
@@ -157,6 +170,7 @@ ViewCaseInfo;
 
 			$getStudents->bind_result($student_fname, $student_lname, $student_id, $student_email);
 
+			//Built instructor part of the table.
 			echo <<<ContactTable1
 				<table class="table table-bordered" style="font-size: 14px;">
 					<caption>Send to</caption>
@@ -172,12 +186,18 @@ ViewCaseInfo;
 					</tr>
 ContactTable1;
 
+			//Add 1 row for every student involved in the case.
 			$i = 0;
 			while($getStudents->fetch()){
 				$i++;
 				if (!$student_email){
 					$student_email = "<font color='red'>Error - no email found.</font>";
+					$caseErrors = true;
+				} else{
+					$sendTo_Emails[] = $student_email;
+					$sendTo_Name[] = ($student_fname . " " . $student_lname);
 				}
+
 				echo <<<ContactTable2
 					<tr>
 						<td>Student #$i</td>
