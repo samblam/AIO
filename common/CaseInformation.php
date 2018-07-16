@@ -8,6 +8,25 @@ include_once '../includes/db.php';
 include '../includes/formProcess.php';
 include_once '../includes/page.php';
 
+$path_to_zip_file = "";
+
+if(isset($_GET['case_id'])){
+    //Gets case id from URL
+    $caseId = intval($_GET['case_id']);
+
+    $statement = $conn->prepare("SELECT evidence_fileDir FROM active_cases WHERE case_id = " . $caseId);
+    if(!$statement->execute()){
+        echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+    }
+
+    $statement->bind_result($path_to_zip_file);
+    $statement->fetch();
+    echo $path_to_zip_file;
+
+    CloseCon($conn);
+    $conn = OpenCon();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -76,7 +95,24 @@ include_once '../includes/page.php';
                     <tr>
                         <td>Files</td>
                         <!-- this needs evidence files -->
-                        <td><a href="#">Link.zip</a></td>
+                        <!-- <td><a href="#">Link.zip</a></td> -->
+                        <?php
+                            $no_evidence_found_row = "<td>No evidence submitted</td>";
+                            if($path_to_zip_file == ""){
+                                // no evidence found
+                                echo $no_evidence_found_row;
+                            } 
+
+                            else {
+                                $path_to_zip_file = "../evidence/" . $path_to_zip_file . "/evidence.zip";
+
+                                if (file_exists($path_to_zip_file)){
+                                    echo "<td><a href=\"" . $path_to_zip_file . "\" download>evidence.zip</a></td>";
+                                } else {
+                                    echo $no_evidence_found_row;
+                                }
+                            }
+                        ?>
                     </tr>
 
                     <tr>
