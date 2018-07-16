@@ -56,7 +56,17 @@ include '../includes/formProcess.php';
                 <tbody>
                   <?php
                     //Get all active cases and bind the returned database fields to php variables
-                    $statement = $conn->prepare("SELECT active_cases.case_id, active_cases.class_name_code, professor.fname, professor.lname, aio.fname, aio.lname  FROM active_cases LEFT JOIN professor ON professor.professor_id = active_cases.prof_id LEFT JOIN aio ON aio.aio_id = active_cases.aio_id");
+                    $statement = $conn->prepare("SELECT active_cases.case_id, 
+                                                        active_cases.class_name_code, 
+                                                        professor.fname, 
+                                                        professor.lname, 
+                                                        aio.fname, 
+                                                        aio.lname  
+                                                    FROM active_cases 
+                                                    LEFT JOIN professor 
+                                                    ON professor.professor_id = active_cases.prof_id 
+                                                    LEFT JOIN aio 
+                                                    ON aio.aio_id = active_cases.aio_id");
                     if(!$statement->execute()){
                       echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                     }
@@ -85,13 +95,21 @@ include '../includes/formProcess.php';
                                   <span class="caret"></span></button>
                                   <ul class="dropdown-menu">
 
-                                      <li><a href="CaseInformation.php?case_id={$caseId}">View</a></li>
-                                      <li><a href="ChangeAIO.php?case_id={$caseId}">Change AIO</a></li>
+                                    <form method="post" action="CaseInformation.php">
+                                        <input type="hidden" id="caseId" name="caseId" value="$caseId"/>
+                                        <button class='btn' type='submit'>ViewCase</button>
+                                    </form>
                                       <li>
-                                      <form class="delete_this_case" method="post" action="AdminActiveCases.php" onclick="return confirm('Are you sure you want to remove this case? This will permanently delete this case.\\nClick OK to continue.')">
-                                        <input type="text" name="case_id" value="$caseId" hidden>
-                                        <button value="true" type="submit" style="background-color: red" name="deleteCase">Delete</button>
-                                      </form>
+                                        <form method="post" action="ChangeAIO.php">
+                                            <input type="hidden" id="caseId" name="caseId" value="$caseId"/>
+                                            <button class='btn' type='submit'>Change AIO</button>
+                                        </form>
+                                      <li>
+
+                                        <form class="delete_this_case" method="post" action="AdminActiveCases.php" onclick="return confirm('Are you sure you want to remove this case? This will permanently delete this case.\\nClick OK to continue.')">
+                                            <input type="text" name="case_id" value="$caseId" hidden>
+                                            <button value="true" type="submit" class='btn border' style="background-color: red" name="deleteCase">Delete</button>
+                                        </form>
                                       </li>
                                   </ul>
                               </div>
