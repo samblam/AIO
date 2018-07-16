@@ -117,7 +117,7 @@ SelectNew;
 OptionAIO;
                 }
                 //Gets case id from URL
-                $caseId = intval($_GET['case_id']);
+                $caseId = $_POST['caseId'];
                 // Submit button, and End of form
                 echo <<<Button
                     </select>
