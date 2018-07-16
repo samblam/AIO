@@ -54,8 +54,7 @@ include '../includes/formProcess.php';
 										P.fname,
 										P.lname,
 										P.email,
-										P.alt_email,
-                                        A.aio_id
+										A.aio_id
 									FROM
 										active_cases as A
 									INNER JOIN
@@ -68,7 +67,7 @@ include '../includes/formProcess.php';
                 echo "Execute failed: (" . $query->errno . ") " . $query->error;
             }
 
-			$getCaseInfo->bind_result($caseID, $description, $prof_id, $date_aware, $evidence_path, $prof_fname, $prof_lname, $prof_email_1, $prof_email_2, $aio);
+			$getCaseInfo->bind_result($caseID, $description, $prof_id, $date_aware, $evidence_path, $prof_fname, $prof_lname, $prof_email_1, $aio);
 
 			$getCaseInfo->fetch();	//Pull just one row.
 
@@ -243,6 +242,12 @@ ContactTable2;
 				<br>
 				<button id="Send">Schedule and Send</button>
 ContactTable3;
+
+			//Temp values while I hook up the date and time pickers.
+			$meeting_day = "2018-6-24";
+			$meeting_location = "AIO";
+			$meeting_time = "9:30:00"
+
 		?>
 
     </body>
