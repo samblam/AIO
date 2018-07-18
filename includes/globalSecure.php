@@ -10,7 +10,7 @@
  *    ***** INCLUDE ~AFTER~ ANY secure.php SCRIPTS *****
  */
 
-if( !$security_override_active ) {
+if( isset($security_override_active) && !$security_override_active ) {
   header( 'HTTP/1.0 403 Forbidden' );
   exit( 'Insufficient access level' );
 }

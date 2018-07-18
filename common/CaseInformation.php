@@ -8,6 +8,9 @@ include_once '../includes/db.php';
 include '../includes/formProcess.php';
 include_once '../includes/page.php';
 
+echo"<script>";
+include '../JS/formLoader.js';
+echo"</script>";
 ?>
 
 <!DOCTYPE html>
@@ -83,7 +86,7 @@ include_once '../includes/page.php';
                                 <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="font-size: 12px;" data-toggle="dropdown">Other Students
                                 <span class="caret"></span></button>
                                     <ul class="dropdown-menu" onchange="warning()">
-                                        <li><a href="../common/student-case-information.php">$sfname, $scsid</a></li>
+                                        <li><a href="student-case-information.php">$sfname, $scsid</a></li>
 DisplayInfo;
                                         while($statement->fetch()){
                                             echo"<input id='caseId' name='caseId' value='$caseIdValue' type='hidden'>";
@@ -155,7 +158,7 @@ ViewAllPost;
                         // Close case Button guilty
                         echo <<<ViewAllPost2
                             <form class="delete_this_case" method="post" action="AioActiveCases.php" onclick="return confirm('Are you sure you want to close this case? \\nIf the verdict is guilty the case gets archived in our system, and if the verdict is not guilty the case is permanently deleted. \\nClick OK to continue.')">
-                                <input type="text" name="case_id" value="$caseId" hidden>
+                                <input type="text" name="case_id"   hidden>
                                 <button class="btn btn-danger" value="true" type="submit" name="closeCaseGuilty">Close Case</button>
                             </form>
 ViewAllPost2;
@@ -183,9 +186,9 @@ ViewAllPost3;
                 <?php
                     if($_SESSION['role'] != "professor"){
                         echo<<<DisplayFormTabs
-                        <li><a data-toggle="tab" href="#formb">Form B</a></li>
-                        <li><a data-toggle="tab" href="#formc">Form C</a></li>
-                        <li><a data-toggle="tab" href="#formd">Form D</a></li>
+                        <li class=""><a data-toggle="tab" href="#formb">Form B</a></li>
+                        <li class=""><a data-toggle="tab" href="#formc">Form C</a></li>
+                        <li class=""><a data-toggle="tab" href="#formd">Form D</a></li>
 DisplayFormTabs;
                     }
                 ?>
@@ -194,27 +197,24 @@ DisplayFormTabs;
             <div class="tab-content">
                 <!-- Not sure why form A is loaded here? Someone who knows should check... - Bjorn -->
                 <div id="forma" class="tab-pane fade active in">
-                    <?php include 'forma.php' ?>
+                    <?php //include 'forma.php' ?>
                 </div>
-                
                 
                 <?php
                     //if it's a professor visiting, only display from A 
                     if($_SESSION['role'] != "professor"){
                         
-                    echo <<<DisplayForms
-                        <div id="formb" class="tab-pane fade">
-                            <?php include '../AIO/formb.php' ?>
-                        </div>
+                        echo"<div id=\"formb\" class='tab-pane fade'>";
+                            //include '../AIO/formb.php';
+                        echo"</div>";
 
-                        <div id="formc" class="tab-pane fade">
-                            <?php include '../AIO/formc.php' ?>
-                        </div>
+                        echo"<div id=\"formc\" class='tab-pane fade'>";
+                            //include '../AIO/formc.php';
+                        echo"</div>";
 
-                        <div id="formd" class="tab-pane fade">
-                            <?php include '../AIO/formd.php' ?>
-                        </div>
-DisplayForms;
+                        echo"<div id=\"formd\" class='tab-pane fade'>";
+                            //include '../AIO/formd.php';
+                        echo"</div>";
             
                     }
                 ?>
