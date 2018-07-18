@@ -146,7 +146,7 @@ DisplayInfo;
                 
                 while($statement->fetch()){
                     
-                    if($caseVerdict == NULL){
+                    if($caseVerdict == NULL && $_SESSION['role'] != "professor"){
                         // Insufficient Evidence Button
                         echo <<<ViewAllPost
                             <form class="delete_this_case" method="post" action="ActiveCases.php" onclick="return confirm('Are you sure you want to remove this case for insufficient evidence? This will permanently delete the case.\\nClick OK to continue.')">
@@ -155,7 +155,7 @@ DisplayInfo;
                             </form>
 ViewAllPost;
                     }
-                    else if ($caseVerdict == "guilty"){
+                    else if ($caseVerdict == "guilty" && $_SESSION['role'] != "professor"){
                         // Close case Button guilty
                         echo <<<ViewAllPost2
                             <form class="delete_this_case" method="post" action="ActiveCases.php" onclick="return confirm('Are you sure you want to close this case? \\nIf the verdict is guilty the case gets archived in our system, and if the verdict is not guilty the case is permanently deleted. \\nClick OK to continue.')">
@@ -164,7 +164,7 @@ ViewAllPost;
                             </form>
 ViewAllPost2;
                     }
-                    else if ($caseVerdict == "not guilty"){
+                    else if ($caseVerdict == "not guilty" && $_SESSION['role'] != "professor"){
                         // Close case Button not guilty
                         echo <<<ViewAllPost3
                             <form class="delete_this_case" method="post" action="ActiveCases.php" onclick="return confirm('Are you sure you want to close this case? \\nIf the verdict is guilty the case gets archived in our system, and if the verdict is not guilty the case is permanently deleted. \\nClick OK to continue.')">
