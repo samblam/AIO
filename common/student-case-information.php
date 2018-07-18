@@ -131,6 +131,14 @@ ViewAllPost3;
             
         </div>
 
+        <div>
+            <?php
+            
+
+            ?>
+
+        </div>
+
         <!-- Form display div -->
         <div>
             <ul class="nav nav-tabs nav-justified">

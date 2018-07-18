@@ -12,10 +12,10 @@ include '../JS/profAutoFill.js';
 
 $formSubmissionDate = "";
 $evidenceFileDir = "";
-$case_id = "";
 
 // check if URL contains the case_id variable
 if(isset($_GET["case_id"])){
+
     $statement = $conn->prepare("SELECT evidence_fileDir, form_a_submit_date FROM active_cases WHERE case_id = ?");
     // get the case_id from the URL
     $case_id = (int)$_GET["case_id"];
@@ -23,6 +23,7 @@ if(isset($_GET["case_id"])){
     if(!$statement->execute()){
       echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
     }
+
 
     // get the case information from the database
     $statement->bind_result($evidenceFileDir, $formSubmissionDate);
@@ -207,6 +208,10 @@ if(isset($_GET["case_id"])){
             			?>
                     </div>
                 </div>
+
+                
+
+                
             </form>
         </div>
     </body>

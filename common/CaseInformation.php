@@ -8,6 +8,8 @@ include_once '../includes/db.php';
 include '../includes/formProcess.php';
 include_once '../includes/page.php';
 
+//$case_id = "";
+//$aio_id="";
 ?>
 
 <!DOCTYPE html>
@@ -23,6 +25,27 @@ include_once '../includes/page.php';
     <body style="margin: auto;">
         <!-- Headder div + Logout button -->
         <div class="top-header-full"></div>
+
+        
+        <div>
+    
+        <?php
+        if($_SESSION['role']=="professor" && $formSubmissionDate==""){
+        echo"<button type=\"submit\" class=\"btn btn-success\" id=\"SubmitFormA\" name=\"SubmitFormA\">Submit</button>";
+        } 
+
+        elseif ($_SESSION['role']=="professor" && $formSubmissionDate!="") {
+        // add submit button for adding more evidence to a previously submitted case
+        echo "<button type=\"submit\" class=\"btn btn-success\" id=\"AddEvidence\" name=\"AddEvidence\" disabled>Upload Selected Evidence</button>";
+
+        if($evidenceFileDir!=""){
+        // add a hidden field that passes on the file directory in which to add the files
+        echo "<input type=\"hidden\" name=\"EvidenceDirectory\" value=\"$evidenceFileDir\">";
+            }
+        }
+        ?>
+        </div>
+    
 
         <div style="display: inline-block;">
             <h2>Case Information - <p class="studentName"></p></h2>
@@ -89,6 +112,45 @@ include_once '../includes/page.php';
             </table>
         </div>
 
+        <div class="center-block text-center">
+        <?php 
+        //setting original AIO id to null for bind parameter
+        $aio_id=NULL;
+        // check if URL contains the case_id variable
+        if(isset($_GET["case_id"])){
+        $statement = $conn->prepare("SELECT aio_id FROM active_cases WHERE case_id = ?");
+        // get the case_id from the URL
+
+        //binding current cases aio id to variable
+        $case_id = (int)$_GET["case_id"];
+        $statement->bind_param("i", $case_id);
+        if(!$statement->execute()){
+        echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+        }
+
+        // get the case information from the database
+        $statement->bind_result($aio_id);
+        $statement->fetch();
+
+        //echoing button actions to Accept Deny php file 
+        if($_SESSION['role']=="aio" && $aio_id==NULL){
+        echo"<form action= \"../includes/AcceptDeny.php\" method=\"post\">";
+        echo"<button type=\"submit\" class=\"btn btn-success\" name=\"AcceptFormA\">Accept</button>";
+        echo"<button type=\"submit\" class=\"btn btn-danger\" name=\"DenyFormA\">Deny</button>";
+        echo"<input type=\"hidden\" name=\"CurrCaseId\" value=\"$case_id\"></input>";
+        echo"</form>";
+        }
+
+
+
+    }
+        CloseCon($conn);
+        $conn=OpenCon();
+    ?>
+
+
+        </div>
+
 
         <!-- Form display div -->
         <div>
@@ -119,6 +181,12 @@ include_once '../includes/page.php';
                 </div>
 
             </div>
+
+
+            
         </div>
+
+
+
     </body>
 </html>
