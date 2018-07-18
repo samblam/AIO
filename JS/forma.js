@@ -6,6 +6,7 @@ function getFileInfo(){
 
     addEvidenceButton = document.getElementById("AddEvidence");
     submitFormAButton = document.getElementById("SubmitFormA");
+    saveFormButton = document.getElementById("SaveFormA");
 
     uploadedFiles = document.getElementById("fileInput").files;
     fileInfoElement = document.getElementById("fileInfo");
@@ -40,7 +41,7 @@ function getFileInfo(){
                 var fileListItem = document.createElement('li');
 
                 var p = document.createElement('p');
-                p.textContent = "The sum of the file sizes selected exceeded the maximum upload size (" + getFileSizeString(maxFileSize) + ")";
+                p.textContent = "The sum of the file sizes selected exceeded the maximum upload size (" + getFileSizeString(maxFileSize) + "). Please contact the administrator if you need assistance with a large case";
                 p.style.color = "red";
                 
                 fileListItem.appendChild(p);
@@ -82,6 +83,10 @@ function getFileInfo(){
 
     if (submitFormAButton){
         submitFormAButton.disabled = !allFilesValid;
+    }
+
+    if (saveFormButton){
+        saveFormButton.disabled = !allFilesValid;
     }
 }
 
