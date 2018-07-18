@@ -86,11 +86,12 @@ echo"</script>";
                                 <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="font-size: 12px;" data-toggle="dropdown">Other Students
                                 <span class="caret"></span></button>
                                     <ul class="dropdown-menu" onchange="warning()">
-                                        <li><a href="student-case-information.php">$sfname, $scsid</a></li>
+                                        <input id='caseId' name='caseId' value='$caseIdValue' type='hidden'>
+                                        <li><button class='btn' type='submit'>$sfname, $scsid</button></li>
 DisplayInfo;
                                         while($statement->fetch()){
                                             echo"<input id='caseId' name='caseId' value='$caseIdValue' type='hidden'>";
-                                            echo "<li><a type='submit'> $sfname, $scsid</a></li>";
+                                            echo "<li><button class='btn' type='submit'>$sfname, $scsid</button></li>";
                                         }
             echo <<<DisplayInfo
                                 </ul>
