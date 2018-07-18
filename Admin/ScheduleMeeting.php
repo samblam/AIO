@@ -4,7 +4,7 @@ require_once '../includes/session.php';
 require_once 'secure.php';
 
 include '../functions/getCaseID.php';
-
+include_once '../includes/page.php';
 //Open the db connection
 include '../includes/db.php';
 //Check if the form variables have been submitted, store them in the session variables
@@ -106,17 +106,10 @@ include '../includes/formProcess.php';
 				CloseCon($getAIO);
 			}
 
-			//Start building the list of people to send emails to
-			$sendTo_Emails = array();
-			$sendTo_Name = array();
 
 			if (!$prof_email_1){
 				$prof_email_1 = "<font color='red'>Error - no email found.</font>";
 				$caseErrors = true;
-			} else{
-				//Adds to the arrays.
-				$sendTo_Emails[] = $prof_email_1;
-				$sendTo_Name[] = ($prof_fname . " " . $prof_lname);
 			}
 
 			//Make the main information table.
@@ -128,12 +121,12 @@ include '../includes/formProcess.php';
 							<td>Case description</td>
 							<td>$description</td>
 						</tr>
-						<tr>
-							<td>Professor</td>
-							<td>$prof_fname $prof_lname</td>
-						<tr>
 							<td>Date</td>
 							<td class="date">$date_aware</td>
+						</tr>
+						<tr>
+							<td>Professor</td>
+							<td>$prof_fname $prof_lname ($prof_email_1)</td>
 						</tr>
 						<tr>
 							<td>Files</td>
@@ -147,44 +140,24 @@ include '../includes/formProcess.php';
 					</tbody>
 				</table>
 ViewCaseInfo;
-			?>
 
-			<!--Meeting date. Uses PHP to set the $date_meeting variable. -->
-			<div class="form-group">
-				<label for="date" class="col-sm-3 control-label">Meeting date:</label>
-				<div class="col-sm-9">
-					<input class="form-control" placeholder="MM/DD/YYYY" name="DateAlleged" id="date" value="<?php if (isset($date_meeting)) { echo $date_meeting;} ?>" autocomplete="off">
-				</div>
-			</div>
-
-		    <script type="text/javascript">
-				$(document).ready(function () {
-					"use strict";
-					var date_input1 = $('input[id="date"]');
-					var options = {
-						format: 'mm/dd/yyyy',
-						todayHighlight: true,
-						autoclose: true
-					};
-
-					var datepicker = date_input1.datepicker(options)
-					datepicker.on('show', function(e) {
-						var rect = e.currentTarget.getBoundingClientRect();
-						$(this).data('datepicker').picker.css('left', rect.left);
-					});
-				});
-			</script>
-
-			<?php
 			/**
 			* Get information on the 1 or more students involved in the case.
 			*/
+			//Start building the list of people to send emails to
+			$student_emails = array();
+			$studentNames = array();
+			$meetingDates = array();
+			$meetingTimes = array();
+
 			$getStudents = $conn->prepare("
 									SELECT
 										fname,
 										lname,
 										csid,
-										email
+										email,
+										c_meetingDate,
+										c_meetingTime
 									FROM
 										student
 									WHERE
@@ -195,21 +168,19 @@ ViewCaseInfo;
                 echo "Execute failed: (" . $query->errno . ") " . $query->error;
             }
 
-			$getStudents->bind_result($student_fname, $student_lname, $student_id, $student_email);
+			$getStudents->bind_result($student_fname, $student_lname, $student_id, $student_email, $meetingDate, $meetingTime);
 
 			//Built instructor part of the table.
 			echo <<<ContactTable1
 				<table class="table table-bordered" style="font-size: 14px;">
-					<caption>Send to</caption>
+					<caption>Student(s)</caption>
 					<tr>
 						<th>Role</th>
 						<th>Name</th>
 						<th>Email</th>
-					</tr>
-					<tr>
-						<td>Professor</td>
-						<td>$prof_fname $prof_lname</td>
-						<td>$prof_email_1</td>
+						<th>Meeting date</th>
+						<th>Meeting time</th>
+						<th></th>
 					</tr>
 ContactTable1;
 
@@ -221,8 +192,13 @@ ContactTable1;
 					$student_email = "<font color='red'>Error - no email found.</font>";
 					$caseErrors = true;
 				} else{
-					$sendTo_Emails[] = $student_email;
-					$sendTo_Name[] = ($student_fname . " " . $student_lname);
+					//TEMP
+					//$meetingDate = "2018-02-03";
+					//Adds to the arrays.
+					$studentEmails[] = $student_email;
+					$studentNames[] = ($student_fname . " " . $student_lname);
+					$meetingDates[] = $meetingDate;
+					$meetingTimes[] = $meetingTime;
 				}
 
 				echo <<<ContactTable2
@@ -230,7 +206,39 @@ ContactTable1;
 						<td>Student #$i</td>
 						<td>$student_fname $student_lname</td>
 						<td>$student_email</td>
+						<td>
+							<div class="col-sm-9">
+								<input class="form-control" placeholder="MM/DD/YYYY" name="DateAlleged" id="date$i" value="$meetingDate" autocomplete="off">
+							</div>
+						</td>
+						<td>**INSET TIME PICKER HERE**</td>
+						<td>
+							<button id="Send$i">Schedule and Send</button>
+						</td>
 					</tr>
+					
+					<script type="text/javascript">
+						console.log("Yup, stuff is happening $i");
+						$(document).ready(function () {
+							"use strict";
+							//var date_input = $('input[id="date$i"]');
+							var date_input = document.getElementById("date$i");
+							console.log(date_input);
+							var options = {
+								format: 'mm/dd/yyyy',
+								todayHighlight: true,
+								autoclose: true
+							};
+
+							var datepicker = date_input.datepicker(options)
+							datepicker.on('show', function(e) {
+								var rect = e.currentTarget.getBoundingClientRect();
+								$(this).data('datepicker').picker.css('left', rect.left);
+							});
+						});
+					</script>
+					
+					
 ContactTable2;
 			}
 
@@ -243,12 +251,34 @@ ContactTable2;
 				<button id="Send">Schedule and Send</button>
 ContactTable3;
 
-			//Temp values while I hook up the date and time pickers.
-			$meeting_day = "2018-6-24";
-			$meeting_location = "AIO";
-			$meeting_time = "9:30:00"
-
 		?>
+		<!--Meeting date. Uses PHP to set the $date_meeting variable. -->
+		<div class="form-group">
+			<label for="date" class="col-sm-3 control-label">Meeting date:</label>
+			<div class="col-sm-9">
+				<input class="form-control" placeholder="MM/DD/YYYY" name="DateAlleged" id="date"
+					value="<?php if (isset($date_meeting)) { echo $date_meeting;} ?>" autocomplete="off"
+				>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+			$(document).ready(function () {
+				"use strict";
+				var date_input1 = $('input[id="date"]');
+				var options = {
+					format: 'mm/dd/yyyy',
+					todayHighlight: true,
+					autoclose: true
+				};
+
+				var datepicker = date_input1.datepicker(options)
+				datepicker.on('show', function(e) {
+					var rect = e.currentTarget.getBoundingClientRect();
+					$(this).data('datepicker').picker.css('left', rect.left);
+				});
+			});
+		</script>
 
     </body>
 </html>
