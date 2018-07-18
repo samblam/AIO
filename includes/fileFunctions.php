@@ -1,4 +1,4 @@
-<?
+<?php
 
 	function validateUploadedFiles(){		 
 		/* the file validation values should be based on the values set in the php.ini file
