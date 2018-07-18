@@ -74,7 +74,7 @@ include '../includes/formProcess.php';
             <!-- Displays the current AIO, or that there isn't one. -->
             <?php
                 //Gets case id from URL
-                $caseId = intval($_GET['case_id']);
+                $caseId = $_POST['caseId'];
                 //Get aio_id and aio name.
                 $statement = $conn->prepare("SELECT active_cases.aio_id, aio.fname, aio.lname FROM active_cases LEFT JOIN aio ON aio.aio_id = active_cases.aio_id WHERE active_cases.case_id = '$caseId' "); 
                 if(!$statement->execute()){
@@ -117,7 +117,7 @@ SelectNew;
 OptionAIO;
                 }
                 //Gets case id from URL
-                $caseId = intval($_GET['case_id']);
+                $caseId = $_POST['caseId'];
                 // Submit button, and End of form
                 echo <<<Button
                     </select>
