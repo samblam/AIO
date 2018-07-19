@@ -1,1 +1,5 @@
 Options -Indexes
+RewriteEngine On
+# redirect URL requests for .zip files to the downloadRequest.php file. This prevents visitors from directly accessing the evidence files
+RewriteCond %{REQUEST_URI} \.(zip)$ [NC]
+RewriteRule ^(.*)$ /evidence/downloadRequest.php?file_name=$1 [L]
