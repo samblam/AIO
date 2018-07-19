@@ -63,20 +63,33 @@ include '../includes/formProcess.php';
 
                     //Fetches each query result, one by one, and prints out a row for each active case created by this professor
                     while($statement->fetch()){
-                      $submitted = "Submitted";
-                      if($subDate == NULL){
-                        $submitted = "Not Submitted";
-                      }
-                      echo <<<ViewAllPost
-                      <tr>
-                        <td>$scsid</td>
-                        <td>$sfname $slname</td>
-                        <td>$afname $alname</td>
-                        <td><button class="custombtn btn btn-danger">Yes</button></td>
-                        <td>$submitted</td>
-                        <td><a href="FormA.php?case_id={$caseId}" class="btn btn-primary">View Case</a></td>
-                      </tr>
+                       if($subDate == NULL){
+                            // case has not been submitted
+                            echo <<<ViewAllPost
+                                <tr>
+                                    <td>$scsid</td>
+                                    <td>$sfname $slname</td>
+                                    <td>$afname $alname</td>
+                                    <td><button class="custombtn btn btn-danger">Yes</button></td>
+                                    <td>Not Submitted</td>
+                                    <td><a href="FormA.php?case_id={$caseId}" class="btn btn-primary">View Case</a></td>
+                                </tr>
 ViewAllPost;
+                        } 
+
+                        else{
+                            // case was submitted
+                            echo <<<ViewAllPost
+                                <tr>
+                                    <td>$scsid</td>
+                                    <td>$sfname $slname</td>
+                                    <td>$afname $alname</td>
+                                    <td><button class="custombtn btn btn-danger">Yes</button></td>
+                                    <td>Submitted</td>
+                                    <td><a href="CaseInformation.php?case_id={$caseId}" class="btn btn-primary">View Case</a></td>
+                                </tr>
+ViewAllPost;
+                        }
                     }
                     ?>
                 </tbody>
