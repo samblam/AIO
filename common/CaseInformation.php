@@ -127,7 +127,7 @@ DisplayInfo;
                 ?>
 
             
-        <!-- CLose case and insufficient evidence buttons -->
+        <!-- CLose case, insufficient evidence and forward case buttons -->
         <div class="center-block text-center">
             <?php
                 //Gets case id from URL
@@ -173,6 +173,58 @@ ViewAllPost2;
                             </form>
 ViewAllPost3;
                     }
+                    // Forward case button
+                    echo <<<ViewAllPost4
+                        <!-- foward case button -->
+                        <button class="btn btn-success" value="true" type="submit" name="forwardCase" data-toggle="modal" data-target="#emailForm">Forward Case</button>
+                        
+                        <!-- forard case email pop-up -->
+                        <div class="form-container">
+                            <form class="form-horizontal">
+                                <div id="emailForm" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h4 class="modal-title">Forward Case Email Form</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Fill out the form below to forward this case to the senate via email. All of the evidence and case files will be attached and sent in this email.</p>
+                                                <div class="form-group">
+                                                    <label for="email-to" class="col-sm-3 control-label">To:</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" placeholder="Email Address" id="email-to" name="email-to" required>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="email-cc" class="col-sm-3 control-label">Cc:</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" placeholder="Email Address" id="email-cc" name="email-cc">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="subject" class="col-sm-3 control-label">Subject:</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" placeholder="Subject" id="email-subject" name="email-subject" required>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="email-message" class="col-sm-3 control-label">Message:</label>
+                                                    <div class="col-sm-9">
+                                                        <textarea class="form-control" placeholder="Message" id="email-message" name="email-message" rows="5" required></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-success pull-left" data-dismiss="modal">Send Email</button>
+                                                <button class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+ViewAllPost4;
                 }
             ?>
             
