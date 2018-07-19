@@ -8,20 +8,21 @@ include_once '../includes/db.php';
 include '../includes/formProcess.php';
 include_once '../includes/page.php';
 
-$path_to_zip_file = "";
+$path_to_evidence_dir = "";
+$aio_id = "";
+$prof_id = "";
 
 if(isset($_GET['case_id'])){
     //Gets case id from URL
     $caseId = intval($_GET['case_id']);
 
-    $statement = $conn->prepare("SELECT evidence_fileDir FROM active_cases WHERE case_id = " . $caseId);
+    $statement = $conn->prepare("SELECT evidence_fileDir, aio_id, prof_id FROM active_cases WHERE case_id = " . $caseId);
     if(!$statement->execute()){
         echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
     }
 
-    $statement->bind_result($path_to_zip_file);
+    $statement->bind_result($path_to_evidence_dir, $aio_id, $prof_id);
     $statement->fetch();
-    echo $path_to_zip_file;
 
     CloseCon($conn);
     $conn = OpenCon();
@@ -94,23 +95,29 @@ if(isset($_GET['case_id'])){
                     </tr>
                     <tr>
                         <td>Files</td>
-                        <!-- this needs evidence files -->
-                        <!-- <td><a href="#">Link.zip</a></td> -->
                         <?php
-                            $no_evidence_found_row = "<td>No evidence submitted</td>";
-                            if($path_to_zip_file == ""){
-                                // no evidence found
-                                echo $no_evidence_found_row;
-                            } 
+                            // user has permission to view evidence files if:
+                            // user is AIO and AIO id for this case matches user's id
+                            // OR user is professor and professor id for this case matches user's id
+                            // OR user is an admin
 
-                            else {
-                                $path_to_zip_file = "../evidence/" . $path_to_zip_file . "/evidence.zip";
+                            $role = $_SESSION["role"];
 
-                                if (file_exists($path_to_zip_file)){
+                            if ($role == "aio" && $aio_id == $_SESSION["userId"] || $role == "professor" && $prof_id == $_SESSION["userId"] || $role == "admin"){
+                                if ($path_to_evidence_dir != "" && file_exists("../evidence/" . $path_to_evidence_dir . "/evidence.zip")) {
+                                    $path_to_zip_file = "../evidence/" . $path_to_evidence_dir . "/evidence.zip";
                                     echo "<td><a href=\"" . $path_to_zip_file . "\" download>evidence.zip</a></td>";
-                                } else {
-                                    echo $no_evidence_found_row;
                                 }
+
+                                else {
+                                    // no evidence has been submitted
+                                    echo "<td>No evidence submitted</td>";
+                                }
+                            }
+
+                            else{
+                                // viewer of the page does not meet the permission requirements to view the evidence
+                                echo "<td>Insufficient permission to view evidence</td>";
                             }
                         ?>
                     </tr>
