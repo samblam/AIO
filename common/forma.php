@@ -48,7 +48,7 @@ if(isset($_GET["case_id"])){
         </div>
 
         <div class="form-container">
-            <form class="form-horizontal" method="post" action="../includes/formProcess.php" enctype="multipart/form-data">
+            <form class="form-horizontal" method="post" action="../includes/processFormA.php" enctype="multipart/form-data">
 
                 <?php
                     if($case_id != ""){
@@ -189,7 +189,7 @@ if(isset($_GET["case_id"])){
                 <div class="form-group">
                     <div class="center-block text-center">
                         <button type="submit" class="btn btn-primary" name="PreviewPDF">Preview PDF</button>
-                        <button type="submit" class="btn btn-primary" name="SaveFormA">Save</button>
+                        <button id="SaveFormA" type="submit" class="btn btn-primary" name="SaveFormA">Save</button>
                         <?php
                             if($_SESSION['role']=="professor" && $formSubmissionDate==""){
                 	            echo"<button type=\"submit\" class=\"btn btn-success\" id=\"SubmitFormA\" name=\"SubmitFormA\">Submit</button>";
