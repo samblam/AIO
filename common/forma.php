@@ -234,6 +234,7 @@ if(isset($_GET["case_id"])){
         $(document).ready(function () {
             "use strict";
             var date_input1 = $('input[id="date"]');
+			console.log(date_input1);
             var options = {
                 format: 'mm/dd/yyyy',
                 todayHighlight: true,

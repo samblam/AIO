@@ -9,7 +9,6 @@ include_once '../includes/page.php';
 include '../includes/db.php';
 //Check if the form variables have been submitted, store them in the session variables
 include '../includes/formProcess.php';
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -200,7 +199,7 @@ ContactTable1;
 					$meetingDates[] = $meetingDate;
 					$meetingTimes[] = $meetingTime;
 				}
-
+				/**
 				echo <<<ContactTable2
 					<tr>
 						<td>Student #$i</td>
@@ -221,8 +220,8 @@ ContactTable1;
 						console.log("Yup, stuff is happening $i");
 						$(document).ready(function () {
 							"use strict";
-							//var date_input = $('input[id="date$i"]');
-							var date_input = document.getElementById("date$i");
+							var date_input = $('input[id="date$i"]');
+							//var date_input = document.getElementById("date$i");
 							console.log(date_input);
 							var options = {
 								format: 'mm/dd/yyyy',
@@ -240,6 +239,7 @@ ContactTable1;
 					
 					
 ContactTable2;
+			*/
 			}
 
 			CloseCon($getStudents);
@@ -252,13 +252,19 @@ ContactTable2;
 ContactTable3;
 
 		?>
-		<!--Meeting date. Uses PHP to set the $date_meeting variable. -->
+		<!--Meeting date. Uses PHP to set the $date_meeting variable. --
 		<div class="form-group">
 			<label for="date" class="col-sm-3 control-label">Meeting date:</label>
 			<div class="col-sm-9">
-				<input class="form-control" placeholder="MM/DD/YYYY" name="DateAlleged" id="date"
-					value="<?php if (isset($date_meeting)) { echo $date_meeting;} ?>" autocomplete="off"
-				>
+				<input class="form-control" placeholder="MM/DD/YYYY" name="DateAlleged" id="date" autocomplete="off">
+			</div>
+		</div>
+		
+		                <!--date of allegation -->
+		<div class="form-group">
+			<label for="date" class="col-sm-3 control-label">Date of Alleged Offense:</label>
+			<div class="col-sm-9">
+				<input class="form-control" placeholder="MM/DD/YYYY" name="DateAlleged" id="date" value="" autocomplete="off">
 			</div>
 		</div>
 
@@ -266,6 +272,7 @@ ContactTable3;
 			$(document).ready(function () {
 				"use strict";
 				var date_input1 = $('input[id="date"]');
+				console.log(date_input1);
 				var options = {
 					format: 'mm/dd/yyyy',
 					todayHighlight: true,
@@ -279,6 +286,5 @@ ContactTable3;
 				});
 			});
 		</script>
-
     </body>
 </html>
