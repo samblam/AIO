@@ -40,6 +40,7 @@ if(isset($_GET['case_id'])){
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Portal</title>
         <link rel="stylesheet" href="../CSS/main.css">
+        <link rel="stylesheet" href="../CSS/caseInformation.css">
         <script src="../JS/top-header-full.js"></script>
     </head>
     <body style="margin: auto;">
@@ -100,8 +101,12 @@ if(isset($_GET['case_id'])){
 
                             if ($role == "aio" && $aio_id == $userId || $role == "professor" && $prof_id == $userId || $role == "admin"){
                                 if ($path_to_evidence_dir != "" && file_exists("../evidence/" . $path_to_evidence_dir . "/evidence.zip")) {
+                                    // user should be shown the link to the evidence file
                                     $path_to_zip_file = "../evidence/" . $path_to_evidence_dir . "/evidence.zip";
-                                    echo "<td><a href=\"" . $path_to_zip_file . "\" download>evidence.zip</a></td>";
+                                    echo "<td><form action=\"../evidence/downloadRequest.php\" method=\"post\">";
+                                    echo "<input hidden name=\"caseId\" id=\"caseId\" value=\"$caseId\"/>";
+                                    echo "<input type=\"submit\" class=\"submitLink\" name=\"evidenceLink\" value=\"evidence.zip\"/>";
+                                    echo "</form></td>";
                                 }
 
                                 else {
