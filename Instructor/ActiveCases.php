@@ -1,6 +1,5 @@
 <?php
 require_once '../includes/session.php';
-
 require_once 'secure.php';
 //Open the db connection
 include '../includes/db.php';
@@ -63,33 +62,26 @@ include '../includes/formProcess.php';
 
                     //Fetches each query result, one by one, and prints out a row for each active case created by this professor
                     while($statement->fetch()){
-                       if($subDate == NULL){
-                            // case has not been submitted
-                            echo <<<ViewAllPost
-                                <tr>
-                                    <td>$scsid</td>
-                                    <td>$sfname $slname</td>
-                                    <td>$afname $alname</td>
-                                    <td><button class="custombtn btn btn-danger">Yes</button></td>
-                                    <td>Not Submitted</td>
-                                    <td><a href="FormA.php?case_id={$caseId}" class="btn btn-primary">View Case</a></td>
-                                </tr>
+                      $submitted = "Submitted";
+                      if($subDate == NULL){
+                        $submitted = "Not Submitted";
+                      }
+                      echo <<<ViewAllPost
+                      <tr>
+                        <td>$scsid</td>
+                        <td>$sfname $slname</td>
+                        <td>$afname $alname</td>
+                        <td><button class="custombtn btn btn-danger">Yes</button></td>
+                        <td>$submitted</td>
+                        <td>
+                            <form method="post" action="CaseInformation.php">
+                                <input type="hidden" id="caseId" name="caseId" value="$caseId">
+                                <button class='btn btn-primary' type='submit'>ViewCase</button>
+                            </form>
+                        </td>
+                      </tr>
 ViewAllPost;
                         } 
-
-                        else{
-                            // case was submitted
-                            echo <<<ViewAllPost
-                                <tr>
-                                    <td>$scsid</td>
-                                    <td>$sfname $slname</td>
-                                    <td>$afname $alname</td>
-                                    <td><button class="custombtn btn btn-danger">Yes</button></td>
-                                    <td>Submitted</td>
-                                    <td><a href="CaseInformation.php?case_id={$caseId}" class="btn btn-primary">View Case</a></td>
-                                </tr>
-ViewAllPost;
-                        }
                     }
                     ?>
                 </tbody>

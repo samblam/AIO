@@ -74,11 +74,16 @@ include '../includes/formProcess.php';
                       while($statement->fetch()){
                         echo <<<ViewAllPost
                         <tr>
-                          <td>$scsid</td>
-                          <td>$sfname $slname</td>
-                          <td>$pfname $plname</td>
-                          <td><button class="custombtn btn btn-danger">Yes</button></td>
-                          <td><a href="CaseInformation.php?case_id={$caseId}" class="btn btn-primary">View Case</a></td>
+                            <td>$scsid</td>
+                            <td>$sfname $slname</td>
+                            <td>$pfname $plname</td>
+                            <td><button class="custombtn btn btn-danger">Yes</button></td>
+                            <td>
+                            <form method="post" action="CaseInformation.php">
+                                <input type="hidden" id="caseId" name="caseId" value="$caseId">
+                                <button class='btn btn-primary' type='submit'>ViewCase</button>
+                            </form>
+                            </td>
                         </tr>
 ViewAllPost;
                       }
@@ -131,7 +136,12 @@ ViewAllPost;
                       <tr>
                           <td>$uClassName</td>
                           <td>$uProfessorFN $uProfessorLN</td>
-                          <td align="center"><a href="CaseInformation.php?case_id={$caseId}" class="btn btn-primary">View Case</a></td>
+                          <td>
+                            <form method="post" action="CaseInformation.php">
+                                <input id="caseId" name="caseId" value="$uCaseId" type="hidden">
+                                <button class='btn btn-primary' type='submit'>ViewCase</button>
+                            </form>
+                            </td>
                       </tr>
                         
 ViewAllPost;
