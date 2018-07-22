@@ -15,9 +15,9 @@ $role = $_SESSION["role"];
 $userId = (int) $_SESSION["userId"];
 
 
-if(isset($_GET['case_id'])){
+if(isset($_POST['caseId'])){
     //Gets case id from URL
-    $caseId = intval($_GET['case_id']);
+    $caseId = intval($_POST['caseId']);
 
     $statement = $conn->prepare("SELECT evidence_fileDir, aio_id, prof_id FROM active_cases WHERE case_id = " . $caseId);
     if(!$statement->execute()){
