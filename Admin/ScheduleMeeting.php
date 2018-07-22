@@ -5,6 +5,7 @@ require_once 'secure.php';
 
 include '../functions/getCaseID.php';
 include_once '../includes/page.php';
+
 //Open the db connection
 include '../includes/db.php';
 //Check if the form variables have been submitted, store them in the session variables
@@ -105,12 +106,6 @@ include '../includes/formProcess.php';
 				CloseCon($getAIO);
 			}
 
-
-			if (!$prof_email_1){
-				$prof_email_1 = "<font color='red'>Error - no email found.</font>";
-				$caseErrors = true;
-			}
-
 			//Make the main information table.
 			echo <<<ViewCaseInfo
 				<table class="table table-bordered" style="font-size: 14px;">
@@ -140,14 +135,47 @@ include '../includes/formProcess.php';
 				</table>
 ViewCaseInfo;
 
+				/**
+				* Get information on the 1 or more students involved in the case.
+				*/
+				//Start building the list of people to send emails to
+				$student_emails = array();
+				$studentNames = array();
+				$meetingDates = array();
+				$meetingTimes = array();
+
+			?>
+
+			<!--Meeting date. Uses PHP to set the $date_meeting variable. -->
+			<div class="form-group">
+				<label for="date" class="col-sm-3 control-label">Meeting date:</label>
+				<div class="col-sm-9">
+					<input class="form-control" placeholder="MM/DD/YYYY" name="DateAlleged" id="date" value="<?php if (isset($date_meeting)) { echo $date_meeting;} ?>" autocomplete="off">
+				</div>
+			</div>
+
+		    <script type="text/javascript">
+				$(document).ready(function () {
+					"use strict";
+					var date_input1 = $('input[id="date"]');
+					var options = {
+						format: 'mm/dd/yyyy',
+						todayHighlight: true,
+						autoclose: true
+					};
+
+					var datepicker = date_input1.datepicker(options)
+					datepicker.on('show', function(e) {
+						var rect = e.currentTarget.getBoundingClientRect();
+						$(this).data('datepicker').picker.css('left', rect.left);
+					});
+				});
+			</script>
+
+			<?php
 			/**
 			* Get information on the 1 or more students involved in the case.
 			*/
-			//Start building the list of people to send emails to
-			$student_emails = array();
-			$studentNames = array();
-			$meetingDates = array();
-			$meetingTimes = array();
 
 			$getStudents = $conn->prepare("
 									SELECT
@@ -191,6 +219,7 @@ ContactTable1;
 					$student_email = "<font color='red'>Error - no email found.</font>";
 					$caseErrors = true;
 				} else{
+
 					//TEMP
 					//$meetingDate = "2018-02-03";
 					//Adds to the arrays.
@@ -240,6 +269,10 @@ ContactTable1;
 					
 ContactTable2;
 			*/
+
+					</tr>
+ContactTable2;
+
 			}
 
 			CloseCon($getStudents);
@@ -252,6 +285,7 @@ ContactTable2;
 ContactTable3;
 
 		?>
+
 		<!--Meeting date. Uses PHP to set the $date_meeting variable. --
 		<div class="form-group">
 			<label for="date" class="col-sm-3 control-label">Meeting date:</label>
