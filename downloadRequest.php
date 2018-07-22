@@ -1,6 +1,6 @@
 <?php
-	require_once '../includes/session.php';
-	include_once "../includes/db.php";
+	require_once 'includes/session.php';
+	include_once "includes/db.php";
 	// This file is accessed when .zip files within the evidence directory are accessed directly via the URL.
 	// The .htaccess file reroutes the direct request to this file instead. 
 	// $_GET["file_name"] will contain the sub-URL that the user tried to access.
@@ -11,7 +11,15 @@
 	}
 
 	function does_not_exist(){
-		header('HTTP/1.0 404 Not Found');
+		echo "<html>
+				<head>
+					<title>404 Not Found</title>
+				</head>
+				<body>
+					<h1>Not Found</h1>
+					<p>The requested evidence files could not be found on the server.</p>
+				</body>
+			</html>";
 		die();
 	}
 
@@ -40,7 +48,7 @@
         // 		OR user is a professor and the professor id for this case matches user's id
         // 		OR user is an admin
 	    if (($role == "aio" && $aio_id == $userId) || ($role == "professor" && $prof_id == $userId) || $role == "admin"){
-	    	$path_to_evidence_dir = $evidence_folder . "/evidence.zip";
+	    	$path_to_evidence_dir = "evidence/" . $evidence_folder . "/evidence.zip";
             
             if ($evidence_folder != "" && file_exists($path_to_evidence_dir)) {
                 // user should be shown the link to the evidence file

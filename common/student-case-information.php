@@ -103,7 +103,7 @@ if(isset($_GET['case_id'])){
                                 if ($path_to_evidence_dir != "" && file_exists("../evidence/" . $path_to_evidence_dir . "/evidence.zip")) {
                                     // user should be shown the link to the evidence file
                                     $path_to_zip_file = "../evidence/" . $path_to_evidence_dir . "/evidence.zip";
-                                    echo "<td><form action=\"../evidence/downloadRequest.php\" method=\"post\">";
+                                    echo "<td><form action=\"/downloadRequest.php\" method=\"post\">";
                                     echo "<input hidden name=\"caseId\" id=\"caseId\" value=\"$caseId\"/>";
                                     echo "<input type=\"submit\" class=\"submitLink\" name=\"evidenceLink\" value=\"evidence.zip\"/>";
                                     echo "</form></td>";
