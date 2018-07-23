@@ -62,7 +62,7 @@ if(isset($_POST['caseId'])){
         <div>
             
             <?php
-                //Get all relevent feilds and bind them to php variables
+                //Get all relevant fields and bind them to php variables
                 $conn = OpenCon();
 
                 //Get all relevant fields and bind them to php variables
@@ -90,8 +90,7 @@ if(isset($_POST['caseId'])){
                 }
 
                 $statement->bind_result($submissionDate, $studentList, $pfname, $plname, $studentID, $sfname, $slname, $scsid);
-                $statement->fetch();
-
+                $statement->fetch();		//Get first student
             ?>
 
             <table class="table table-bordered" style="font-size: 14px;">
@@ -119,7 +118,9 @@ if(isset($_POST['caseId'])){
                                         <input id='caseId' name='caseId' value='$caseIdValue' type='hidden'>
                                         <li><button class='btn' type='submit'><?php echo $sfname . ", " . $scsid ?></button></li>
                                         <?php
+											$num_students = 1;
                                             while($statement->fetch()){
+												$num_students++;
                                                 echo"<input id='caseId' name='caseId' value='$caseIdValue' type='hidden'>";
                                                 echo "<li><button class='btn' type='submit'>$sfname, $scsid</button></li>";
                                             }
@@ -284,7 +285,7 @@ DisplayFormTabsC;
                         echo<<<LoadFormC
 							<div id="formc" class='tab-pane fade'>";
 							</div>
-							<script>loadFormC($caseIdValue, $studentID);</script>
+							<script>loadFormC($caseIdValue, $studentID, $num_students);</script>
 LoadFormC;
 					}
 
