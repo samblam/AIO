@@ -88,8 +88,7 @@ if(isset($_POST['caseId'])){
                     echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                 }
 
-                $statement->bind_result($submissionDate, $studentList, $pfname, $plname, $sfname, $slname, $scsid);
-
+                $statement->bind_result($submissionDate, $studentList, $pfname, $plname, $studentID, $sfname, $slname, $scsid);
                 $statement->fetch();
 
             ?>
@@ -196,7 +195,15 @@ if(isset($_POST['caseId'])){
                     }
                 
                     $statement->bind_result($caseVerdict);
-                    
+				}
+
+                $id = (int)$_SESSION['userId'];
+                if(!$statement->execute()){
+                    echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+                }
+            
+                $statement->bind_result($caseVerdict);
+                  
                     while($statement->fetch()){
                         
                         if($caseVerdict == NULL){
@@ -287,7 +294,6 @@ LoadFormC;
 
                 ?>
             </div>
-        </div>
         </div>
     </body>
 </html>

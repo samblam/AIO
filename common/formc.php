@@ -100,8 +100,9 @@ NoStuIDError;
 
 
 				//Get additional information about the case.
-				$caseInfo = $conn->prepare("
+				$getCaseInfo = $conn->prepare("
 									SELECT
+										A.date_aware,
 										A.evidence_fileDir,
 										P.fname,
 										P.lname,
@@ -113,7 +114,6 @@ NoStuIDError;
 										professor as P ON A.prof_id = P.professor_id
 									WHERE
 										case_id = $caseId
-
 									");
 
 				if(!$caseInfo->execute()){
