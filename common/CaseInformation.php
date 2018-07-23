@@ -224,7 +224,7 @@ DisplayFormTabsC;
                     if($_SESSION['role'] == "admin"){
                         echo<<<LoadFormC
 							<div id="formc" class='tab-pane fade'>";
-							</div>";
+							</div>
 							<script>loadFormC($caseIdValue, $studentID);</script>
 LoadFormC;
 					}
