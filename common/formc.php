@@ -150,32 +150,32 @@ NoStuIDError;
         </div>
 
         <div class="form-container">
-            <form class="form-horizontal" action="../includes/processForm.php" method="post">
+            <form class="form-horizontal" action="../Admin/processFormC.php" method="post">
                 <div class="form-group">
                     <label class="control-label col-sm-3">Student Name:</label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control" placeholder="Student Name"
-						id="student_name" name="student_name" required readonly
+						id="student_name" name="student_name"
 						value=<?php echo ('"' . $stu_fname . ' ' . $stu_lname . '"'); ?>
-						>
+						required readonly>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-3">Student B00:</label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control" placeholder="B00 Number"
-						id="b00_num" name="b00_num" required readonly
+						id="b00_num" name="b00_num"
 						value=<?php echo ('"' . $stu_csid . '"'); ?>
-						>
+						required readonly>
                     </div>
                 </div>
 				<div class="form-group">
                     <label class="control-label col-sm-3">Student Email:</label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control" placeholder="student@dal.ca"
-						id="student_email_C" name="student_email_C" required
+						id="student_email_C" name="student_email_C"
 						value=<?php echo ('"' . $stu_email . '"'); ?>
-						>
+						required>
                     </div>
                 </div>
                 <div class="form-group">
