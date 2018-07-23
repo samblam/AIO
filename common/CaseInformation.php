@@ -7,10 +7,34 @@ include_once '../includes/db.php';
 //Check if the form variables have been submitted, store them in the session variables
 include '../includes/formProcess.php';
 include_once '../includes/page.php';
-
 echo"<script>";
 include '../JS/formLoader.js';
 echo"</script>";
+
+$role = $_SESSION["role"];
+$userId = (int) $_SESSION["userId"];
+
+// get information related to evidence files that have been submitted for this case
+$path_to_evidence_dir = "";
+$aio_id = "";
+$prof_id = "";
+$caseId = "";
+
+if(isset($_POST['caseId'])){
+    //Gets case id from URL
+    $caseId = intval($_POST['caseId']);
+
+    $statement = $conn->prepare("SELECT evidence_fileDir, aio_id, prof_id FROM active_cases WHERE case_id = " . $caseId);
+    if(!$statement->execute()){
+        echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+    }
+
+    $statement->bind_result($path_to_evidence_dir, $aio_id, $prof_id);
+    $statement->fetch();
+
+    CloseCon($conn);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -21,6 +45,7 @@ echo"</script>";
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Student Case</title>
         <link rel="stylesheet" href="../CSS/main.css">
+        <link rel="stylesheet" href="../CSS/caseInformation.css">
         <script src="../JS/top-header-full.js"></script>
     </head>
     <body style="margin: auto;">
@@ -29,7 +54,6 @@ echo"</script>";
 
         <div style="display: inline-block;">
             <h2>Case Information</h2>
-
         </div>
         
         <!-- Table div -->
@@ -38,6 +62,7 @@ echo"</script>";
         <div>
             
             <?php
+            $conn = OpenCon();
                 
             //This fixes an issues with going back, or reloading the page as the caseId is lost
                 if(!isset($_POST['caseId'])){
@@ -54,9 +79,9 @@ echo"</script>";
                 }
 
                 //Get all relevent feilds and bind them to php variables
+
                 $statement = $conn->prepare("
-                SELECT 
-                    active_cases.evidence_fileDir,
+                SELECT
                     active_cases.form_a_submit_date,
                     active_cases.stu_csid_list,
                     professor.fname, 
@@ -75,56 +100,86 @@ echo"</script>";
                 if(!$statement->execute()){
                     echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                 }
-                $statement->bind_result($evidenceDir, $submissionDate, $studentList, $pfname, $plname, $sfname, $slname, $scsid);
+                $statement->bind_result($submissionDate, $studentList, $pfname, $plname, $sfname, $slname, $scsid);
                 $statement->fetch();
 
-            echo <<<DisplayInfo
+            ?>
 
             <table class="table table-bordered" style="font-size: 14px;">
                 <tbody>
                     <tr>
                         <td>Banner number</td>
-                        <td>$scsid</td>
+                        <td><?php echo $scsid ?></td>
                     </tr>
                     <tr>
                         <td>Student name</td>
-                        <td class="studentName">$sfname $slname</td>
+                        <td class="studentName"><?php echo $sfname . ", " . $scsid ?></td>
                     </tr>
                     <tr>
                         <td>Other Students</td>
                         <td>
                             <!-- Still needs to be done -->
-                             <div class="dropdown">
-                             <form method="post" action="student-case-information.php">
-                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="font-size: 12px;" data-toggle="dropdown">Other Students
-                                <span class="caret"></span></button>
+                            <div class="dropdown">
+                                <form method="post" action="student-case-information.php">
+                                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="font-size: 12px;" data-toggle="dropdown">
+                                        Other Students
+                                        <span class="caret"></span>
+                                    </button>
+
                                     <ul class="dropdown-menu" onchange="warning()">
                                         <input id='caseId' name='caseId' value='$caseIdValue' type='hidden'>
-                                        <li><button class='btn' type='submit'>$sfname, $scsid</button></li>
-DisplayInfo;
-                                        while($statement->fetch()){
-                                            echo"<input id='caseId' name='caseId' value='$caseIdValue' type='hidden'>";
-                                            echo "<li><button class='btn' type='submit'>$sfname, $scsid</button></li>";
-                                        }
-            echo <<<DisplayInfo
-                                </ul>
+                                        <li><button class='btn' type='submit'><?php echo $sfname . ", " . $scsid ?></button></li>
+                                        <?php
+                                            while($statement->fetch()){
+                                                echo"<input id='caseId' name='caseId' value='$caseIdValue' type='hidden'>";
+                                                echo "<li><button class='btn' type='submit'>$sfname, $scsid</button></li>";
+                                            }
+                                        ?>
+                                    </ul>
                                 </form>
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td>Professor</td>
-                        <td>$pfname $plname</td>
+                        <td><?php echo $pfname . " " . $plname ?></td>
                     </tr>
                     <tr>
                         <td>Date</td>
                         <!-- is this current date or case submitted date or allegation date? needs backend-->
-                        <td>$submissionDate</td>
+                        <td><?php echo $submissionDate ?></td>
                     </tr>
                     <tr>
                         <td>Files</td>
-                        <!-- this needs evidence files -->
-                        <td><a href="$evidenceDir">Link.zip</a></td>
+                        <?php
+                            // user has permission to view evidence files if:
+                            // user is an AIO and the AIO id assigned to this case matches user's id
+                            // OR user is a professor and the professor id for this case matches user's id
+                            // OR user is an admin
+
+                            if ( ($role == "aio" && $aio_id == $userId) || ($role == "professor" && $prof_id == $userId) || ($role == "admin") ){
+                                if ($path_to_evidence_dir != "" && file_exists("../evidence/" . $path_to_evidence_dir . "/evidence.zip")) {
+                                    // user should be shown the link to the evidence file
+                                    $path_to_zip_file = "../evidence/" . $path_to_evidence_dir . "/evidence.zip";
+                                    echo "<td>
+                                            <form action=\"/downloadRequest.php\" method=\"post\">
+                                                <input hidden name=\"caseId\" id=\"caseId\" value=\"$caseId\"/>
+                                                <input type=\"submit\" class=\"submitLink\" name=\"evidenceLink\" value=\"evidence.zip\"/>
+                                            </form>
+                                        </td>";
+                                }
+
+                                else {
+                                    // no evidence has been submitted
+                                    echo "<td>No evidence submitted</td>";
+                                }
+                            }
+
+                            else{
+                                // viewer of the page does not meet the permission requirements to view the evidence
+                                echo "<td>Insufficient permission to view evidence</td>";
+                            }
+                        ?>
                     </tr>
 
                     <tr>
@@ -136,9 +191,6 @@ DisplayInfo;
                 </tbody>
             </table>
         </div>
-DisplayInfo;
-                ?>
-
             
         <!-- CLose case and insufficient evidence buttons -->
         <div class="center-block text-center">
@@ -165,10 +217,8 @@ DisplayInfo;
                 if(!$statement->execute()){
                     echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                 }
-            
-                $statement->bind_result($caseVerdict);
                 
-                while($statement->fetch()){
+                $statement->bind_result($caseVerdict);
                     
                     if($caseVerdict == NULL){
                         // Insufficient Evidence Button
@@ -178,31 +228,30 @@ DisplayInfo;
                                 <input type="text" name="case_id" value="$caseIdValue" hidden>
                                 <button class="btn btn-danger" value="true" type="submit" name="insufficientEvidence">Insufficient Evidence</button>
                             </form>
-ViewAllPost;
-                    }
-                    else if ($caseVerdict == "guilty"){
-                        // Close case Button guilty
-                        echo <<<ViewAllPost2
-                            <form class="delete_this_case" method="post" action="ActiveCases.php" onclick="return confirm('Are you sure you want to close this case? \\nIf the verdict is guilty the case gets archived in our system, and if the verdict is not guilty the case is permanently deleted. \\nClick OK to continue.')">
-                                <input type="text" name="case_id"   hidden>
-                                <button class="btn btn-danger" value="true" type="submit" name="closeCaseGuilty">Close Case</button>
-                            </form>
-ViewAllPost2;
-                    }
-                    else if ($caseVerdict == "not guilty"){
-                        // Close case Button not guilty
-                        echo <<<ViewAllPost3
 
-                            <form class="delete_this_case" method="post" action="AioActiveCases.php" onclick="return confirm('Are you sure you want to close this case? \\nIf the verdict is guilty the case gets archived in our system, and if the verdict is not guilty the case is permanently deleted. \\nClick OK to continue.')">
-                                <input type="text" name="case_id" value="$caseIdValue" hidden>
-                                <button class="btn btn-danger" value="true" type="submit" name="closeCaseNotGuilty">Close Case</button>
-                            </form>
+ViewAllPost;
+                        }
+                        else if ($caseVerdict == "guilty"){
+                            // Close case Button guilty
+                            echo <<<ViewAllPost2
+                                <form class="delete_this_case" method="post" action="ActiveCases.php" onclick="return confirm('Are you sure you want to close this case? \\nIf the verdict is guilty the case gets archived in our system, and if the verdict is not guilty the case is permanently deleted. \\nClick OK to continue.')">
+                                    <input type="text" name="case_id"   hidden>
+                                    <button class="btn btn-danger" value="true" type="submit" name="closeCaseGuilty">Close Case</button>
+                                </form>
+ViewAllPost2;
+                        }
+                        else if ($caseVerdict == "not guilty"){
+                            // Close case Button not guilty
+                            echo <<<ViewAllPost3
+
+                                <form class="delete_this_case" method="post" action="AioActiveCases.php" onclick="return confirm('Are you sure you want to close this case? \\nIf the verdict is guilty the case gets archived in our system, and if the verdict is not guilty the case is permanently deleted. \\nClick OK to continue.')">
+                                    <input type="text" name="case_id" value="$caseIdValue" hidden>
+                                    <button class="btn btn-danger" value="true" type="submit" name="closeCaseNotGuilty">Close Case</button>
+                                </form>
+
 ViewAllPost3;
-                    }
-                }
-            ?>
-            
-            
+                        }
+                    ?>
         </div>
             
         <!-- Form display div -->
