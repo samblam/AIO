@@ -77,7 +77,6 @@ if(isset($_POST['caseId'])){
                                 <ul class="dropdown-menu" onchange="warning()">
                                     <!-- needs to add an <li> tage for each student in the case upon loading page; BACKEND -->
                                     <li><a href="CaseInformation.php"> TestStudent Name</a></li>
-
                                 </ul>
                             </div>
                         </td>
@@ -99,14 +98,16 @@ if(isset($_POST['caseId'])){
                             // OR user is professor and professor id for this case matches user's id
                             // OR user is an admin
 
-                            if ($role == "aio" && $aio_id == $userId || $role == "professor" && $prof_id == $userId || $role == "admin"){
+                            if ( ($role == "aio" && $aio_id == $userId) || ($role == "professor" && $prof_id == $userId) || ($role == "admin") ){
                                 if ($path_to_evidence_dir != "" && file_exists("../evidence/" . $path_to_evidence_dir . "/evidence.zip")) {
                                     // user should be shown the link to the evidence file
                                     $path_to_zip_file = "../evidence/" . $path_to_evidence_dir . "/evidence.zip";
-                                    echo "<td><form action=\"/downloadRequest.php\" method=\"post\">";
-                                    echo "<input hidden name=\"caseId\" id=\"caseId\" value=\"$caseId\"/>";
-                                    echo "<input type=\"submit\" class=\"submitLink\" name=\"evidenceLink\" value=\"evidence.zip\"/>";
-                                    echo "</form></td>";
+                                    echo "<td>
+                                            <form action=\"/downloadRequest.php\" method=\"post\">
+                                                <input hidden name=\"caseId\" id=\"caseId\" value=\"$caseId\"/>
+                                                <input type=\"submit\" class=\"submitLink\" name=\"evidenceLink\" value=\"evidence.zip\"/>
+                                            </form>
+                                        </td>";
                                 }
 
                                 else {

@@ -33,7 +33,6 @@ if(isset($_POST['caseId'])){
     $statement->fetch();
 
     CloseCon($conn);
-    $conn = OpenCon();
 }
 
 ?>
@@ -55,7 +54,6 @@ if(isset($_POST['caseId'])){
 
         <div style="display: inline-block;">
             <h2>Case Information</h2>
-
         </div>
         
         <!-- Table div -->
@@ -64,8 +62,8 @@ if(isset($_POST['caseId'])){
         <div>
             
             <?php
-
                 //Get all relevent feilds and bind them to php variables
+                $conn = OpenCon();
                 $caseIdValue = $_POST['caseId'];
                 $statement = $conn->prepare("
                 SELECT
@@ -144,14 +142,16 @@ if(isset($_POST['caseId'])){
                             // OR user is a professor and the professor id for this case matches user's id
                             // OR user is an admin
 
-                            if ($role == "aio" && $aio_id == $userId || $role == "professor" && $prof_id == $userId || $role == "admin"){
+                            if ( ($role == "aio" && $aio_id == $userId) || ($role == "professor" && $prof_id == $userId) || ($role == "admin") ){
                                 if ($path_to_evidence_dir != "" && file_exists("../evidence/" . $path_to_evidence_dir . "/evidence.zip")) {
                                     // user should be shown the link to the evidence file
                                     $path_to_zip_file = "../evidence/" . $path_to_evidence_dir . "/evidence.zip";
-                                    echo "<td><form action=\"/downloadRequest.php\" method=\"post\">";
-                                    echo "<input hidden name=\"caseId\" id=\"caseId\" value=\"$caseId\"/>";
-                                    echo "<input type=\"submit\" class=\"submitLink\" name=\"evidenceLink\" value=\"evidence.zip\"/>";
-                                    echo "</form></td>";
+                                    echo "<td>
+                                            <form action=\"/downloadRequest.php\" method=\"post\">
+                                                <input hidden name=\"caseId\" id=\"caseId\" value=\"$caseId\"/>
+                                                <input type=\"submit\" class=\"submitLink\" name=\"evidenceLink\" value=\"evidence.zip\"/>
+                                            </form>
+                                        </td>";
                                 }
 
                                 else {
