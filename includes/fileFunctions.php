@@ -1,4 +1,4 @@
-<?
+<?php
 
 	function validateUploadedFiles(){		 
 		/* the file validation values should be based on the values set in the php.ini file
@@ -12,8 +12,8 @@
 			in them and would require complex parsing.
 		*/
 
-		// max file size in bytes
-		$maxFileSize = 2097152;
+		// max file size (100MB) in bytes
+		$maxFileSize = 104857600;
 
 		$numUploadedFiles = count($_FILES['fileInput']['name']);
 
@@ -25,9 +25,10 @@
 		$allUploadedFilesAreValid = true;
 
 		for($i = 0; $i < $numUploadedFiles; $i++){
-		    // Check if there was an error uploading the file and check the file size 
+		    // Check if there was an error uploading the file or if the file size exceeds the max size allowed 
 		    if($_FILES["fileInput"]["error"][$i] == 1 || $_FILES["fileInput"]["size"][$i] > $maxFileSize){
 		        $allUploadedFilesAreValid = false;
+		        break;
 		    }
 		}
 
