@@ -32,6 +32,57 @@
     $conn -> close();
   }
 
+  /**
+   * Checks whether the provided csid can be found in the DB
+   */
+  function db_checkCSID($csid)
+  {
+    $stmt = $conn->prepare( "SELECT count(csid) FROM ? WHERE csid LIKE ?" );
+    $stmt->bind_param( "ss", $table_name, $csid );
+    $tables = array( 'admin', 'aio', 'professor', 'student' );
+    foreach ($tables as $table_name ) {
+      $result = $stmt->execute();
+      if( $result->num_rows > 0 ) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Get's session data from DB
+   */
+  function db_getUserData($csid)
+  {
+    $data = array( 'csid' => $csid );
+    // Fetch user roles
+    $roles = array();
+    $stmt = $conn->prepare( "SELECT count(csid) FROM ? WHERE csid LIKE ?" );
+    $stmt->bind_param( "ss", $table_name, $csid );
+    $tables = array( 'admin', 'aio', 'professor', 'student' );
+    foreach ($tables as $table_name ) {
+      $result = $stmt->execute();
+      if( $result->num_rows > 0 ) {
+        array_push( $roles, $table_name );
+      }
+    }
+    $data['user_roles'] = $roles;
+    // Determine default user role
+    if( in_array( 'admin', $roles ) ) {
+      $data['default_role'] = 'admin';
+    }
+    elseif( in_array( 'aio', $roles ) ) {
+      $data['default_role'] = 'aio';
+    }
+    elseif( in_array( 'professor', $roles) ) {
+      $data['default_role'] = 'professor';
+    }
+    else {
+      $data['default_role'] = 'student';
+    }
+    // Fetch user data from table corresponding to default role
+  }
+
   global $conn;
   $conn = OpenCon();
 
