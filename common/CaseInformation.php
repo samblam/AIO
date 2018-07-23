@@ -38,7 +38,8 @@ echo"</script>";
         <div>
             
             <?php
-            
+                
+            //This fixes an issues with going back, or reloading the page as the caseId is lost
                 if(!isset($_POST['caseId'])){
                     if(!isset($_SESSION['lastCaseId'])){
                         header('ActiveCases.php');
