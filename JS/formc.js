@@ -21,3 +21,8 @@ jQuery(function () {
         scrollbar: true
     });
 });
+
+
+ function loadFormC(caseID, studentID) {
+     $("#formc").load("formc.php?case_id=" + caseID + "&student_id=" + studentID);
+ };
