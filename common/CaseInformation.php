@@ -62,6 +62,7 @@ if(isset($_POST['caseId'])){
         <div>
             
             <?php
+<<<<<<< HEAD
             $conn = OpenCon();
                 
             //This fixes an issues with going back, or reloading the page as the caseId is lost
@@ -77,6 +78,10 @@ if(isset($_POST['caseId'])){
                     $caseIdValue = $_POST['caseId'];
                     $_SESSION['lastCaseId'] = $_POST['caseId'];
                 }
+=======
+                //Get all relevent feilds and bind them to php variables
+                $conn = OpenCon();
+>>>>>>> Load caseID and studentID into formC on the caseInfo page; Add PHP method to get caseID from URL; Start loading info into FormC.
 
                 //Get all relevant fields and bind them to php variables
                 $caseIdValue = $_POST['caseId'];
@@ -101,7 +106,8 @@ if(isset($_POST['caseId'])){
                 if(!$statement->execute()){
                     echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                 }
-                $statement->bind_result($submissionDate, $studentList, $pfname, $plname, $sfname, $slname, $scsid);
+
+                $statement->bind_result($submissionDate, $studentList, $pfname, $plname, $studentID, $sfname, $slname, $scsid);
                 $statement->fetch();
             ?>
 
@@ -218,6 +224,7 @@ if(isset($_POST['caseId'])){
                     echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                 }
                 
+<<<<<<< HEAD
                 $statement->bind_result($caseVerdict);
             
                 $statement->bind_result($caseVerdict);
@@ -232,6 +239,27 @@ if(isset($_POST['caseId'])){
                                 <button class="btn btn-danger" value="true" type="submit" name="insufficientEvidence">Insufficient Evidence</button>
                             </form>
 
+=======
+                    $statement->bind_result($caseVerdict);
+				}
+
+                $id = (int)$_SESSION['userId'];
+                if(!$statement->execute()){
+                    echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+                }
+            
+                $statement->bind_result($caseVerdict);
+                  
+                    while($statement->fetch()){
+                        
+                        if($caseVerdict == NULL){
+                            // Insufficient Evidence Button
+                            echo <<<ViewAllPost
+                                <form class="delete_this_case" method="post" action="ActiveCases.php" onclick="return confirm('Are you sure you want to remove this case for insufficient evidence? This will permanently delete the case.\\nClick OK to continue.')">
+                                    <input type="text" name="case_id" value="$caseId" hidden>
+                                    <button class="btn btn-danger" value="true" type="submit" name="insufficientEvidence">Insufficient Evidence</button>
+                                </form>
+>>>>>>> Load caseID and studentID into formC on the caseInfo page; Add PHP method to get caseID from URL; Start loading info into FormC.
 ViewAllPost;
                         }
                         else if ($caseVerdict == "guilty"){
@@ -301,7 +329,11 @@ DisplayFormTabsC;
                     if($_SESSION['role'] == "admin"){
                         echo<<<LoadFormC
 							<div id="formc" class='tab-pane fade'>";
+<<<<<<< HEAD
 							</div>
+=======
+							</div>";
+>>>>>>> Load caseID and studentID into formC on the caseInfo page; Add PHP method to get caseID from URL; Start loading info into FormC.
 							<script>loadFormC($caseIdValue, $studentID);</script>
 LoadFormC;
 					}
