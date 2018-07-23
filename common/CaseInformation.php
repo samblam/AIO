@@ -39,7 +39,7 @@ echo"</script>";
             
             <?php
 
-                //Get all relevent feilds and bind them to php variables
+                //Get all relevant fields and bind them to php variables
                 $caseIdValue = $_POST['caseId'];
                 $statement = $conn->prepare("
                 SELECT 
@@ -47,7 +47,8 @@ echo"</script>";
                     active_cases.form_a_submit_date,
                     active_cases.stu_csid_list,
                     professor.fname, 
-                    professor.lname, 
+                    professor.lname,
+					student.student_id,
                     student.fname, 
                     student.lname, 
                     student.csid 
@@ -62,7 +63,7 @@ echo"</script>";
                 if(!$statement->execute()){
                     echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                 }
-                $statement->bind_result($evidenceDir, $submissionDate, $studentList, $pfname, $plname, $sfname, $slname, $scsid);
+                $statement->bind_result($evidenceDir, $submissionDate, $studentList, $pfname, $plname, $studentID, $sfname, $slname, $scsid);
                 $statement->fetch();
 
             echo <<<DisplayInfo
@@ -143,7 +144,7 @@ DisplayInfo;
                 }
             
                 $statement->bind_result($caseVerdict);
-                
+
                 while($statement->fetch()){
                     
                     if($caseVerdict == NULL){
@@ -186,38 +187,53 @@ ViewAllPost3;
                 <li class="active"><a data-toggle="tab" href="#forma">Form A</a></li>
                 <?php
                     if($_SESSION['role'] != "professor"){
-                        echo<<<DisplayFormTabs
-                        <li class=""><a data-toggle="tab" href="#formb">Form B</a></li>
-                        <li class=""><a data-toggle="tab" href="#formc">Form C</a></li>
-                        <li class=""><a data-toggle="tab" href="#formd">Form D</a></li>
-DisplayFormTabs;
+                        echo <<<DisplayFormTabsB
+							<li class=""><a data-toggle="tab" href="#formb">Form B</a></li>
+DisplayFormTabsB;
+					}
+
+                    if($_SESSION['role'] == "admin"){
+						echo <<<DisplayFormTabsC
+							<li class=""><a data-toggle="tab" href="#formc">Form C: Meeting</a></li>
+DisplayFormTabsC;
                     }
+
+					if($_SESSION['role'] != "professor"){
+						echo <<<DisplayFormTabsC
+							<li class=""><a data-toggle="tab" href="#formd">Form D</a></li>
+DisplayFormTabsC;
+					}
                 ?>
             </ul>
 
             <div class="tab-content">
                 <!-- Not sure why form A is loaded here? Someone who knows should check... - Bjorn -->
                 <div id="forma" class="tab-pane fade active in">
-                    <?php //include 'forma.php' ?>
+					<?php //BUG: Faculty & Class name render 5x if this php tag is absent. ?>
                 </div>
                 
                 <?php
+					//Pages are loaded using JS/formLoader.js
+
                     //if it's a professor visiting, only display from A 
                     if($_SESSION['role'] != "professor"){
-                        
                         echo"<div id=\"formb\" class='tab-pane fade'>";
-                            //include '../AIO/formb.php';
                         echo"</div>";
+					}
 
-                        echo"<div id=\"formc\" class='tab-pane fade'>";
-                            //include '../AIO/formc.php';
-                        echo"</div>";
+                    if($_SESSION['role'] == "admin"){
+                        echo<<<LoadFormC
+							<div id="formc" class='tab-pane fade'>";
+							</div>";
+							<script>loadFormC($caseIdValue, $studentID);</script>
+LoadFormC;
+					}
 
+					if($_SESSION['role'] != "professor"){
                         echo"<div id=\"formd\" class='tab-pane fade'>";
-                            //include '../AIO/formd.php';
                         echo"</div>";
-            
                     }
+
                 ?>
             </div>
         </div>

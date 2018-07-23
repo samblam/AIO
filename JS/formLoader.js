@@ -6,10 +6,19 @@
      $("#formb").load("formb.php");
  });
 
+ /**
  $(document).ready( function() {
-     $("#formc").load("formc.php");
+     console.log("Loading form C");
+	 $("#formc").load("formc.php");
+	 console.log("Form C loaded");
  });
+*/
 
  $(document).ready( function() {
      $("#formd").load("formd.php");
  });
+
+
+ function loadFormC(caseID, studentID) {
+     $("#formc").load("formc.php?case_id=" + caseID + "&student_id=" + studentID);
+ };
