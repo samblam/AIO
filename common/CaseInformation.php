@@ -8,8 +8,7 @@ include_once '../includes/db.php';
 include '../includes/formProcess.php';
 include_once '../includes/page.php';
 
-//$case_id = "";
-//$aio_id="";
+
 ?>
 
 <!DOCTYPE html>
@@ -28,22 +27,21 @@ include_once '../includes/page.php';
 
         
         <div>
-    
-        <?php
-        if($_SESSION['role']=="professor" && $formSubmissionDate==""){
-        echo"<button type=\"submit\" class=\"btn btn-success\" id=\"SubmitFormA\" name=\"SubmitFormA\">Submit</button>";
-        } 
+            <?php
+                if($_SESSION['role']=="professor" && $formSubmissionDate==''){
+                    echo"<button type=\"submit\" class=\"btn btn-success\" id=\"SubmitFormA\" name=\"SubmitFormA\">Submit</button>";
+                } 
 
-        elseif ($_SESSION['role']=="professor" && $formSubmissionDate!="") {
-        // add submit button for adding more evidence to a previously submitted case
-        echo "<button type=\"submit\" class=\"btn btn-success\" id=\"AddEvidence\" name=\"AddEvidence\" disabled>Upload Selected Evidence</button>";
+                elseif ($_SESSION['role']=="professor" && $formSubmissionDate!="") {
+                // add submit button for adding more evidence to a previously submitted case
+                    echo "<button type=\"submit\" class=\"btn btn-success\" id=\"AddEvidence\" name=\"AddEvidence\" disabled>Upload Selected Evidence</button>";
 
-        if($evidenceFileDir!=""){
-        // add a hidden field that passes on the file directory in which to add the files
-        echo "<input type=\"hidden\" name=\"EvidenceDirectory\" value=\"$evidenceFileDir\">";
+                if($evidenceFileDir!=""){
+                // add a hidden field that passes on the file directory in which to add the files
+                    echo "<input type=\"hidden\" name=\"EvidenceDirectory\" value=\"$evidenceFileDir\">";
+                }
             }
-        }
-        ?>
+            ?>
         </div>
     
 
@@ -134,11 +132,15 @@ include_once '../includes/page.php';
 
         //echoing button actions to Accept Deny php file 
         if($_SESSION['role']=="aio" && $aio_id==NULL){
-        echo"<form action= \"../includes/AcceptDeny.php\" method=\"post\">";
-        echo"<button type=\"submit\" class=\"btn btn-success\" name=\"AcceptFormA\">Accept</button>";
-        echo"<button type=\"submit\" class=\"btn btn-danger\" name=\"DenyFormA\">Deny</button>";
-        echo"<input type=\"hidden\" name=\"CurrCaseId\" value=\"$case_id\"></input>";
-        echo"</form>";
+
+        echo <<<AcceptDenyButtons
+                    <form action="../includes/AcceptDeny.php" method="post">
+                        <button type="submit" class="btn btn-success" name="AcceptFormA">Accept Case</button>
+                        <button type="submit" class="btn btn-danger" name="DenyFormA">Decline</button>
+                        <input type="hidden" name="CurrCaseId" value="$case_id"></input>
+                    </form>
+AcceptDenyButtons;
+       
         }
 
 
@@ -148,12 +150,6 @@ include_once '../includes/page.php';
         $conn=OpenCon();
     ?>
 
-
-        </div>
-
-
-        <!-- Form display div -->
-        <div>
             <ul class="nav nav-tabs nav-justified">
 
                 <li class="active"><a data-toggle="tab" href="#forma">Form A</a></li>

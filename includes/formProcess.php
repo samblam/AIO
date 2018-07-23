@@ -1,5 +1,5 @@
 <?php
-    //require_once "globalSecure.php";
+    require_once "globalSecure.php";
 /**
  * This file is included in each page. It is where the form processing logic is located.
  * The future group that is developing this might want to think about whether they
@@ -265,8 +265,6 @@ if(isset($_POST['SaveFormD']) || isset($_POST['SubmitFormD'])){
     $userId =(int)$_SESSION['userId'];
 
     $CurrCaseId=(int)$_POST['CurrCaseId'];
-    $statement = $conn->prepare("SELECT aio_id FROM active_cases WHERE case_id = ?");
-
     
     $AcceptCase = $conn->prepare("UPDATE active_cases SET aio_id = ?  WHERE case_id = ?");
     $AcceptCase->bind_param("dd", $userId,$CurrCaseId); //bind evidence folder name to the prepared statements
@@ -281,7 +279,6 @@ if(isset($_POST['SaveFormD']) || isset($_POST['SubmitFormD'])){
 //The case where this Form A set aio_id null
   if(isset($_POST['DenyFormA'])){
     
-    //header('location: ../AIO/ActiveCases.php');
 
     // Grabs case_id of the just inserted case and uses it to set aio id to null
     $userId =(int)$_SESSION['userId'];
