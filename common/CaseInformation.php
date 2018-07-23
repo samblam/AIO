@@ -200,6 +200,7 @@ if(isset($_POST['caseId'])){
         <!-- CLose case and insufficient evidence buttons -->
         <div class="center-block text-center">
             <?php
+<<<<<<< HEAD
                 if(!isset($_POST['caseId'])){
                     if(!isset($_SESSION['lastCaseId'])){
                         header('ActiveCases.php');
@@ -213,26 +214,27 @@ if(isset($_POST['caseId'])){
                     $_SESSION['lastCaseId'] = $_POST['caseId'];
                 }
             
-                //Get case verdict from db
-                $statement = $conn->prepare("SELECT case_verdict FROM active_cases WHERE case_id = '$caseIdValue' AND aio_id = ?"); 
-                $statement->bind_param("d", $id); //bind the csid to the prepared statements
+                if($caseId != "" && $role == "aio"){
+                    //Get case verdict from db
+                    $statement = $conn->prepare("SELECT case_verdict FROM active_cases WHERE case_id = '$caseId' AND aio_id = ?"); 
+                    $statement->bind_param("d", $id); //bind the csid to the prepared statements
 
-                $id = (int)$_SESSION['userId'];
-                if(!$statement->execute()){
-                    echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
-                }
-
-                $statement->bind_result($caseVerdict);
-
-                while($statement->fetch()){
-                    if($caseVerdict == NULL){
-                        // Insufficient Evidence Button
-                        echo <<<ViewAllPost
-
-                            <form class="delete_this_case" method="post" action="AioActiveCases.php" onclick="return confirm('Are you sure you want to remove this case for insufficient evidence? This will permanently delete the case.\\nClick OK to continue.')">
-                                <input type="text" name="case_id" value="$caseIdValue" hidden>
-                                <button class="btn btn-danger" value="true" type="submit" name="insufficientEvidence">Insufficient Evidence</button>
-                            </form>
+                    $id = (int)$_SESSION['userId'];
+                    if(!$statement->execute()){
+                        echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+                    }
+                
+                    $statement->bind_result($caseVerdict);
+                  
+					while($statement->fetch()){
+						if($caseVerdict == NULL){
+							// Insufficient Evidence Button
+							echo <<<ViewAllPost
+								<form class="delete_this_case" method="post" action="ActiveCases.php"
+								onclick="return confirm('Are you sure you want to remove this case for insufficient evidence? This will permanently delete the case.\\nClick OK to continue.')">
+									<input type="text" name="case_id" value="$caseId" hidden>
+									<button class="btn btn-danger" value="true" type="submit" name="insufficientEvidence">Insufficient Evidence</button>
+								</form>
 ViewAllPost;
 						}
 						else if ($caseVerdict == "guilty"){
@@ -313,7 +315,6 @@ LoadFormC;
                         echo"<div id=\"formd\" class='tab-pane fade'>";
                         echo"</div>";
                     }
-
                 ?>
             </div>
         </div>
