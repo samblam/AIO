@@ -76,7 +76,7 @@ include '../includes/formProcess.php';
                         <td>
                             <form method="post" action="CaseInformation.php">
                                 <input type="hidden" id="caseId" name="caseId" value="$caseId">
-                                <button class='btn btn-primary' type='submit'>ViewCase</button>
+                                <button class='btn btn-primary' type='submit'>View Case</button>
                             </form>
                         </td>
                       </tr>
