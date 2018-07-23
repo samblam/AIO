@@ -328,8 +328,8 @@ if(isset($_POST['insufficientEvidence']) && isset($_POST['case_id']) && $_SESSIO
   while($statement->fetch()){
     mail($email, "Insufficient evidence provided for academic integrity case.", $msg);
   }
-  $conn->query("DELETE FROM student WHERE case_id = \"$id\"");
-  $conn->query("DELETE FROM active_cases WHERE case_id = \"$id\"");
+  $conn->query("DELETE FROM student WHERE case_id = \"$caseId\"");
+  $conn->query("DELETE FROM active_cases WHERE case_id = \"$caseId\"");
 }
 
 // deletes all students and active cases with the given case_id for close case
