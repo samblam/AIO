@@ -57,7 +57,7 @@ include_once '../includes/page.php';
 
 					while($getStudentList->fetch()) {
 						echo<<<AltStudentButton
-							<button class="btn btn-primary" type="button" onclick="loadFormC($caseId, $student_id)">
+							<button class="btn btn-primary" type="button" onclick="loadFormC($caseId, $student_id, $num_students)">
 								$stu_fname $stu_lname
 							</button>
 AltStudentButton;
@@ -96,7 +96,6 @@ NoStuIDError;
 				$studentInfo->bind_result($stu_fname, $stu_lname, $stu_email, $stu_csid);
 				$studentInfo->fetch();	//Pull just one row.
 				CloseCon($studentInfo);
-
 
 				//Get additional information about the case.
 				$caseInfo = $conn->prepare("
