@@ -76,6 +76,7 @@ NoStuIDError;
 					exit();
 				}
 
+<<<<<<< HEAD
 				//Get info about the student.
 				$studentInfo = $conn->prepare("
 									SELECT
@@ -111,7 +112,6 @@ NoStuIDError;
 										professor as P ON A.prof_id = P.professor_id
 									WHERE
 										case_id = $caseId
-
 									");
 
 				if(!$caseInfo->execute()){
