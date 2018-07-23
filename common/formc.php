@@ -37,8 +37,7 @@ include_once '../includes/page.php';
 				}
 
 				//Get the IDs of students involved in the case and make a button for each one.
-				//TODO: Pass in a num_students in the GET so this step can be skipped 90% of the time.
-				if (true) {
+				if ($num_students > 1) {
 					$getStudentList = $conn->prepare("
 									SELECT
 										student_id,
