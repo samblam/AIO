@@ -18,7 +18,6 @@
      $("#formd").load("formd.php");
  });
 
-
- function loadFormC(caseID, studentID, num_students) {
-     $("#formc").load("formc.php?case_id=" + caseID + "&student_id=" + studentID + "&num_students=" + num_students);
- };
+function loadFormC(caseID, studentID, num_students) {
+    $("#formc").load("formc.php?case_id=" + caseID + "&student_id=" + studentID + "&num_students=" + num_students);
+};

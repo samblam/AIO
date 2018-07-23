@@ -190,6 +190,7 @@ if(isset($_POST['caseId'])){
                     $statement = $conn->prepare("SELECT case_verdict FROM active_cases WHERE case_id = '$caseId' AND aio_id = ?"); 
                     $statement->bind_param("d", $id); //bind the csid to the prepared statements
 
+<<<<<<< HEAD
                     $id = (int)$_SESSION['userId'];
                     if(!$statement->execute()){
                         echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
