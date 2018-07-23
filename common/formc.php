@@ -4,6 +4,7 @@ require_once '../includes/session.php';
 require_once 'secure.php';
 //Open the db connection
 include_once '../includes/db.php';
+include_once '../includes/getCaseID.php';
 //Check if the form variables have been submitted, store them in the session variables
 include '../includes/formProcess.php';
 include_once '../includes/page.php';
@@ -24,6 +25,51 @@ include_once '../includes/page.php';
         <div class="form-container">
             <h2 class="form-d-title">Form C</h2>
             <p>AIO Allegation Letter</p>
+
+			<button onclick="loadFormC(2,2)">Click me</button>
+
+			<?php
+				$caseId = getCaseID();
+
+				if(isset($_GET["student_id"]) && is_numeric($_GET["student_id"])){
+					$student_id = intval($_GET['student_id']);
+				} else {
+					echo <<<NoStuIDError
+						<p>Error: Student ID not set.</p>
+						<a href="ActiveCases.php?" class="btn btn-primary">Return to Active Cases</a>
+NoStuIDError;
+					exit();
+				}
+
+				echo "Hello world" . $caseId;
+
+				$getCaseInfo = $conn->prepare("
+									SELECT
+										A.date_aware,
+										A.evidence_fileDir,
+										P.fname,
+										P.lname,
+										P.email,
+										A.aio_id
+									FROM
+										active_cases as A
+									INNER JOIN
+										professor as P ON A.prof_id = P.professor_id
+									WHERE
+										case_id = $caseId
+									");
+
+				if(!$getCaseInfo->execute()){
+					echo "Execute failed: (" . $getCaseInfo->errno . ") " . $getCaseInfo->error;
+				}
+
+				$getCaseInfo->bind_result($date_aware, $evidence_path, $prof_fname, $prof_lname, $prof_email_1, $aio);
+
+				$getCaseInfo->fetch();	//Pull just one row.
+
+				CloseCon($getCaseInfo);
+			?>
+
         </div>
         <div class="form-container">
             <form class="form-horizontal" action="../includes/processForm.php" method="post">
@@ -42,7 +88,10 @@ include_once '../includes/page.php';
                 <div class="form-group">
                     <label class="control-label col-sm-3">Professor Name:</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" placeholder="Professor Name" id="prof_name" name="prof_name" required>
+                        <input type="text" class="form-control" placeholder="Professor Name"
+						id="prof_name" name="prof_name"
+						value=<?php echo ('"' . $prof_fname . ' ' . $prof_lname . '"') ?>
+						required>
                     </div>
                 </div>
 
@@ -84,8 +133,10 @@ include_once '../includes/page.php';
                 <!--save button, submit button-->
                 <div class="form-group">
                     <div class="center-block text-center">
+						<!--
                         <button type="submit" class="btn btn-primary" name="SubmitFormC">Preview PDF</button>
                         <button type="submit" class="btn btn-primary" name="SaveFormA">Save</button>
+						-->
                         <button type="submit" class="btn btn-success" name="SubmitFormA">Submit</button>
                     </div>
                 </div>
