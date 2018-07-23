@@ -122,4 +122,16 @@ if(isset($_POST['closeCaseGuilty']) && isset($_POST['case_id']) && $_SESSION['ro
   $conn->query("DELETE FROM active_cases WHERE case_id = \"$id\"");
 }
 
+// sends email to forward case to senate
+if(isset($_POST['forwardCase']) && isset($_POST['case_id']) && $_SESSION['role'] == "aio") {
+  $caseId = htmlspecialchars(trim(stripslashes($_POST['case_id'])));
+  $email = htmlspecialchars(trim(stripslashes($_POST['email_to'])));
+  $cc = htmlspecialchars(trim(stripslashes($_POST['email_cc'])));
+  $subject = htmlspecialchars(trim(stripslashes($_POST['email_subject'])));
+  $message = htmlspecialchars(trim(stripslashes($_POST['email_message'])));
+  $message = wordwrap($message,70);
+  $header = "CC:" . $cc . "\r\n";
+  mail($email, $subject, $message, $header);
+}
+
 ?>

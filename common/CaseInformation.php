@@ -159,7 +159,7 @@ ViewAllPost;
                         // Close case Button guilty
                         echo <<<ViewAllPost2
                             <form class="delete_this_case" method="post" action="ActiveCases.php" onclick="return confirm('Are you sure you want to close this case? \\nIf the verdict is guilty the case gets archived in our system, and if the verdict is not guilty the case is permanently deleted. \\nClick OK to continue.')">
-                                <input type="text" name="case_id"   hidden>
+                                <input type="text" name="case_id" value="$caseId" hidden>
                                 <button class="btn btn-danger" value="true" type="submit" name="closeCaseGuilty">Close Case</button>
                             </form>
 ViewAllPost2;
@@ -175,60 +175,63 @@ ViewAllPost3;
                     }
                     // Forward case button
                     echo <<<ViewAllPost4
-                        <!-- foward case button -->
-                        <button class="btn btn-success" value="true" type="submit" name="forwardCase" data-toggle="modal" data-target="#emailForm">Forward Case</button>
-                        
-                        <!-- forard case email pop-up -->
+                        <button class="btn btn-success" name="forwardCaseButton" data-toggle="modal" data-target="#emailForm">Forward Case</button>
                         <div class="form-container">
-                            <form class="form-horizontal">
-                                <div id="emailForm" class="modal fade" role="dialog">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                <h4 class="modal-title">Forward Case Email Form</h4>
-                                            </div>
+                            <div id="emailForm" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h2 class="modal-title">Forward Case Email Form</h2>
+                                        </div>
+                                        <form class="form-horizontal forward_case" id="forward_case" method="post" action="CaseInformation.php">
                                             <div class="modal-body">
                                                 <p>Fill out the form below to forward this case to the senate via email. All of the evidence and case files will be attached and sent in this email.</p>
                                                 <div class="form-group">
                                                     <label for="email-to" class="col-sm-3 control-label">To:</label>
                                                     <div class="col-sm-9">
-                                                        <input type="text" class="form-control" placeholder="Email Address" id="email-to" name="email-to" required>
+                                                        <input type="text" class="form-control" placeholder="Email Address" id="email-to" name="email_to" required>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="email-cc" class="col-sm-3 control-label">Cc:</label>
                                                     <div class="col-sm-9">
-                                                        <input type="text" class="form-control" placeholder="Email Address" id="email-cc" name="email-cc">
+                                                        <input type="text" class="form-control" placeholder="Email Address" id="email-cc" name="email_cc">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="subject" class="col-sm-3 control-label">Subject:</label>
                                                     <div class="col-sm-9">
-                                                        <input type="text" class="form-control" placeholder="Subject" id="email-subject" name="email-subject" required>
+                                                        <input type="text" class="form-control" placeholder="Subject" id="email-subject" name="email_subject" required>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="email-message" class="col-sm-3 control-label">Message:</label>
                                                     <div class="col-sm-9">
-                                                        <textarea class="form-control" placeholder="Message" id="email-message" name="email-message" rows="5" required></textarea>
+                                                        <input type="text" class="form-control" placeholder="Message" id="email-message" name="email_message" required>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button class="btn btn-success pull-left" data-dismiss="modal">Send Email</button>
+                                                <input type="text" name="case_id" value="$caseId" hidden>
+                                                <input type="text" name="caseId" value="$caseId" hidden>
+                                                <input type="text" name="forwardCase" value="true" hidden>
+                                                <button class="btn btn-success pull-left"  onclick="submit_form()" value="true" type="submit" name="forwardCase" data-dismiss="modal" >Send Email</button>
                                                 <button class="btn btn-default" data-dismiss="modal">Close</button>
                                             </div>
-                                        </div>
+                                        </form>
+                                        <script type="text/javascript">
+                                            function submit_form() {
+                                                document.getElementById("forward_case").submit();
+                                            }    
+                                        </script>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
 ViewAllPost4;
                 }
-            ?>
-            
-            
+            ?>   
         </div>
             
         <!-- Form display div -->
