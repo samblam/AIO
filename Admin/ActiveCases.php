@@ -99,7 +99,7 @@ include '../includes/formProcess.php';
 
                                     <form method="post" action="CaseInformation.php">
                                         <input type="hidden" id="caseId" name="caseId" value="$caseId"/>
-                                        <button class='btn' type='submit'>ViewCase</button>
+                                        <button class='btn' type='submit'>View Case</button>
                                     </form>
                                       <li>
                                         <form method="post" action="ChangeAIO.php">
