@@ -200,7 +200,6 @@ if(isset($_POST['caseId'])){
         <!-- CLose case and insufficient evidence buttons -->
         <div class="center-block text-center">
             <?php
-            
                 if(!isset($_POST['caseId'])){
                     if(!isset($_SESSION['lastCaseId'])){
                         header('ActiveCases.php');
