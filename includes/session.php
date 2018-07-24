@@ -1,4 +1,17 @@
 <?php
+  /**
+   * The $_SESSION array should contain:
+   *     csid          -> the CSID of the user
+   *     roles         -> list of roles the user has
+   *     default_role  -> the highest ranked of the user's roles
+   *                      ( admin -> aio -> professor -> student )
+   *     role          -> the user's active role, starts same as default_role
+   *     fname         -> the user's first name
+   *     lname         -> the user's last name
+   *     phone         -> the user's phone number
+   *     email         -> the user's email address
+   *     loggedIn      -> TRUE is a user is logged in
+   */
   session_start();
 
   $start_pages = array();

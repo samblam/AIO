@@ -6,7 +6,7 @@
     header( 'HTTP/1.0 403 Forbidden' );
     exit( 'You are not logged in.' );
   } // if a user is logged in, checks if legal user
-  elseif( !in_array("aio", $_SESSION['access_roles']) ) {
+  elseif( !in_array("aio", $_SESSION['roles']) ) {
     header( 'HTTP/1.0 403 Forbidden' );
     exit( 'Insufficient access level' );
   }
