@@ -129,6 +129,7 @@ if(isset($_POST['forwardCase']) && isset($_POST['case_id']) && $_SESSION['role']
   $cc = htmlspecialchars(trim(stripslashes($_POST['email_cc'])));
   $subject = htmlspecialchars(trim(stripslashes($_POST['email_subject'])));
   $message = htmlspecialchars(trim(stripslashes($_POST['email_message'])));
+  echo "<script>console.log( 'Debug Objects: " . $message . "' );</script>";
   $message = wordwrap($message,70);
   $header = "CC:" . $cc . "\r\n";
   mail($email, $subject, $message, $header);

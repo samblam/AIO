@@ -219,22 +219,22 @@ ViewAllPost2;
                                 <button class="btn btn-danger" value="true" type="submit" name="closeCaseNotGuilty">Close Case</button>
                             </form>
 ViewAllPost3;
-                        }
                     }
                     // Forward case button
                     echo <<<ViewAllPost4
                         <button class="btn btn-success" name="forwardCaseButton" data-toggle="modal" data-target="#emailForm">Forward Case</button>
-                        <div class="form-container">
-                            <div id="emailForm" class="modal fade" role="dialog">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                            <h2 class="modal-title">Forward Case Email Form</h2>
-                                        </div>
-                                        <form class="form-horizontal forward_case" id="forward_case" method="post" action="CaseInformation.php">
+                        <form class="form-horizontal forward_case" id="forward_case" method="post" action="CaseInformation.php">
+                            <div class="form-container">
+                                <div id="emailForm" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h2 class="modal-title">Forward Case Email Form</h2>
+                                            </div>
                                             <div class="modal-body">
                                                 <p>Fill out the form below to forward this case to the senate via email. All of the evidence and case files will be attached and sent in this email.</p>
+                                                <p>To send email to more than one address, enter email addresses in a comma seperated list.</p>
                                                 <div class="form-group">
                                                     <label for="email-to" class="col-sm-3 control-label">To:</label>
                                                     <div class="col-sm-9">
@@ -256,31 +256,28 @@ ViewAllPost3;
                                                 <div class="form-group">
                                                     <label for="email-message" class="col-sm-3 control-label">Message:</label>
                                                     <div class="col-sm-9">
-                                                        <input type="text" class="form-control" placeholder="Message" id="email-message" name="email_message" required>
+                                                        <textarea type="text" class="form-control" rows="5" placeholder="Message" name="email_message"></textarea>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <input type="text" name="case_id" value="$caseId" hidden>
                                                 <input type="text" name="caseId" value="$caseId" hidden>
-                                                <input type="text" name="forwardCase" value="true" hidden>
-                                                <button class="btn btn-success pull-left"  onclick="submit_form()" value="true" type="submit" name="forwardCase" data-dismiss="modal" >Send Email</button>
+                                                <button class="btn btn-success pull-left" name="forwardCase" value="true" type="submit">Send Email</button>
                                                 <button class="btn btn-default" data-dismiss="modal">Close</button>
                                             </div>
-                                        </form>
-                                        <script type="text/javascript">
-                                            function submit_form() {
-                                                document.getElementById("forward_case").submit();
-                                            }    
-                                        </script>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </form>
 ViewAllPost4;
                 }
             ?>   
         </div>
+        <!--
+        
+        -->
             
         <!-- Form display div -->
         <div>
