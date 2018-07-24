@@ -218,13 +218,24 @@ if(isset($_POST['caseId'])){
         //echoing button actions to Accept Deny php file 
         if($_SESSION['role']=="aio" && $aio_id==NULL){
 
-        echo <<<AcceptDenyButtons
+        echo <<<AcceptButtons
                     <form action="../includes/AcceptDeny.php" method="post">
                         <button type="submit" class="btn btn-success" name="AcceptFormA">Accept Case</button>
-                        <button type="submit" class="btn btn-danger" name="DenyFormA">Decline</button>
                         <input type="hidden" name="CurrCaseId" value="$case_id"></input>
                     </form>
-AcceptDenyButtons;
+AcceptButtons;
+       
+        }
+
+        //echoing button actions to Accept Deny php file 
+        if($_SESSION['role']=="aio" && $aio_id!=NULL){
+
+        echo <<<DenyButtons
+                    <form action="../includes/AcceptDeny.php" method="post">
+                        <button type="submit" class="btn btn-danger" name="DenyFormA">Decline Case</button>
+                        <input type="hidden" name="CurrCaseId" value="$case_id"></input>
+                    </form>
+DenyButtons;
        
         }
 
