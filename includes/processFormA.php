@@ -187,7 +187,7 @@
 			$conn->query($statement);
 			
     		if (!$statement->execute()) {
-       			echo "Execute failed: (" . $statement2->errno . ") " . $statement2->error;
+       			echo "Execute failed";
     		}
     		else{
       			echo "Execute successful";
