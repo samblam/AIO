@@ -29,7 +29,6 @@
 		$formatDate = strtotime($stringDate);
 		$date = date('Y-m-d',$formatDate); // allegation date formatted for mysql database
 		$comments = htmlspecialchars(trim(stripslashes($_POST['additionalComments'])));
-
 		//Form A is submitted
 		if(isset($_POST['SubmitFormA'])){
 			$submitDate = date('Y-m-d', time());
@@ -79,7 +78,6 @@
 				}
 
 			}
-
 			//Insert students into student table
 			/**
 			 * For each set of students and b00s, check if both entries are not null.
@@ -161,9 +159,14 @@
 				}
 			}
 
+			$statement = $conn->prepare("INSERT INTO saved_info (professor, email, course, faculty, student_name, student_bannerid, date, comments, case_id, phone) VALUES ('{$prof}', '{$email}', '{$cname}', '{$faculty}', '{$students[0]}', '{$boos[0]}', '{$date}', '{$comments}', '{$caseId}', '{$phone}')");
+
+    		if (!$statement->execute()) {
+       			echo "Execute failed";
+    		}
+
 			sendUserHome();
 		}
-
 		//The case where a new Form A is created but saved instead of submitted
 		if(isset($_POST['SaveFormA']) && isset($_POST['case_id'])){
 			//Create new case entry
@@ -182,6 +185,15 @@
 			}
 
 			$statement->bind_result($fname, $csid);
+
+			$statement = $conn->prepare("INSERT INTO saved_info (professor, email, course, faculty, student_name, student_bannerid, date, comments, case_id, phone) VALUES ('{$prof}', '{$email}', '{$cname}', '{$faculty}', '{$students[0]}', '{$boos[0]}', '{$date}', '{$comments}', '{$caseId}', '{$phone}')");
+
+    		if (!$statement->execute()) {
+       			echo "Execute failed";
+    		}
+    		else{
+      			echo "Execute successful";
+   			}
 
 			//creates an associative array of csids and names of all students in the cases
 			//to easily lookup all students from this case to see if a student needs to be added,
@@ -242,5 +254,7 @@
 			}
 		}
 	}
+
+	sendUserHome();
 
 ?>
