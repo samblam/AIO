@@ -183,11 +183,10 @@
 
 			$statement->bind_result($fname, $csid);
 
-			$statement2 = $conn->prepare("INSERT INTO saved_info (professor, email, faculty, course, student_name, student_bannerid, date, comments, case_id, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-
-   			$statement2->bind_param("ssssssssss", $prof, $email, $faculty, $cname, $students[0], $boos[0], $date, $comments, $caseId, $phone);
-
-    		if (!$statement2->execute()) {
+			$statement = "INSERT INTO saved_info (professor, email, course, faculty, student_name, student_bannerid, date, comments, case_id, phone) VALUES ('{$prof}', '{$email}', '{$cname}', '{$faculty}', '{$students[0]}', '{$boos[0]}', '{$date}', '{$comments}', '{$caseId}', '{$phone}')";
+			$conn->query($statement);
+			
+    		if (!$statement->execute()) {
        			echo "Execute failed: (" . $statement2->errno . ") " . $statement2->error;
     		}
     		else{
