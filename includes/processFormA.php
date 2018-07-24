@@ -121,7 +121,17 @@
 				sendUserHome();
 			}
 		}
-
+        if(isset($_POST['SaveFormA'])){
+            $statement = "INSERT INTO saved_info (professor, email, course, faculty, student_name, student_bannerid, date, comments, case_id, phone) VALUES ('{$prof}', '{$email}', '{$cname}', '{$faculty}', '{$students[0]}', '{$boos[0]}', '{$date}', '{$comments}', '{$caseId}', '{$phone}')";
+			$conn->query($statement);
+			
+    	    if (!$statement->execute()) {
+                echo "Execute failed";
+    		}
+    		else{
+      			echo "Execute successful";
+   			}
+        }
 		//The case where this Form A has already been saved before and needs to be just saved again
 		if(isset($_POST['SaveFormA']) && !isset($_POST['case_id'])){
 			//Create new case entry
@@ -213,17 +223,6 @@
 					}
 				}
 			}
-        if(isset($_POST['SaveFormA'])){
-            $statement = "INSERT INTO saved_info (professor, email, course, faculty, student_name, student_bannerid, date, comments, case_id, phone) VALUES ('{$prof}', '{$email}', '{$cname}', '{$faculty}', '{$students[0]}', '{$boos[0]}', '{$date}', '{$comments}', '{$caseId}', '{$phone}')";
-			$conn->query($statement);
-			
-    		if (!$statement->execute()) {
-       			echo "Execute failed";
-    		}
-    		else{
-      			echo "Execute successful";
-   			}
-        }
         
 			sendUserHome();
 		}
