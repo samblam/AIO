@@ -183,16 +183,6 @@
 
 			$statement->bind_result($fname, $csid);
 
-			$statement = "INSERT INTO saved_info (professor, email, course, faculty, student_name, student_bannerid, date, comments, case_id, phone) VALUES ('{$prof}', '{$email}', '{$cname}', '{$faculty}', '{$students[0]}', '{$boos[0]}', '{$date}', '{$comments}', '{$caseId}', '{$phone}')";
-			$conn->query($statement);
-			
-    		if (!$statement->execute()) {
-       			echo "Execute failed";
-    		}
-    		else{
-      			echo "Execute successful";
-   			}
-
 			//creates an associative array of csids and names of all students in the cases
 			//to easily lookup all students from this case to see if a student needs to be added,
 			//removed, or edited.
@@ -223,7 +213,18 @@
 					}
 				}
 			}
-
+        if(isset($_POST['SaveFormA'])){
+            $statement = "INSERT INTO saved_info (professor, email, course, faculty, student_name, student_bannerid, date, comments, case_id, phone) VALUES ('{$prof}', '{$email}', '{$cname}', '{$faculty}', '{$students[0]}', '{$boos[0]}', '{$date}', '{$comments}', '{$caseId}', '{$phone}')";
+			$conn->query($statement);
+			
+    		if (!$statement->execute()) {
+       			echo "Execute failed";
+    		}
+    		else{
+      			echo "Execute successful";
+   			}
+        }
+        
 			sendUserHome();
 		}
 	}
