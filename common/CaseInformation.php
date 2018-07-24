@@ -270,14 +270,14 @@ ViewAllPost3;
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                        </form>    
 ViewAllPost4;
                 }
             ?>   
         </div>
         <!--
         
-        -->
+-->
             
         <!-- Form display div -->
         <div>

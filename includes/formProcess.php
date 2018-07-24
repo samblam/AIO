@@ -132,7 +132,7 @@ if(isset($_POST['forwardCase']) && isset($_POST['case_id']) && $_SESSION['role']
   echo "<script>console.log( 'Debug Objects: " . $message . "' );</script>";
   $message = wordwrap($message,70);
   $header = "CC:" . $cc . "\r\n";
-  mail($email, $subject, $message, $header);
+  //mail($email, $subject, $message, $header); 
 }
 
 ?>
