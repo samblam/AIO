@@ -5,53 +5,65 @@
 ?>
 
 <?php
-  // Default redirect for each role
-  $start_pages = array( 'professor' => './Instructor/ActiveCases.php',
-                        'aio'       => './AIO/ActiveCases.php',
-                        'admin'     => './Admin/ActiveCases.php',
-                        'student'   => './includes/logout.php' ); // Replace when student stuff is built
-
-
-  // Login Script
-  if( $_SERVER['REQUEST_METHOD'] == 'POST' ) { // Login Attempt made
-    // Test connection
-    if( $pass_serv = ldap_connect('ldap://fcsldap.cs.dal.ca') ) {
-      // Set to proper protocol version
-      if( ldap_set_option($pass_serv,LDAP_OPT_PROTOCOL_VERSION,3) ) {
-        // Establish connection
-        if( $pass_bind = ldap_bind( $pass_serv ) ) { 
-          // Check credentials
-          $cred_chck = ldap_compare( $pass_bind, "cn=". $_POST['csid'], "password", $_POST['password']);
-          if( $cred_chck === -1 ) { // error in compare statement
-            $login_error = "Internal error. Please notify the system administrator.";
-          }
-          elseif( $cred_chck === false ) { // Wrong CSID or password
-            $login_error = "Incorrect CSID/password.";
-          }
-          else { // Correct CSID and password
-            // Fill session data
-            if( db_checkCSID( $_POST['csid'] ) ) {
-              $_SESSION = db_getUserData( $_POST['csid'] );
-              $_SESSION['start_page'] = $start_pages[$_SESSION['default_role']];
-              // Redirect to default page
-              header( 'Location: ' . $_SESSION['start_page'] . '?w=t', false, 303 );
-              exit;
+  // Testing from localhost
+  if( $_SERVER["HTTP_HOST"] == 'localhost' ) {
+    if( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
+      $csid = $_POST['csid'];
+      $pass = $_POST['password'];
+      if( db_checkCSID( $csid ) ) {
+        $_SESSION = db_getUserData( $csid );
+        $start_page = $start_pages[$_SESSION['default_role']];
+        $_SESSION['loggedIn'] = TRUE;
+        header( 'Location: ' . $start_page, false, 303 );
+        exit;
+      }
+    }
+  }
+  // Accessing/testing on staging server
+  else {
+    // Login Script
+    if( $_SERVER['REQUEST_METHOD'] == 'POST' ) { // Login Attempt made
+      // Test connection
+      if( $pass_serv = ldap_connect('ldap://fcsldap.cs.dal.ca') ) {
+        // Set to proper protocol version
+        if( ldap_set_option($pass_serv,LDAP_OPT_PROTOCOL_VERSION,3) ) {
+          // Establish connection
+          if( $pass_bind = ldap_bind( $pass_serv ) ) { 
+            // Check credentials
+            $cred_chck = ldap_compare( $pass_bind, "cn=". $_POST['csid'], "password", $_POST['password']);
+            if( $cred_chck === -1 ) { // error in compare statement
+              $login_error = "Internal error. Please notify the system administrator.";
             }
-            else {
-              $login_error = "CS ID not in AIO database. Contact the admin.";
+            elseif( $cred_chck === false ) { // Wrong CSID or password
+              $login_error = "Incorrect CSID/password.";
             }
+            else { // Correct CSID and password
+              // Fill session data
+              if( db_checkCSID( $_POST['csid'] ) ) {
+                $_SESSION = db_getUserData( $_POST['csid'] );
+                $start_page = $start_pages[$_SESSION['default_role']];
+                // Mark session as loggged in
+                $_SESSION['loggedIn'] = TRUE;
+                // Redirect to default page
+                header( 'Location: ' . $start_page, false, 303 );
+                exit;
+              }
+              else {
+                $login_error = "CS ID not in AIO database. Contact the admin.";
+              }
+            }
+          }
+          else { // Could not connect to server
+            $login_error = "Could not connect to FCS password server. Please try again later.";
           }
         }
-        else { // Could not connect to server
+        else { // Could not set version number
           $login_error = "Could not connect to FCS password server. Please try again later.";
         }
       }
-      else { // Could not set version number
+      else { // Test connection failed
         $login_error = "Could not connect to FCS password server. Please try again later.";
       }
-    }
-    else { // Test connection failed
-      $login_error = "Could not connect to FCS password server. Please try again later.";
     }
   }
 ?>

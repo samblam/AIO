@@ -7,8 +7,7 @@
    * The else connects you to the live database for when you are using this live.
    * This only needs to be changed if you decide to change the database password.
    */
-  function OpenCon()
-  {
+  function OpenCon() {
     $dbhost = "";
     $dbuser = "";
     $dbpass = "";
@@ -27,17 +26,16 @@
     return $conn;
   }
 
-  function CloseCon($conn)
-  {
+  function CloseCon($conn) {
     $conn -> close();
   }
 
   /**
    * Checks whether the provided csid can be found in the DB
    */
-  function db_checkCSID($csid)
-  {
-    $stmt = $conn->prepare( "SELECT count(csid) FROM ? WHERE csid LIKE ?" );
+  function db_checkCSID($csid) {
+    global $conn;
+    $stmt = $conn->prepare( "SELECT count(csid) FROM ? WHERE csid = ?" );
     $stmt->bind_param( "ss", $table_name, $csid );
     $tables = array( 'admin', 'aio', 'professor', 'student' );
     foreach ($tables as $table_name ) {
@@ -51,13 +49,24 @@
 
   /**
    * Get's session data from DB
+   *
+   * Returns an array with elements:
+   *     csid          -> the CSID of the user
+   *     roles         -> list of roles the user has
+   *     default_role  -> the highest ranked of the user's roles
+   *                      ( admin -> aio -> professor -> student )
+   *     role          -> the user's active role, starts same as default_role
+   *     fname         -> the user's first name
+   *     lname         -> the user's last name
+   *     phone         -> the user's phone number
+   *     email         -> the user's email address
    */
-  function db_getUserData($csid)
-  {
+  function db_getUserData($csid) {
+    global $conn;
     $data = array( 'csid' => $csid );
     // Fetch user roles
     $roles = array();
-    $stmt = $conn->prepare( "SELECT count(csid) FROM ? WHERE csid LIKE ?" );
+    $stmt = $conn->prepare( "SELECT count(csid) FROM ? WHERE csid = ?" );
     $stmt->bind_param( "ss", $table_name, $csid );
     $tables = array( 'admin', 'aio', 'professor', 'student' );
     foreach ($tables as $table_name ) {
@@ -66,7 +75,7 @@
         array_push( $roles, $table_name );
       }
     }
-    $data['user_roles'] = $roles;
+    $data['roles'] = $roles;
     // Determine default user role
     if( in_array( 'admin', $roles ) ) {
       $data['default_role'] = 'admin';
@@ -80,7 +89,20 @@
     else {
       $data['default_role'] = 'student';
     }
+    $data['role'] = $data['default_role'];
     // Fetch user data from table corresponding to default role
+    $fname = $lname = $phone = $email = "";
+    $stmt = $conn->prepare( "SELECT fname, lname, phone, email FROM ? WHERE csid = ?" );
+    $stmt->bind_param( "ss", $data['role'], $csid );
+    $result = $stmt->execute();
+    $stmt->bind_result( $fname, $lname, $phone, $email );
+    $stmt->fetch();
+    $data['fname'] = $fname;
+    $data['lname'] = $lname;
+    $data['phone'] = $phone;
+    $data['email'] = $email;
+
+    return $data;
   }
 
   global $conn;
