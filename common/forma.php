@@ -62,23 +62,22 @@ if(isset($_GET["case_id"])){
                     <div class="col-sm-9">
                         
                         <?php
-                        //this check is to see if the admin is submitting the form
+                            //this check is to see if the admin is submitting the form
                             if(isset($_GET['ProfRequired'])){
                             //show dropdown here
                                 echo "<select data-live-search='true' id='profSelect' class='selectpicker form-control' onchange='fillProf()''>";
                                 echo "<option disabled selected value> -- select an option -- </option>";
                                 
                                 //grab all the professors
-                                $statement = $conn->prepare("SELECT fname, lname, email, phone FROM professor");
+                                $statement = $conn->prepare("SELECT professor_id, fname, lname, email, phone FROM professor");
                                 if(!$statement->execute()){
                                   echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                                 }
-                                $statement->bind_result( $pfname, $plname, $email, $phone);
+                                $statement->bind_result($pid, $pfname, $plname, $email, $phone);
                                 while($statement->fetch()){
                                     //add each professor to the dropdown, and tie the email/phone number to the value in order to auto fill
                                     $profName = $pfname . ' ' . $plname;
-                                    echo"<option value='$email,$phone' data-tokens='$pfname,$plname'>$profName</option>";
-                                    
+                                    echo"<option value='$email,$phone,$pid' data-tokens='$pfname,$plname'>$profName</option>";   
                                 }
                                 echo"</select>";
                             }
@@ -191,17 +190,27 @@ if(isset($_GET["case_id"])){
                         <button type="submit" class="btn btn-primary" name="PreviewPDF">Preview PDF</button>
                         <button id="SaveFormA" type="submit" class="btn btn-primary" name="SaveFormA">Save</button>
                         <?php
-                            if($_SESSION['role']=="professor" && $formSubmissionDate==""){
+                            $role = $_SESSION['role'];
+                            echo "date: " . $formSubmissionDate;
+
+                            if($role == "admin"){
+                                // admin is submitting the case for the selected professor. Pass this info as a hidden input to the form processing file.
+                                // the value is set in profAutoFill.js
+                                echo "<input type=\"hidden\" id=\"AdminSubmittedProfId\" name=\"AdminSubmittedProfId\" value=\"\"/>";
+                            }
+
+                            if(($role == "professor" || $role == "admin") && $formSubmissionDate == ""){
+                                // form has not been submitted
                 	            echo"<button type=\"submit\" class=\"btn btn-success\" id=\"SubmitFormA\" name=\"SubmitFormA\">Submit</button>";
                             } 
 
-                            elseif ($_SESSION['role']=="professor" && $formSubmissionDate!="") {
-                                // add submit button for adding more evidence to a previously submitted case
+                            elseif (($role == "professor" || $role == "admin") && $formSubmissionDate != "") {
+                                // form has been submitted. Add submit button for adding more evidence to a previously submitted case
                                 echo "<button type=\"submit\" class=\"btn btn-success\" id=\"AddEvidence\" name=\"AddEvidence\" disabled>Upload Selected Evidence</button>";
 
                                 if($evidenceFileDir!=""){
                                     // add a hidden field that passes on the file directory in which to add the files
-                                    echo "<input type=\"hidden\" name=\"EvidenceDirectory\" value=\"$evidenceFileDir\">";
+                                    echo "<input type=\"hidden\" name=\"EvidenceDirectory\" value=\"$evidenceFileDir\"/>";
                                 }
                             }
             			?>
