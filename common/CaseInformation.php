@@ -62,9 +62,24 @@ if(isset($_POST['caseId'])){
         <div>
             
             <?php
+            $conn = OpenCon();
+                
+            //This fixes an issues with going back, or reloading the page as the caseId is lost
+                if(!isset($_POST['caseId'])){
+                    if(!isset($_SESSION['lastCaseId'])){
+                        header('ActiveCases.php');
+                    }
+                    else{
+                        $caseIdValue = $_SESSION['lastCaseId'];
+                    }
+                }
+                else{
+                    $caseIdValue = $_POST['caseId'];
+                    $_SESSION['lastCaseId'] = $_POST['caseId'];
+                }
+
                 //Get all relevent feilds and bind them to php variables
-                $conn = OpenCon();
-                $caseIdValue = $_POST['caseId'];
+
                 $statement = $conn->prepare("
                 SELECT
                     active_cases.form_a_submit_date,
@@ -180,24 +195,36 @@ if(isset($_POST['caseId'])){
         <!-- CLose case, insufficient evidence and forward case buttons -->
         <div class="center-block text-center">
             <?php
-
-                if($caseId != "" && $role == "aio"){
-                    //Get case verdict from db
-                    $statement = $conn->prepare("SELECT case_verdict FROM active_cases WHERE case_id = '$caseId' AND aio_id = ?"); 
-                    $statement->bind_param("d", $id); //bind the csid to the prepared statements
-
-                    $id = (int)$_SESSION['userId'];
-                    if(!$statement->execute()){
-                        echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+            
+                if(!isset($_POST['caseId'])){
+                    if(!isset($_SESSION['lastCaseId'])){
+                        header('ActiveCases.php');
                     }
+                    else{
+                        $caseIdValue = $_SESSION['lastCaseId'];
+                    }
+                }
+                else{
+                    $caseIdValue = $_POST['caseId'];
+                    $_SESSION['lastCaseId'] = $_POST['caseId'];
+                }
+            
+                //Get case verdict from db
+                $statement = $conn->prepare("SELECT case_verdict FROM active_cases WHERE case_id = '$caseIdValue' AND aio_id = ?"); 
+                $statement->bind_param("d", $id); //bind the csid to the prepared statements
+
+                $id = (int)$_SESSION['userId'];
+                if(!$statement->execute()){
+                    echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+                }
                 
-                    $statement->bind_result($caseVerdict);
-                    
-                    if($caseVerdict == NULL && $_SESSION['role'] != "professor"){
+                $statement->bind_result($caseVerdict);
+                    if($caseVerdict == NULL){
                         // Insufficient Evidence Button
                         echo <<<ViewAllPost
-                            <form class="delete_this_case" method="post" action="ActiveCases.php" onclick="return confirm('Are you sure you want to remove this case for insufficient evidence? This will permanently delete the case.\\nClick OK to continue.')">
-                                <input type="text" name="case_id" value="$caseId" hidden>
+
+                            <form class="delete_this_case" method="post" action="AioActiveCases.php" onclick="return confirm('Are you sure you want to remove this case for insufficient evidence? This will permanently delete the case.\\nClick OK to continue.')">
+                                <input type="text" name="case_id" value="$caseIdValue" hidden>
                                 <button class="btn btn-danger" value="true" type="submit" name="insufficientEvidence">Insufficient Evidence</button>
                             </form>
 ViewAllPost;
@@ -206,7 +233,7 @@ ViewAllPost;
                         // Close case Button guilty
                         echo <<<ViewAllPost2
                             <form class="delete_this_case" method="post" action="ActiveCases.php" onclick="return confirm('Are you sure you want to close this case? \\nIf the verdict is guilty the case gets archived in our system, and if the verdict is not guilty the case is permanently deleted. \\nClick OK to continue.')">
-                                <input type="text" name="case_id" value="$caseId" hidden>
+                                <input type="text" name="case_id" value="$caseIdValue" hidden>
                                 <button class="btn btn-danger" value="true" type="submit" name="closeCaseGuilty">Close Case</button>
                             </form>
 ViewAllPost2;
@@ -215,7 +242,7 @@ ViewAllPost2;
                         // Close case Button not guilty
                         echo <<<ViewAllPost3
                             <form class="delete_this_case" method="post" action="ActiveCases.php" onclick="return confirm('Are you sure you want to close this case? \\nIf the verdict is guilty the case gets archived in our system, and if the verdict is not guilty the case is permanently deleted. \\nClick OK to continue.')">
-                                <input type="text" name="case_id" value="$caseId" hidden>
+                                <input type="text" name="case_id" value="$caseIdValue" hidden>
                                 <button class="btn btn-danger" value="true" type="submit" name="closeCaseNotGuilty">Close Case</button>
                             </form>
 ViewAllPost3;
@@ -261,8 +288,8 @@ ViewAllPost3;
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <input type="text" name="case_id" value="$caseId" hidden>
-                                                <input type="text" name="caseId" value="$caseId" hidden>
+                                                <input type="text" name="case_id" value="$caseIdValue" hidden>
+                                                <input type="text" name="caseId" value="$caseIdValue" hidden>
                                                 <button class="btn btn-success pull-left" name="forwardCase" value="true" type="submit">Send Email</button>
                                                 <button class="btn btn-default" data-dismiss="modal">Close</button>
                                             </div>
