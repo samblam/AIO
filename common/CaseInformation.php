@@ -7,9 +7,6 @@ include_once '../includes/db.php';
 //Check if the form variables have been submitted, store them in the session variables
 include '../includes/formProcess.php';
 include_once '../includes/page.php';
-echo"<script>";
-include '../JS/formLoader.js';
-echo"</script>";
 
 $role = $_SESSION["role"];
 $userId = (int) $_SESSION["userId"];
@@ -82,7 +79,6 @@ if(isset($_POST['caseId'])){
 
 
                 //Get all relevent feilds and bind them to php variables
-
                 $statement = $conn->prepare("
                 SELECT
                     active_cases.form_a_submit_date,
@@ -358,5 +354,25 @@ DisplayFormTabs;
         </div>
         </div>
     </body>
+
+    <script type="text/javascript">
+
+        $(document).ready( function() {
+            // pass the case id on to form A via POST
+             $("#forma").load("forma.php", {"caseId": <?php echo $caseId; ?> });
+         });
+
+         $(document).ready( function() {
+             $("#formb").load("formb.php");
+         });
+
+         $(document).ready( function() {
+             $("#formc").load("formc.php");
+         });
+
+         $(document).ready( function() {
+             $("#formd").load("formd.php");
+         });
+    </script>
 </html>
 
