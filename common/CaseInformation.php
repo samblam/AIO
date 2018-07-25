@@ -7,9 +7,6 @@ include_once '../includes/db.php';
 //Check if the form variables have been submitted, store them in the session variables
 include '../includes/formProcess.php';
 include_once '../includes/page.php';
-echo"<script>";
-include '../JS/formLoader.js';
-echo"</script>";
 
 $role = $_SESSION["role"];
 $userId = (int) $_SESSION["userId"];
@@ -62,9 +59,11 @@ if(isset($_POST['caseId'])){
         <div>
             
             <?php
+
             $conn = OpenCon();
                 
             //This fixes an issues with going back, or reloading the page as the caseId is lost
+
                 if(!isset($_POST['caseId'])){
                     if(!isset($_SESSION['lastCaseId'])){
                         header('ActiveCases.php');
@@ -78,8 +77,8 @@ if(isset($_POST['caseId'])){
                     $_SESSION['lastCaseId'] = $_POST['caseId'];
                 }
 
-                //Get all relevent feilds and bind them to php variables
 
+                //Get all relevent feilds and bind them to php variables
                 $statement = $conn->prepare("
                 SELECT
                     active_cases.form_a_submit_date,
@@ -191,8 +190,55 @@ if(isset($_POST['caseId'])){
                 </tbody>
             </table>
         </div>
-            
-        <!-- CLose case, insufficient evidence and forward case buttons -->
+        <div class="center-block text-center">
+            <?php 
+            //setting original AIO id to null for bind parameter
+            $aio_id=NULL;
+
+            // check if URL contains the case_id variable
+            if(isset($_SESSION["lastCaseId"])){
+            $statement = $conn->prepare("SELECT aio_id FROM active_cases WHERE case_id = ?");
+
+            //binding current cases aio id to variable
+            $case_id = (int)$_SESSION["lastCaseId"];
+            $statement->bind_param("i", $case_id);
+            if(!$statement->execute()){
+            echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+            }
+
+            // get the case information from the database
+            $statement->bind_result($aio_id);
+            $statement->fetch();
+
+            //echoing button actions to Accept Deny php file 
+            if($_SESSION['role']=="aio" && $aio_id==NULL){
+
+            echo <<<AcceptButtons
+                    <form action="../includes/AcceptDeny.php" method="post">
+                        <button type="submit" class="btn btn-success" name="AcceptFormA">Accept Case</button>
+                        <input type="hidden" name="CurrCaseId" value="$case_id"></input>
+                    </form>
+AcceptButtons;
+       
+            }
+
+            //echoing button actions to Accept Deny php file 
+            if($_SESSION['role']=="aio" && $aio_id!=NULL){
+            echo <<<DenyButtons
+                    <form action="../includes/AcceptDeny.php" method="post">
+                        <button type="submit" class="btn btn-danger" name="DenyFormA">Decline Case</button>
+                        <input type="hidden" name="CurrCaseId" value="$case_id"></input>
+                    </form>
+DenyButtons;
+        }
+    }
+        CloseCon($conn);
+        $conn=OpenCon();
+    ?>
+</div>
+
+
+        <!-- Close case and insufficient evidence buttons -->
         <div class="center-block text-center">
             <?php
             
@@ -218,6 +264,7 @@ if(isset($_POST['caseId'])){
                     echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                 }
                 
+                    
                 $statement->bind_result($caseVerdict);
                 while($statement->fetch()){
                     if($caseVerdict == NULL){
@@ -348,4 +395,25 @@ DisplayFormTabs;
             </div>
         </div>
     </body>
+
+    <script type="text/javascript">
+
+        $(document).ready( function() {
+            // pass the case id on to form A via POST
+             $("#forma").load("forma.php", {"caseId": <?php echo $caseId; ?> });
+         });
+
+         $(document).ready( function() {
+             $("#formb").load("formb.php");
+         });
+
+         $(document).ready( function() {
+             $("#formc").load("formc.php");
+         });
+
+         $(document).ready( function() {
+             $("#formd").load("formd.php");
+         });
+    </script>
 </html>
+
