@@ -7,9 +7,6 @@ include_once '../includes/db.php';
 //Check if the form variables have been submitted, store them in the session variables
 include '../includes/formProcess.php';
 include_once '../includes/page.php';
-echo"<script>";
-include '../JS/formLoader.js';
-echo"</script>";
 
 $role = $_SESSION["role"];
 $userId = (int) $_SESSION["userId"];
@@ -66,6 +63,7 @@ if(isset($_POST['caseId'])){
             $conn = OpenCon();
                 
             //This fixes an issues with going back, or reloading the page as the caseId is lost
+
                 if(!isset($_POST['caseId'])){
                     if(!isset($_SESSION['lastCaseId'])){
                         header('ActiveCases.php');
@@ -195,7 +193,61 @@ if(isset($_POST['caseId'])){
                 </tbody>
             </table>
         </div>
-            
+                
+
+                <div class="center-block text-center">
+        <?php 
+        //setting original AIO id to null for bind parameter
+        $aio_id=NULL;
+
+        // check if URL contains the case_id variable
+        if(isset($_SESSION["lastCaseId"])){
+        $statement = $conn->prepare("SELECT aio_id FROM active_cases WHERE case_id = ?");
+
+        //binding current cases aio id to variable
+        $case_id = (int)$_SESSION["lastCaseId"];
+        $statement->bind_param("i", $case_id);
+        if(!$statement->execute()){
+        echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+        }
+
+        // get the case information from the database
+        $statement->bind_result($aio_id);
+        $statement->fetch();
+
+        //echoing button actions to Accept Deny php file 
+        if($_SESSION['role']=="aio" && $aio_id==NULL){
+
+        echo <<<AcceptButtons
+                    <form action="../includes/AcceptDeny.php" method="post">
+                        <button type="submit" class="btn btn-success" name="AcceptFormA">Accept Case</button>
+                        <input type="hidden" name="CurrCaseId" value="$case_id"></input>
+                    </form>
+AcceptButtons;
+       
+        }
+
+        //echoing button actions to Accept Deny php file 
+        if($_SESSION['role']=="aio" && $aio_id!=NULL){
+
+        echo <<<DenyButtons
+                    <form action="../includes/AcceptDeny.php" method="post">
+                        <button type="submit" class="btn btn-danger" name="DenyFormA">Decline Case</button>
+                        <input type="hidden" name="CurrCaseId" value="$case_id"></input>
+                    </form>
+DenyButtons;
+       
+        }
+
+
+
+    }
+        CloseCon($conn);
+        $conn=OpenCon();
+    ?>
+</div>
+
+
         <!-- CLose case and insufficient evidence buttons -->
         <div class="center-block text-center">
             <?php
@@ -221,40 +273,38 @@ if(isset($_POST['caseId'])){
                     if(!$statement->execute()){
                         echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                     }
-                
-                    $statement->bind_result($caseVerdict);
-                  
-					while($statement->fetch()){
-						if($caseVerdict == NULL){
-							// Insufficient Evidence Button
-							echo <<<ViewAllPost
-								<form class="delete_this_case" method="post" action="ActiveCases.php"
-								onclick="return confirm('Are you sure you want to remove this case for insufficient evidence? This will permanently delete the case.\\nClick OK to continue.')">
-									<input type="text" name="case_id" value="$caseId" hidden>
-									<button class="btn btn-danger" value="true" type="submit" name="insufficientEvidence">Insufficient Evidence</button>
-								</form>
+
+					$statement->bind_result($caseVerdict);
+
+                    if($caseVerdict == NULL){
+                        // Insufficient Evidence Button
+                        echo <<<ViewAllPost
+
+                            <form class="delete_this_case" method="post" action="AioActiveCases.php" onclick="return confirm('Are you sure you want to remove this case for insufficient evidence? This will permanently delete the case.\\nClick OK to continue.')">
+                                <input type="text" name="case_id" value="$caseIdValue" hidden>
+                                <button class="btn btn-danger" value="true" type="submit" name="insufficientEvidence">Insufficient Evidence</button>
+
+                            </form>                 
 ViewAllPost;
-						}
-						else if ($caseVerdict == "guilty"){
-							// Close case Button guilty
-							echo <<<ViewAllPost2
-								<form class="delete_this_case" method="post" action="ActiveCases.php"
-								onclick="return confirm('Are you sure you want to close this case? \\nIf the verdict is guilty the case gets archived in our system, and if the verdict is not guilty the case is permanently deleted. \\nClick OK to continue.')">
-									<input type="text" name="case_id" hidden>
-									<button class="btn btn-danger" value="true" type="submit" name="closeCaseGuilty">Close Case</button>
-								</form>
+					}
+					else if ($caseVerdict == "guilty"){
+						// Close case Button guilty
+						echo <<<ViewAllPost2
+
+							<form class="delete_this_case" method="post" action="ActiveCases.php" onclick="return confirm('Are you sure you want to close this case? \\nIf the verdict is guilty the case gets archived in our system, and if the verdict is not guilty the case is permanently deleted. \\nClick OK to continue.')">
+								<input type="text" name="case_id"   hidden>
+								<button class="btn btn-danger" value="true" type="submit" name="closeCaseGuilty">Close Case</button>
+							</form>
 ViewAllPost2;
-						}
-						else if ($caseVerdict == "not guilty"){
-							// Close case Button not guilty
-							echo <<<ViewAllPost3
-								<form class="delete_this_case" method="post" action="ActiveCases.php"
-								onclick="return confirm('Are you sure you want to close this case? \\nIf the verdict is guilty the case gets archived in our system, and if the verdict is not guilty the case is permanently deleted. \\nClick OK to continue.')">
-									<input type="text" name="case_id" value="$caseId" hidden>
-									<button class="btn btn-danger" value="true" type="submit" name="closeCaseNotGuilty">Close Case</button>
-								</form>
+					}
+					else if ($caseVerdict == "not guilty"){
+						// Close case Button not guilty
+						echo <<<ViewAllPost3
+							<form class="delete_this_case" method="post" action="AioActiveCases.php" onclick="return confirm('Are you sure you want to close this case? \\nIf the verdict is guilty the case gets archived in our system, and if the verdict is not guilty the case is permanently deleted. \\nClick OK to continue.')">
+								<input type="text" name="case_id" value="$caseIdValue" hidden>
+								<button class="btn btn-danger" value="true" type="submit" name="closeCaseNotGuilty">Close Case</button>
+							</form>
 ViewAllPost3;
-						}
 					}
 				}
             ?>
@@ -305,7 +355,11 @@ DisplayFormTabsC;
                         echo<<<LoadFormC
 							<div id="formc" class='tab-pane fade'>";
 							</div>
-							<script>loadFormC($caseIdValue, $studentID, $num_students);</script>
+							<script>
+								$(document).ready( function() {
+									$("#formc").load("formc.php?case_id=" + $caseIdValue + "&student_id=" + $studentID + "&num_students=" + $num_students);
+								});
+							</script>
 LoadFormC;
 					}
 
@@ -317,4 +371,21 @@ LoadFormC;
             </div>
         </div>
     </body>
+
+    <script type="text/javascript">
+
+        $(document).ready( function() {
+            // pass the case id on to form A via POST
+             $("#forma").load("forma.php", {"caseId": <?php echo $caseId; ?> });
+         });
+
+         $(document).ready( function() {
+             $("#formb").load("formb.php");
+         });
+
+         $(document).ready( function() {
+             $("#formd").load("formd.php");
+         });
+    </script>
 </html>
+

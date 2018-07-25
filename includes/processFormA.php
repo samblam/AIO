@@ -34,6 +34,10 @@
 			$submitDate = date('Y-m-d', time());
 			$caseId;
 
+			if(isset($_POST["AdminSubmittedProfId"])){
+				$userId = intval($_POST["AdminSubmittedProfId"]);
+			}
+
 			// If you are submitting a form A, it cant have multiple students with the same csid. So, return to the form.
 			// The "multiIds" query string might be useful for displaying an error message once you return to the form page.
 			if(count($boos) != count(array_unique($boos)) && isset($_POST['case_id'])){
