@@ -59,62 +59,76 @@ if(isset($_POST['SaveFormD']) || isset($_POST['SubmitFormD'])){
 
 }
 
-// deletes all students and active cases with the given case_id for admins
+
+/*
+ All code below this point is used by either ActiveCases.php or CaseInformation.php to perform actions like
+ changing the AIO of a case, closing a case, etc.
+*/
+
+
+// Deletes all students and active cases with the given case id from Admin/ACtiveCases.php
 if(isset($_POST['deleteCase']) && isset($_POST['case_id']) && $_SESSION['role'] == "admin") {
   $id = htmlspecialchars(trim(stripslashes($_POST['case_id'])));
   $conn->query("DELETE FROM student WHERE case_id = \"$id\"");
   $conn->query("DELETE FROM active_cases WHERE case_id = \"$id\"");
 }
 
-// ALlows the admin to change the AIO of a case
+// Allows the admin to change the AIO of a case from ChangeAIO.php
 if(isset($_POST['submitChangeAIO']) && isset($_POST['case_id']) && $_SESSION['role'] == "admin") {
   $id = htmlspecialchars(trim(stripslashes($_POST['case_id'])));
-  $newAIO = htmlspecialchars(trim(stripslashes($_POST['selectedAIO']))); //Gets selected AIO from dropdown
+  // Gets selected AIO from dropdown
+  $newAIO = htmlspecialchars(trim(stripslashes($_POST['selectedAIO']))); 
+  // Gets AIO id from db
   if($newAIO != "Select New"){
-    $statement = $conn->prepare("SELECT aio_id FROM aio WHERE CONCAT(TRIM(fname), ' ', TRIM(lname)) LIKE '$newAIO'"); //Gets AIO id from db
+    $statement = $conn->prepare("SELECT aio_id FROM aio WHERE CONCAT(TRIM(fname), ' ', TRIM(lname)) LIKE '$newAIO'"); 
     if(!$statement->execute()){
         echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
     }
     $statement->bind_result($aioId);
     while($statement->fetch()){ }
-    $conn->query("UPDATE active_cases SET aio_id = '$aioId' WHERE case_id = '$id'"); //Updates AIO in active cases table
+    // Updates AIO in active cases table
+    $conn->query("UPDATE active_cases SET aio_id = '$aioId' WHERE case_id = '$id'"); 
   }
 }
 
-// deletes all students and active cases with the given case_id for insufficient evidence
+// Deletes all students and active cases with the given case id for insufficient evidence from CaseInformation.php
 if(isset($_POST['insufficientEvidence']) && isset($_POST['case_id']) && $_SESSION['role'] == "aio") {
   $caseId = htmlspecialchars(trim(stripslashes($_POST['case_id'])));
-  //Get student name from db
+  // Get student name from db
   $statement = $conn->prepare("SELECT fname, lname, csid FROM student WHERE case_id = '$caseId'"); 
   if(!$statement->execute()){
     echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
   }
   $statement->bind_result($fname, $lname, $id);
-  while($statement->fetch()){
+  // Creates email message
+  while($statement->fetch()){ 
     $msg = "Insufficient evidence provided for academic integrity case involving " . $fname . " " . $lname . " (" . $id . "). The case has been closed.";
     $msg = wordwrap($msg, 70);
   }
-  //Get prof email from db
+  // Get prof email from db
   $statement = $conn->prepare("SELECT professor.email FROM active_cases LEFT JOIN professor ON active_cases.prof_id = professor.professor_id WHERE active_cases.case_id = '$caseId'"); 
   if(!$statement->execute()){
     echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
   }
   $statement->bind_result($email);
+  // Sends email
   while($statement->fetch()){
     mail($email, "Insufficient evidence provided for academic integrity case.", $msg);
   }
   $conn->query("DELETE FROM student WHERE case_id = \"$caseId\"");
   $conn->query("DELETE FROM active_cases WHERE case_id = \"$caseId\"");
+  // Redircets to the ActiveCases.php page once the email is sent
+  header("Location: ../AIO/ActiveCases.php");
 }
 
-// deletes all students and active cases with the given case_id for close case
+// Deletes all students and active cases with the given case id from CaseInformation.php
 if(isset($_POST['closeCaseNotGuilty']) && isset($_POST['case_id']) && $_SESSION['role'] == "aio") {
   $id = htmlspecialchars(trim(stripslashes($_POST['case_id'])));
   $conn->query("DELETE FROM student WHERE case_id = \"$id\"");
   $conn->query("DELETE FROM active_cases WHERE case_id = \"$id\"");
 }
 
-// moves all students and active cases with the given case_id to archive
+// Moves all students and active cases with the given case id to archive from CaseInformation.php
 if(isset($_POST['closeCaseGuilty']) && isset($_POST['case_id']) && $_SESSION['role'] == "aio") {
   $id = htmlspecialchars(trim(stripslashes($_POST['case_id'])));
   $conn->query("INSERT INTO history (class_name, verdict, date_allegation) SELECT class_name_code, case_verdict, date_aware FROM active_cases WHERE case_id = \"$id\"");
@@ -122,7 +136,8 @@ if(isset($_POST['closeCaseGuilty']) && isset($_POST['case_id']) && $_SESSION['ro
   $conn->query("DELETE FROM active_cases WHERE case_id = \"$id\"");
 }
 
-// sends email to forward case to senate
+// TODO: Add functionality so a zip folder with all of the case files is sent with the email
+// sends email to forward case to senate from CaseInformation.php
 if(isset($_POST['forwardCase']) && isset($_POST['case_id']) && $_SESSION['role'] == "aio") {
   $caseId = htmlspecialchars(trim(stripslashes($_POST['case_id'])));
   $email = htmlspecialchars(trim(stripslashes($_POST['email_to'])));
@@ -132,7 +147,8 @@ if(isset($_POST['forwardCase']) && isset($_POST['case_id']) && $_SESSION['role']
   echo "<script>console.log( 'Debug Objects: " . $message . "' );</script>";
   $message = wordwrap($message,70);
   $header = "CC:" . $cc . "\r\n";
-  //mail($email, $subject, $message, $header); 
+  mail($email, $subject, $message, $header); 
+  // Redircets to the CaseINformation.php page once the email is sent
   header("Location: ../AIO/CaseInformation.php");
 }
 

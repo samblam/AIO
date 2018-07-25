@@ -219,11 +219,12 @@ if(isset($_POST['caseId'])){
                 }
                 
                 $statement->bind_result($caseVerdict);
+                while($statement->fetch()){
                     if($caseVerdict == NULL){
                         // Insufficient Evidence Button
                         echo <<<ViewAllPost
 
-                            <form class="delete_this_case" method="post" action="AioActiveCases.php" onclick="return confirm('Are you sure you want to remove this case for insufficient evidence? This will permanently delete the case.\\nClick OK to continue.')">
+                            <form class="delete_this_case" method="post" onclick="return confirm('Are you sure you want to remove this case for insufficient evidence? This will permanently delete the case.\\nClick OK to continue.')">
                                 <input type="text" name="case_id" value="$caseIdValue" hidden>
                                 <button class="btn btn-danger" value="true" type="submit" name="insufficientEvidence">Insufficient Evidence</button>
                             </form>
@@ -247,6 +248,7 @@ ViewAllPost2;
                             </form>
 ViewAllPost3;
                     }
+                    // TODO: Add functionality so a zip folder with all of the case files is sent with the email
                     // Forward case button
                     echo <<<ViewAllPost4
                         <button class="btn btn-success" name="forwardCaseButton" data-toggle="modal" data-target="#emailForm">Forward Case</button>
@@ -302,9 +304,6 @@ ViewAllPost4;
                 }
             ?>   
         </div>
-        <!--
-        
--->
             
         <!-- Form display div -->
         <div>
