@@ -59,11 +59,8 @@ if(isset($_POST['caseId'])){
         <div>
             
             <?php
-
-            $conn = OpenCon();
-                
-            //This fixes an issues with going back, or reloading the page as the caseId is lost
-
+                $conn = OpenCon();
+                //This fixes an issues with going back, or reloading the page as the caseId is lost
                 if(!isset($_POST['caseId'])){
                     if(!isset($_SESSION['lastCaseId'])){
                         header('ActiveCases.php');
@@ -76,32 +73,28 @@ if(isset($_POST['caseId'])){
                     $caseIdValue = $_POST['caseId'];
                     $_SESSION['lastCaseId'] = $_POST['caseId'];
                 }
-
-
                 //Get all relevent feilds and bind them to php variables
                 $statement = $conn->prepare("
-                SELECT
-                    active_cases.form_a_submit_date,
-                    active_cases.stu_csid_list,
-                    professor.fname, 
-                    professor.lname, 
-                    student.fname, 
-                    student.lname, 
-                    student.csid 
-                FROM 
-                    professor 
-                    LEFT JOIN active_cases ON professor.professor_id = active_cases.prof_id 
-                    LEFT JOIN student ON student.case_id = $caseIdValue
-                WHERE 
-                    active_cases.case_id = $caseIdValue
-                    ");
-
+                    SELECT
+                        active_cases.form_a_submit_date,
+                        active_cases.stu_csid_list,
+                        professor.fname, 
+                        professor.lname, 
+                        student.fname, 
+                        student.lname, 
+                        student.csid 
+                    FROM 
+                        professor 
+                        LEFT JOIN active_cases ON professor.professor_id = active_cases.prof_id 
+                        LEFT JOIN student ON student.case_id = $caseIdValue
+                    WHERE 
+                        active_cases.case_id = $caseIdValue
+                        ");
                 if(!$statement->execute()){
                     echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                 }
                 $statement->bind_result($submissionDate, $studentList, $pfname, $plname, $sfname, $slname, $scsid);
                 $statement->fetch();
-
             ?>
 
             <table class="table table-bordered" style="font-size: 14px;">
@@ -156,7 +149,7 @@ if(isset($_POST['caseId'])){
                             // OR user is a professor and the professor id for this case matches user's id
                             // OR user is an admin
 
-                            if ( ($role == "aio" && $aio_id == $userId) || ($role == "professor" && $prof_id == $userId) || ($role == "admin") ){
+                            if(($role == "aio" && $aio_id == $userId) || ($role == "professor" && $prof_id == $userId) || ($role == "admin")){
                                 if ($path_to_evidence_dir != "" && file_exists("../evidence/" . $path_to_evidence_dir . "/evidence.zip")) {
                                     // user should be shown the link to the evidence file
                                     $path_to_zip_file = "../evidence/" . $path_to_evidence_dir . "/evidence.zip";
@@ -167,81 +160,69 @@ if(isset($_POST['caseId'])){
                                             </form>
                                         </td>";
                                 }
-
                                 else {
                                     // no evidence has been submitted
                                     echo "<td>No evidence submitted</td>";
                                 }
                             }
-
-                            else{
+                            else {
                                 // viewer of the page does not meet the permission requirements to view the evidence
                                 echo "<td>Insufficient permission to view evidence</td>";
                             }
                         ?>
                     </tr>
-
                     <tr>
                         <td>Case status</td>
                         <!-- needs to come from backend -->
                         <td>Waiting for student to confirm meeting date</td>
                     </tr>
-
                 </tbody>
             </table>
         </div>
+        
         <div class="center-block text-center">
             <?php 
-            //setting original AIO id to null for bind parameter
-            $aio_id=NULL;
-
-            // check if URL contains the case_id variable
-            if(isset($_SESSION["lastCaseId"])){
-            $statement = $conn->prepare("SELECT aio_id FROM active_cases WHERE case_id = ?");
-
-            //binding current cases aio id to variable
-            $case_id = (int)$_SESSION["lastCaseId"];
-            $statement->bind_param("i", $case_id);
-            if(!$statement->execute()){
-            echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
-            }
-
-            // get the case information from the database
-            $statement->bind_result($aio_id);
-            $statement->fetch();
-
-            //echoing button actions to Accept Deny php file 
-            if($_SESSION['role']=="aio" && $aio_id==NULL){
-
-            echo <<<AcceptButtons
-                    <form action="../includes/AcceptDeny.php" method="post">
-                        <button type="submit" class="btn btn-success" name="AcceptFormA">Accept Case</button>
-                        <input type="hidden" name="CurrCaseId" value="$case_id"></input>
-                    </form>
+                //setting original AIO id to null for bind parameter
+                $aio_id=NULL;
+                // check if URL contains the case_id variable
+                if(isset($_SESSION["lastCaseId"])){
+                    $statement = $conn->prepare("SELECT aio_id FROM active_cases WHERE case_id = ?");
+                    //binding current cases aio id to variable
+                    $case_id = (int)$_SESSION["lastCaseId"];
+                    $statement->bind_param("i", $case_id);
+                    if(!$statement->execute()){
+                        echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+                    }
+                    // get the case information from the database
+                    $statement->bind_result($aio_id);
+                    $statement->fetch();
+                    //echoing button actions to Accept Deny php file 
+                    if($_SESSION['role']=="aio" && $aio_id==NULL){
+                        echo <<<AcceptButtons
+                            <form action="../includes/AcceptDeny.php" method="post">
+                                <button type="submit" class="btn btn-success" name="AcceptFormA">Accept Case</button>
+                                <input type="hidden" name="CurrCaseId" value="$case_id"></input>
+                            </form>
 AcceptButtons;
-       
-            }
-
-            //echoing button actions to Accept Deny php file 
-            if($_SESSION['role']=="aio" && $aio_id!=NULL){
-            echo <<<DenyButtons
-                    <form action="../includes/AcceptDeny.php" method="post">
-                        <button type="submit" class="btn btn-danger" name="DenyFormA">Decline Case</button>
-                        <input type="hidden" name="CurrCaseId" value="$case_id"></input>
-                    </form>
+                    }
+                    //echoing button actions to Accept Deny php file 
+                    if($_SESSION['role']=="aio" && $aio_id!=NULL){
+                        echo <<<DenyButtons
+                            <form action="../includes/AcceptDeny.php" method="post">
+                                <button type="submit" class="btn btn-danger" name="DenyFormA">Decline Case</button>
+                                <input type="hidden" name="CurrCaseId" value="$case_id"></input>
+                            </form>
 DenyButtons;
-        }
-    }
-        CloseCon($conn);
-        $conn=OpenCon();
-    ?>
-</div>
-
+                    }
+                }
+                CloseCon($conn);
+                $conn=OpenCon();
+            ?>
+        </div>
 
         <!-- Close case and insufficient evidence buttons -->
         <div class="center-block text-center">
             <?php
-            
                 if(!isset($_POST['caseId'])){
                     if(!isset($_SESSION['lastCaseId'])){
                         header('ActiveCases.php');
@@ -263,8 +244,7 @@ DenyButtons;
                 if(!$statement->execute()){
                     echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                 }
-                
-                    
+                  
                 $statement->bind_result($caseVerdict);
                 while($statement->fetch()){
                     if($caseVerdict == NULL){
@@ -397,7 +377,6 @@ DisplayFormTabs;
     </body>
 
     <script type="text/javascript">
-
         $(document).ready( function() {
             // pass the case id on to form A via POST
              $("#forma").load("forma.php", {"caseId": <?php echo $caseId; ?> });
