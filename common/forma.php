@@ -186,6 +186,8 @@ if(isset($_GET["case_id"])){
                 </div>
 
                 <!--save button, submit button-->
+                <!--made type button to test things-->
+
                 <div class="form-group">
                     <div class="center-block text-center">
                         <button type="submit" class="btn btn-primary" name="PreviewPDF">Preview PDF</button>
@@ -230,6 +232,7 @@ if(isset($_GET["case_id"])){
                 students[students.length - 1].remove();
             }
         });
+
 
         $(document).ready(function () {
             "use strict";
