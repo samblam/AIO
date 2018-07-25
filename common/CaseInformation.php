@@ -278,17 +278,17 @@ NotGuiltyClose;
                                             </div>
                                             <div class="modal-body">
                                                 <p>Fill out the form below to forward this case to the senate via email. All of the evidence and case files will be attached and sent in this email.</p>
-                                                <p>To send email to more than one address, enter email addresses in a comma seperated list.</p>
+                                                <p>To send email to multiple addresses, enter email addresses in a comma seperated list.</p>
                                                 <div class="form-group">
                                                     <label for="email-to" class="col-sm-3 control-label">To:</label>
                                                     <div class="col-sm-9">
-                                                        <input type="text" class="form-control" placeholder="Email Address" id="email-to" name="email_to" required>
+                                                        <input type="email" class="form-control" placeholder="Email Address" id="email-to" name="email_to" required>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="email-cc" class="col-sm-3 control-label">Cc:</label>
                                                     <div class="col-sm-9">
-                                                        <input type="text" class="form-control" placeholder="Email Address" id="email-cc" name="email_cc">
+                                                        <input type="email" class="form-control" placeholder="Email Address" id="email-cc" name="email_cc">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -379,5 +379,13 @@ DisplayFormTabs;
          $(document).ready( function() {
              $("#formd").load("formd.php");
          });
+    </script>
+    
+    <!-- script that allows the email field to accept more than one email -->
+    <script type="text/javascript">
+        $(document).ready( function() {
+            document.getElementById("email-to").multiple = true;
+            document.getElementById("email-cc").multiple = true;
+        });
     </script>
 </html>
