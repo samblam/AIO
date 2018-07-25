@@ -1,42 +1,34 @@
 <?php
-require_once '../includes/session.php';
+    require_once '../includes/session.php';
+    require_once 'secure.php';
+    //Open the db connection
+    include_once '../includes/db.php';
+    //Check if the form variables have been submitted, store them in the session variables
+    include '../includes/formProcess.php';
+    include_once '../includes/page.php';
 
-require_once 'secure.php';
-//Open the db connection
-include_once '../includes/db.php';
-//Check if the form variables have been submitted, store them in the session variables
-include '../includes/formProcess.php';
-include_once '../includes/page.php';
-
-$role = $_SESSION["role"];
-$userId = (int) $_SESSION["userId"];
-
-// get information related to evidence files that have been submitted for this case
-$path_to_evidence_dir = "";
-$aio_id = "";
-$prof_id = "";
-$caseId = "";
-
-if(isset($_POST['caseId'])){
-    //Gets case id from URL
-    $caseId = intval($_POST['caseId']);
-
-    $statement = $conn->prepare("SELECT evidence_fileDir, aio_id, prof_id FROM active_cases WHERE case_id = " . $caseId);
-    if(!$statement->execute()){
-        echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+    $role = $_SESSION["role"];
+    $userId = (int) $_SESSION["userId"];
+    // get information related to evidence files that have been submitted for this case
+    $path_to_evidence_dir = "";
+    $aio_id = "";
+    $prof_id = "";
+    $caseId = "";
+    if(isset($_POST['caseId'])){
+        //Gets case id from URL
+        $caseId = intval($_POST['caseId']);
+        $statement = $conn->prepare("SELECT evidence_fileDir, aio_id, prof_id FROM active_cases WHERE case_id = " . $caseId);
+        if(!$statement->execute()){
+            echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+        }
+        $statement->bind_result($path_to_evidence_dir, $aio_id, $prof_id);
+        $statement->fetch();
+        CloseCon($conn);
     }
-
-    $statement->bind_result($path_to_evidence_dir, $aio_id, $prof_id);
-    $statement->fetch();
-
-    CloseCon($conn);
-}
-
 ?>
 
 <!DOCTYPE html>
 <html> 
-
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -45,10 +37,12 @@ if(isset($_POST['caseId'])){
         <link rel="stylesheet" href="../CSS/caseInformation.css">
         <script src="../JS/top-header-full.js"></script>
     </head>
+    
     <body style="margin: auto;">
         <!-- Headder div + Logout button -->
         <div class="top-header-full"></div>
-
+        
+        <!-- Title  div -->
         <div style="display: inline-block;">
             <h2>Case Information</h2>
         </div>
@@ -57,7 +51,6 @@ if(isset($_POST['caseId'])){
         <!-- TODO: Table will need to populate based on the entries in the DB(server side) -->
         <!-- TODO: I think to properly link the buttons, each row might have to be an input form(haven't looked it up) -->
         <div>
-            
             <?php
                 $conn = OpenCon();
                 //This fixes an issues with going back, or reloading the page as the caseId is lost
@@ -96,7 +89,6 @@ if(isset($_POST['caseId'])){
                 $statement->bind_result($submissionDate, $studentList, $pfname, $plname, $sfname, $slname, $scsid);
                 $statement->fetch();
             ?>
-
             <table class="table table-bordered" style="font-size: 14px;">
                 <tbody>
                     <tr>
@@ -117,7 +109,6 @@ if(isset($_POST['caseId'])){
                                         Other Students
                                         <span class="caret"></span>
                                     </button>
-
                                     <ul class="dropdown-menu" onchange="warning()">
                                         <input id='caseId' name='caseId' value='$caseIdValue' type='hidden'>
                                         <li><button class='btn' type='submit'><?php echo $sfname . ", " . $scsid ?></button></li>
@@ -148,7 +139,6 @@ if(isset($_POST['caseId'])){
                             // user is an AIO and the AIO id assigned to this case matches user's id
                             // OR user is a professor and the professor id for this case matches user's id
                             // OR user is an admin
-
                             if(($role == "aio" && $aio_id == $userId) || ($role == "professor" && $prof_id == $userId) || ($role == "admin")){
                                 if ($path_to_evidence_dir != "" && file_exists("../evidence/" . $path_to_evidence_dir . "/evidence.zip")) {
                                     // user should be shown the link to the evidence file
@@ -180,6 +170,7 @@ if(isset($_POST['caseId'])){
             </table>
         </div>
         
+        <!-- Accept/deny buttons div -->
         <div class="center-block text-center">
             <?php 
                 //setting original AIO id to null for bind parameter
@@ -235,49 +226,46 @@ DenyButtons;
                     $caseIdValue = $_POST['caseId'];
                     $_SESSION['lastCaseId'] = $_POST['caseId'];
                 }
-            
                 //Get case verdict from db
                 $statement = $conn->prepare("SELECT case_verdict FROM active_cases WHERE case_id = '$caseIdValue' AND aio_id = ?"); 
                 $statement->bind_param("d", $id); //bind the csid to the prepared statements
-
                 $id = (int)$_SESSION['userId'];
                 if(!$statement->execute()){
                     echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                 }
-                  
                 $statement->bind_result($caseVerdict);
                 while($statement->fetch()){
                     if($caseVerdict == NULL){
                         // Insufficient Evidence Button
-                        echo <<<ViewAllPost
+                        echo <<<InsufficientEvidence
 
                             <form class="delete_this_case" method="post" onclick="return confirm('Are you sure you want to remove this case for insufficient evidence? This will permanently delete the case.\\nClick OK to continue.')">
                                 <input type="text" name="case_id" value="$caseIdValue" hidden>
                                 <button class="btn btn-danger" value="true" type="submit" name="insufficientEvidence">Insufficient Evidence</button>
                             </form>
-ViewAllPost;
+InsufficientEvidence;
                     }
                     else if ($caseVerdict == "guilty" && $_SESSION['role'] != "professor"){
                         // Close case Button guilty
-                        echo <<<ViewAllPost2
+                        echo <<<GuiltyClose
                             <form class="delete_this_case" method="post" action="ActiveCases.php" onclick="return confirm('Are you sure you want to close this case? \\nIf the verdict is guilty the case gets archived in our system, and if the verdict is not guilty the case is permanently deleted. \\nClick OK to continue.')">
                                 <input type="text" name="case_id" value="$caseIdValue" hidden>
                                 <button class="btn btn-danger" value="true" type="submit" name="closeCaseGuilty">Close Case</button>
                             </form>
-ViewAllPost2;
+GuiltyClose;
                     }
                     else if ($caseVerdict == "not guilty" && $_SESSION['role'] != "professor"){
                         // Close case Button not guilty
-                        echo <<<ViewAllPost3
+                        echo <<<NotGuiltyClose
                             <form class="delete_this_case" method="post" action="ActiveCases.php" onclick="return confirm('Are you sure you want to close this case? \\nIf the verdict is guilty the case gets archived in our system, and if the verdict is not guilty the case is permanently deleted. \\nClick OK to continue.')">
                                 <input type="text" name="case_id" value="$caseIdValue" hidden>
                                 <button class="btn btn-danger" value="true" type="submit" name="closeCaseNotGuilty">Close Case</button>
                             </form>
-ViewAllPost3;
+NotGuiltyClose;
                     }
                     // TODO: Add functionality so a zip folder with all of the case files is sent with the email
                     // Forward case button
-                    echo <<<ViewAllPost4
+                    echo <<<ForwardCase
                         <button class="btn btn-success" name="forwardCaseButton" data-toggle="modal" data-target="#emailForm">Forward Case</button>
                         <form class="form-horizontal forward_case" id="forward_case" method="post">
                             <div class="form-container">
@@ -327,7 +315,7 @@ ViewAllPost3;
                                 </div>
                             </div>
                         </form>    
-ViewAllPost4;
+ForwardCase;
                 }
             ?>   
         </div>
@@ -335,7 +323,6 @@ ViewAllPost4;
         <!-- Form display div -->
         <div>
             <ul class="nav nav-tabs nav-justified">
-
                 <li class="active"><a data-toggle="tab" href="#forma">Form A</a></li>
                 <?php
                     if($_SESSION['role'] != "professor"){
@@ -347,13 +334,11 @@ DisplayFormTabs;
                     }
                 ?>
             </ul>
-
             <div class="tab-content">
                 <!-- Not sure why form A is loaded here? Someone who knows should check... - Bjorn -->
                 <div id="forma" class="tab-pane fade active in">
                     <?php //include 'forma.php' ?>
                 </div>
-                
                 <?php
                     //if it's a professor visiting, only display from A 
                     if($_SESSION['role'] != "professor"){
@@ -375,11 +360,12 @@ DisplayFormTabs;
             </div>
         </div>
     </body>
-
+    
+    <!-- script for loading forms -->
     <script type="text/javascript">
         $(document).ready( function() {
             // pass the case id on to form A via POST
-             $("#forma").load("forma.php", {"caseId": <?php echo $caseId; ?> });
+             $("#forma").load("forma.php", {"caseId": <?php echo $caseIdValue; ?> });
          });
 
          $(document).ready( function() {
@@ -395,4 +381,3 @@ DisplayFormTabs;
          });
     </script>
 </html>
-
