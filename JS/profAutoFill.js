@@ -4,8 +4,6 @@
 function fillProf(){
     var selectBox = document.getElementById("profSelect");
     var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-    
-    // todo set value pid of AdminSubmittedProfId element
 
     var res = selectedValue.split(",");
     document.getElementById('email').value = res[0];
