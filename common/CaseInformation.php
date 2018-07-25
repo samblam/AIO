@@ -80,7 +80,6 @@ if(isset($_POST['caseId'])){
                 }
 
                 //Get all relevant fields and bind them to php variables
-                $caseIdValue = $_POST['caseId'];
                 $statement = $conn->prepare("
                 SELECT
                     active_cases.form_a_submit_date,
@@ -200,7 +199,6 @@ if(isset($_POST['caseId'])){
         <!-- CLose case and insufficient evidence buttons -->
         <div class="center-block text-center">
             <?php
-<<<<<<< HEAD
                 if(!isset($_POST['caseId'])){
                     if(!isset($_SESSION['lastCaseId'])){
                         header('ActiveCases.php');
