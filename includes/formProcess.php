@@ -133,6 +133,7 @@ if(isset($_POST['forwardCase']) && isset($_POST['case_id']) && $_SESSION['role']
   $message = wordwrap($message,70);
   $header = "CC:" . $cc . "\r\n";
   //mail($email, $subject, $message, $header); 
+  header("Location: ../AIO/CaseInformation.php");
 }
 
 ?>

@@ -223,7 +223,7 @@ ViewAllPost3;
                     // Forward case button
                     echo <<<ViewAllPost4
                         <button class="btn btn-success" name="forwardCaseButton" data-toggle="modal" data-target="#emailForm">Forward Case</button>
-                        <form class="form-horizontal forward_case" id="forward_case" method="post" action="CaseInformation.php">
+                        <form class="form-horizontal forward_case" id="forward_case" method="post">
                             <div class="form-container">
                                 <div id="emailForm" class="modal fade" role="dialog">
                                     <div class="modal-dialog">
