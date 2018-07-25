@@ -15,10 +15,10 @@ $evidenceFileDir = "";
 $case_id = "";
 
 // check if URL contains the case_id variable
-if(isset($_GET["case_id"])){
+if(isset($_POST["caseId"])){
     $statement = $conn->prepare("SELECT evidence_fileDir, form_a_submit_date FROM active_cases WHERE case_id = ?");
     // get the case_id from the URL
-    $case_id = (int)$_GET["case_id"];
+    $case_id = (int)$_POST["caseId"];
     $statement->bind_param("d", $case_id);
     if(!$statement->execute()){
       echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
@@ -191,7 +191,6 @@ if(isset($_GET["case_id"])){
                         <button id="SaveFormA" type="submit" class="btn btn-primary" name="SaveFormA">Save</button>
                         <?php
                             $role = $_SESSION['role'];
-                            echo "date: " . $formSubmissionDate;
 
                             if($role == "admin"){
                                 // admin is submitting the case for the selected professor. Pass this info as a hidden input to the form processing file.
