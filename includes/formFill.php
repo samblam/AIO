@@ -1,20 +1,37 @@
 <?php
   require_once "globalSecure.php";
   
+  function parsePhoneNumber( $number ) {
+    if( is_int( $number ) ) {
+      $areacode = $number % 10000000;
+      $blockcode = ($number-$areacode) % 10000;
+      $num = ($number-$blockcode-$areacode);
+      return "(" . $areacode . ") " . $blockcode . "-" . $num;
+    }
+    elseif( strlen( $number ) == 10 ) {
+      return "(" . substr($number, 0, 3) . ") " . substr($number, 3, 3) . "-" . substr($number, 6, 4);
+    }
+    else
+      return $number;
+  }
+
   // Creates the variables for professor info to be automatically inputed into form A
   if(basename($_SERVER['PHP_SELF']) == "forma.php" && $_SESSION['role'] == "professor"){
-    $conn = OpenCon();
+    $prof_name = $_SESSION['fname'] . " " . $_SESSION['lname'];
+    $prof_phone = parsePhoneNumber($_SESSION['phone']);
+    $prof_email = $_SESSION['email'];
+    // $conn = OpenCon();
 
-    $query = $conn->prepare("SELECT fname, lname, phone, email, department FROM professor WHERE professor_id = ?");
-    $query->bind_param("i", $_SESSION['csid']);
-    $query->execute();
-    $query->store_result();
-    $num_of_rows = $query->num_rows;
-    if($num_of_rows > 0) {
-      $query->bind_result($fname, $lname, $prof_phone, $prof_email, $prof_dept);
-      $query->fetch();
-      $prof_name = ($fname . " " . $lname);
-    }
+    // $query = $conn->prepare("SELECT fname, lname, phone, email, department FROM professor WHERE professor_id = ?");
+    // $query->bind_param("i", $_SESSION['csid']);
+    // $query->execute();
+    // $query->store_result();
+    // $num_of_rows = $query->num_rows;
+    // if($num_of_rows > 0) {
+    //   $query->bind_result($fname, $lname, $prof_phone, $prof_email, $prof_dept);
+    //   $query->fetch();
+    //   $prof_name = ($fname . " " . $lname);
+    // }
   }
 
   //check the query string to see if there is saved data
