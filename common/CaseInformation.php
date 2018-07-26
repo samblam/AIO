@@ -238,9 +238,6 @@ AcceptButtons;
 DenyButtons;
        
         }
-
-
-
     }
         CloseCon($conn);
         $conn=OpenCon();

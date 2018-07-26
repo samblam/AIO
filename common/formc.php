@@ -172,7 +172,7 @@ NoStuIDError;
 				<div class="form-group">
                     <label class="control-label col-sm-3">Student Email:</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" placeholder="student@dal.ca"
+                        <input type="email" class="form-control" placeholder="student@dal.ca"
 							id="student_email_C" name="student_email_C"
 							value=<?php echo ('"' . $stu_email . '"'); ?>
 							required>
@@ -195,7 +195,7 @@ NoStuIDError;
                         <input type="text" class="form-control" placeholder="MM/DD/YYY" id="date" name="date" required>
                     </div>
                     <div class="col-sm-6">
-                        <input class="timepicker form-control" id="time" name="time" required>
+                        <input class="timepicker form-control" id="timepickerC" name="timepickerC" required>
                     </div>
                 </div>
                 <div class="form-group">

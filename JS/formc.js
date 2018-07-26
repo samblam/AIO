@@ -1,6 +1,6 @@
 jQuery(function () {
     "use strict";
-    var date_input = $('input[id="date"]'); //our date input has the name "date"
+	var date_input = $('input[id="date"]'); //our date input has the name "date"
     //var container = $('.form-group.date').length > 0 ? $('.form-group.date').parent() : "div";
     var options = {
         format: 'mm/dd/yyyy',
@@ -9,7 +9,11 @@ jQuery(function () {
     };
     date_input.datepicker(options);
 
-    $('input.timepicker').timepicker({
+	console.log($('input.timepicker'));
+	console.log($('input[id="timepickerC"]'));
+
+    //$('input.timepicker').timepicker({
+    $('input[id="timepickerC"]').timepicker({
         timeFormat: 'h:mm p',
         interval: 10,
         minTime: '8',
@@ -20,7 +24,11 @@ jQuery(function () {
         dropdown: true,
         scrollbar: true
     });
+
+	console.log("This is run");
 });
+
+console.log("Loaded");
 
 
 function loadFormC(caseID, studentID, num_students) {
