@@ -3,8 +3,10 @@
   
   // Creates the variables for professor info to be automatically inputed into form A
   if(basename($_SERVER['PHP_SELF']) == "forma.php" && $_SESSION['role'] == "professor"){
+    $conn = OpenCon();
+
     $query = $conn->prepare("SELECT fname, lname, phone, email, department FROM professor WHERE professor_id = ?");
-    $query->bind_param("i", $_SESSION['userId']);
+    $query->bind_param("i", $_SESSION['csid']);
     $query->execute();
     $query->store_result();
     $num_of_rows = $query->num_rows;
@@ -54,5 +56,6 @@
       }
     }
           //form A data is rettieved at this point.
+    CloseCon( $conn );
   }
 ?>

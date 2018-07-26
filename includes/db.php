@@ -34,14 +34,24 @@
    * Checks whether the provided csid can be found in the DB
    */
   function db_checkCSID($csid) {
-    global $conn;
-    $stmt = $conn->prepare( "SELECT count(csid) FROM ? WHERE csid = ?" );
-    $stmt->bind_param( "ss", $table_name, $csid );
+    $conn = OpenCon();
+    
+    //$stmt->bind_param( "ss", $table_name, $csid );
     $tables = array( 'admin', 'aio', 'professor', 'student' );
-    foreach ($tables as $table_name ) {
-      $result = $stmt->execute();
-      if( $result->num_rows > 0 ) {
+    foreach( $tables as $table_name ) {
+
+      $st = "SELECT * FROM `$table_name` WHERE csid='$csid'";
+
+      $result = $conn->query( $st );
+      if( !$result ){
+        echo "Database Error. Please contact admin.\nError details: " . $conn->error;
+        $result->close();
+        break;
+      }
+      elseif( $result->num_rows > 0 ) {
+        $result->close();
         return true;
+
       }
     }
     return false;
@@ -62,20 +72,28 @@
    *     email         -> the user's email address
    */
   function db_getUserData($csid) {
-    global $conn;
+    $conn = OpenCon();
     $data = array( 'csid' => $csid );
+
     // Fetch user roles
     $roles = array();
-    $stmt = $conn->prepare( "SELECT count(csid) FROM ? WHERE csid = ?" );
-    $stmt->bind_param( "ss", $table_name, $csid );
     $tables = array( 'admin', 'aio', 'professor', 'student' );
     foreach ($tables as $table_name ) {
-      $result = $stmt->execute();
-      if( $result->num_rows > 0 ) {
+      $st = "SELECT * FROM `$table_name` WHERE csid='$csid'";
+
+      $result = $conn->query( $st );
+      if( !$result ){
+        echo "Database Error. Please contact admin.\nError details: " . $conn->error;
+        $result->close();
+        exit;
+      }
+      elseif( $result->num_rows > 0 ) {
         array_push( $roles, $table_name );
+        $result->close();
       }
     }
     $data['roles'] = $roles;
+
     // Determine default user role
     if( in_array( 'admin', $roles ) ) {
       $data['default_role'] = 'admin';
@@ -90,22 +108,19 @@
       $data['default_role'] = 'student';
     }
     $data['role'] = $data['default_role'];
-    // Fetch user data from table corresponding to default role
-    $fname = $lname = $phone = $email = "";
-    $stmt = $conn->prepare( "SELECT fname, lname, phone, email FROM ? WHERE csid = ?" );
-    $stmt->bind_param( "ss", $data['role'], $csid );
-    $result = $stmt->execute();
-    $stmt->bind_result( $fname, $lname, $phone, $email );
-    $stmt->fetch();
-    $data['fname'] = $fname;
-    $data['lname'] = $lname;
-    $data['phone'] = $phone;
-    $data['email'] = $email;
 
+    $def = $data['role'];
+    // Fetch user data from table corresponding to default role
+    $st = "SELECT fname, lname, phone, email FROM `$def` WHERE csid='$csid'";
+    $result = $conn->query( $st );
+    $arr = $result->fetch_assoc();
+    $data['fname'] = $arr['fname'];
+    $data['lname'] = $arr['lname'];
+    $data['phone'] = $arr['phone'];
+    $data['email'] = $arr['email'];
+
+    $result->close();
+    CloseCon( $conn );
     return $data;
   }
-
-  global $conn;
-  $conn = OpenCon();
-
 ?>

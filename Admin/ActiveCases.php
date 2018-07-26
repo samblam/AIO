@@ -53,6 +53,7 @@ include '../includes/formProcess.php';
                 </thead>
                 <tbody>
                   <?php
+                    $conn = OpenCon();
                     //Get all active cases and bind the returned database fields to php variables
                     $statement = $conn->prepare("SELECT active_cases.case_id, 
                                                         active_cases.class_name_code, 
@@ -114,6 +115,7 @@ include '../includes/formProcess.php';
                           </td>
                       </tr>
 ViewAllPost;
+                      CloseCon( $conn );
                     }
                     ?>
                 </tbody>

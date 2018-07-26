@@ -87,7 +87,10 @@
 
     <!-- Login Page Body -->
     <div>
-      <h2>Login</h2>
+      <h1>Academic Integrity Portal</h1>
+      <h3>Faculty of Computer Science</h3>
+      
+      <h3>Login</h3>
       
       <!-- Login screen ready for back end php -->
       <form method="post">

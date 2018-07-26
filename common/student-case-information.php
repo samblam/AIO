@@ -12,13 +12,14 @@ $prof_id = "";
 $caseId = "";
 
 $role = $_SESSION["role"];
-$userId = (int) $_SESSION["userId"];
+$userId = (int) $_SESSION["csid"];
 
 
 if(isset($_POST['caseId'])){
     //Gets case id from URL
     $caseId = intval($_POST['caseId']);
-
+    
+    $conn = OpenCon();
     $statement = $conn->prepare("SELECT evidence_fileDir, aio_id, prof_id FROM active_cases WHERE case_id = " . $caseId);
     if(!$statement->execute()){
         echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
@@ -28,7 +29,6 @@ if(isset($_POST['caseId'])){
     $statement->fetch();
 
     CloseCon($conn);
-    $conn = OpenCon();
 }
 
 ?>
@@ -41,11 +41,9 @@ if(isset($_POST['caseId'])){
         <title>Portal</title>
         <link rel="stylesheet" href="../CSS/main.css">
         <link rel="stylesheet" href="../CSS/caseInformation.css">
-        <script src="../JS/top-header-full.js"></script>
     </head>
     <body style="margin: auto;">
-        <!-- Headder div + Logout button -->
-        <div class="top-header-full"></div>
+        <?php include '../includes/navbar.php'; ?>
 
         <div style="display: inline-block;">
             <h2>Case Information</h2>

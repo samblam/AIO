@@ -7,6 +7,8 @@
 	$baseEvidenceDir = "../evidence/";
 	$processSuccessful = true;
 
+	$conn = OpenCon();
+
 	if(empty($_POST) && empty($_FILES)){
 		// upload has failed (likely because the files were too big)
 		echo "Uploading evidence files failed. Please reduce the size of the upload and try again.";
@@ -15,7 +17,7 @@
 	//Form A processing
 	if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
 
-		$userId = $_SESSION['userId'];//first column of the current user's role table in the database
+		$userId = $_SESSION['csid'];//first column of the current user's role table in the database
 
 		//Grabs all form data and sanatize it
 		$prof = htmlspecialchars(trim(stripslashes($_POST['ProfessorName'])));
@@ -258,7 +260,7 @@
 			}
 		}
 	}
-
+	CloseCon( $conn );
 	sendUserHome();
 
 ?>
