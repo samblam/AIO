@@ -8,7 +8,6 @@
     include_once '../includes/page.php';
 
     $role = $_SESSION["role"];
-    $userId = (int) $_SESSION["userId"];
     // get information related to evidence files that have been submitted for this case
     $path_to_evidence_dir = "";
     $aio_id = "";
@@ -24,6 +23,7 @@
         $statement->bind_result($path_to_evidence_dir, $aio_id, $prof_id);
         $statement->fetch();
         CloseCon($conn);
+    $userId = (int) $_SESSION["userId"];
     }
 ?>
 
@@ -35,14 +35,12 @@
         <title>Student Case</title>
         <link rel="stylesheet" href="../CSS/main.css">
         <link rel="stylesheet" href="../CSS/caseInformation.css">
-        <script src="../JS/top-header-full.js"></script>
     </head>
     
     <body style="margin: auto;">
         <!-- Headder div + Logout button -->
-        <div class="top-header-full"></div>
-        
-        <!-- Title  div -->
+        <?php include '../includes/navbar.php'; ?>
+
         <div style="display: inline-block;">
             <h2>Case Information</h2>
         </div>
@@ -317,6 +315,7 @@ NotGuiltyClose;
                         </form>    
 ForwardCase;
                 }
+                CloseCon( $conn );
             ?>   
         </div>
             
