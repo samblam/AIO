@@ -270,7 +270,6 @@ DenyButtons;
                     if(!$statement->execute()){
                         echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                     }
-<<<<<<< HEAD
 
 					$statement->bind_result($caseVerdict);
 
