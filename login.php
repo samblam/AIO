@@ -17,6 +17,9 @@
         header( 'Location: ' . $start_page, false, 303 );
         exit;
       }
+      else {
+        $login_error = "CS ID not in AIO database. Contact the admin.";
+      }
     }
   }
   // Accessing/testing on staging server

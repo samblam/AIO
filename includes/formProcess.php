@@ -43,13 +43,11 @@
         }
     }
 
+    $conn = OpenCon();
+
     // form B processing
     if(isset($_POST['SaveFormB']) || isset($_POST['SubmitFormB'])){ }
 
-$conn = OpenCon();
-
-// form B processing
-if(isset($_POST['SaveFormB']) || isset($_POST['SubmitFormB'])){
 
     // form D processing
     if(isset($_POST['SaveFormD']) || isset($_POST['SubmitFormD'])){ }
@@ -144,5 +142,5 @@ if(isset($_POST['SaveFormB']) || isset($_POST['SubmitFormB'])){
         // Redircets to the CaseINformation.php page once the email is sent
         header("Location: ../AIO/CaseInformation.php");
     }
-CloseCon( $conn );
+    CloseCon( $conn );
 ?>
