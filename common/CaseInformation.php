@@ -61,7 +61,7 @@ if(isset($_POST['caseId'])){
             <?php
 
             $conn = OpenCon();
-                
+
             //This fixes an issues with going back, or reloading the page as the caseId is lost
 
                 if(!isset($_POST['caseId'])){
@@ -270,6 +270,7 @@ DenyButtons;
                     if(!$statement->execute()){
                         echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                     }
+<<<<<<< HEAD
 
 					$statement->bind_result($caseVerdict);
 

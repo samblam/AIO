@@ -155,9 +155,9 @@ NoStuIDError;
                     <label class="control-label col-sm-3">Student Name:</label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control" placeholder="Student Name"
-							id="student_name" name="student_name"
-							value=<?php echo ('"' . $stu_fname . ' ' . $stu_lname . '"'); ?>
-							required readonly>
+						id="student_name" name="student_name"
+						value=<?php echo ('"' . $stu_fname . ' ' . $stu_lname . '"'); ?>
+						required readonly>
                     </div>
                 </div>
                 <div class="form-group">
