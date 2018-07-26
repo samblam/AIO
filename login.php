@@ -97,7 +97,7 @@
       
       <!-- Login screen ready for back end php -->
       <form method="post">
-        <div class="container">
+        <div class="container" style="margin-bottom: 25px">
           <label for="uname"><b>Enter CS ID and password</b>
             <br>
             <input type="text" placeholder="CS ID" name="csid" required>
@@ -109,7 +109,7 @@
         </div>
         <?php
           if( isset($login_error) ) {
-            echo "        <div class=\"container\">";
+            echo "        <div class='container alert alert-danger'>";
             echo "          " . $login_error;
             echo "        </div>";
           }

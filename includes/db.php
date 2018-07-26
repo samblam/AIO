@@ -88,7 +88,7 @@
         exit;
       }
       elseif( $result->num_rows > 0 ) {
-        array_push( $roles, $table_name );
+         $roles[] = $table_name;
         $result->close();
       }
     }
