@@ -43,7 +43,7 @@ if(isset($_GET["case_id"])){
         <script src="../JS/forma.js"></script>
     </head>
     <body style="margin:auto;">
-
+        <?php include '../includes/navbar.php'; ?>
         <div class="form-container">
             <h2 class="form-a-title" style="text-align: left">Form A</h2>
             <p>Report of Academic Integrity Violation</p>
