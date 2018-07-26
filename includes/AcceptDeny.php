@@ -9,7 +9,7 @@ include_once 'fileFunctions.php';
     
     
     // Grabs case_id of the just inserted case and uses it to set aio_id to current aio
-    $userId =(int)$_SESSION['userId'];
+    $userId =(int)$_SESSION['csid'];
 
     $CurrCaseId=(int)$_POST['CurrCaseId'];
     
@@ -27,7 +27,7 @@ include_once 'fileFunctions.php';
   if(isset($_POST['DenyFormA'])){
 
     // Grabs case_id of the just inserted case and uses it to set aio id to null
-    $userId =(int)$_SESSION['userId'];
+    $userId =(int)$_SESSION['csid'];
 
     $CurrCaseId=(int)$_POST['CurrCaseId'];
     

@@ -7,6 +7,8 @@
     include '../includes/formProcess.php';
     include_once '../includes/page.php';
 
+    $conn = OpenCon();
+
     $role = $_SESSION["role"];
     // get information related to evidence files that have been submitted for this case
     $path_to_evidence_dir = "";
@@ -23,7 +25,7 @@
         $statement->bind_result($path_to_evidence_dir, $aio_id, $prof_id);
         $statement->fetch();
         CloseCon($conn);
-    $userId = (int) $_SESSION["userId"];
+    $userId = (int) $_SESSION["csid"];
     }
 ?>
 
@@ -227,7 +229,7 @@ DenyButtons;
                 //Get case verdict from db
                 $statement = $conn->prepare("SELECT case_verdict FROM active_cases WHERE case_id = '$caseIdValue' AND aio_id = ?"); 
                 $statement->bind_param("d", $id); //bind the csid to the prepared statements
-                $id = (int)$_SESSION['userId'];
+                $id = (int)$_SESSION['csid'];
                 if(!$statement->execute()){
                     echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                 }
