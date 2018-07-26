@@ -87,7 +87,8 @@ _END;
 	//$output = shell_exec($command);
 	//echo $output;
 	fclose($fileHandle);
-	$dir = "C:\Users\stuam\Google Drive\CSCI 3190\AIO Current\aio-summer-2018-master-c997b24cf396a5f494ce37b9e31469802f61d8d5\LaTeX";
+	//Change to run
+	$dir = "C:\Users\stuam\Google Drive\CSCI 3190\AIO Curr\aio-summer-2018\LaTeX";
 	//Maybe a security issue
 	$redir = chdir("{$dir}");
 	//echo $redir;
