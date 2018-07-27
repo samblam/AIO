@@ -22,7 +22,7 @@ include '../includes/formProcess.php';
 
     </head>
     <body style="margin: auto;">
-        <?php include '../includes/navbar.php'; ?>
+        <?php include_once '../includes/navbar.php'; ?>
 
         <div style="display: inline-block;">
             <h2>Case Information</h2>

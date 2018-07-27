@@ -23,7 +23,7 @@ include '../includes/formProcess.php';
     </head>
     <body style="margin: auto;">
         <!-- Headder div + Logout button -->
-        <?php include '../includes/navbar.php' ?>
+        <?php include_once '../includes/navbar.php' ?>
 
         <div>
             <h2>Active Cases</h2>

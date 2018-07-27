@@ -21,7 +21,7 @@ include '../includes/formProcess.php';
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
     </head>
     <body style="margin: auto;">
-        <?php include '../includes/navbar.php'; ?>
+        <?php include_once '../includes/navbar.php'; ?>
 
         <div>
             <h2>Active Cases</h2>

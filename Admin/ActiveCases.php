@@ -26,7 +26,7 @@ include '../includes/formProcess.php';
     </head>
 
      <body style="margin: auto;">
-        <?php include '../includes/navbar.php'; ?>
+        <?php include_once '../includes/navbar.php'; ?>
         <div>
             <h2>Active Cases</h2>
         </div>
