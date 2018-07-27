@@ -135,6 +135,7 @@
                     <tr>
                         <td>Files</td>
                         <?php
+                            $userId = $_SESSION['csid'];
                             // user has permission to view evidence files if:
                             // user is an AIO and the AIO id assigned to this case matches user's id
                             // OR user is a professor and the professor id for this case matches user's id

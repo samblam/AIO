@@ -27,7 +27,7 @@
 			isset($_SESSION["csid"]) && isset($_SESSION["role"]) && isset($_POST["caseId"])){
 
   		$caseId = intval($_POST['caseId']);
-  		$userId = intval($_SESSION["userId"]);
+  		$userId = intval($_SESSION["csid"]);
   		$role = $_SESSION["role"];
 
   		// get case information to check if the user has permission to view this file
