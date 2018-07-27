@@ -288,13 +288,13 @@ NotGuiltyClose;
                                                 <div class="form-group">
                                                     <label for="email-to" class="col-sm-3 control-label">To:</label>
                                                     <div class="col-sm-9">
-                                                        <input type="email" class="form-control" placeholder="Email Address" id="email-to" name="email_to" required>
+                                                        <input type="email" class="form-control" placeholder="Email Address" id="email-to" name="email_to" required multiple>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="email-cc" class="col-sm-3 control-label">Cc:</label>
                                                     <div class="col-sm-9">
-                                                        <input type="email" class="form-control" placeholder="Email Address" id="email-cc" name="email_cc">
+                                                        <input type="email" class="form-control" placeholder="Email Address" id="email-cc" name="email_cc" multiple>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -403,10 +403,10 @@ LoadFormC;
     </script>
     
     <!-- script that allows the email field to accept more than one email -->
-    <script type="text/javascript">
+    <!--script type="text/javascript">
         $(document).ready( function() {
             document.getElementById("email-to").multiple = true;
             document.getElementById("email-cc").multiple = true;
         });
-    </script>
+    </script-->
 </html>

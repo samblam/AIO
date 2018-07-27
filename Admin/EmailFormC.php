@@ -19,12 +19,13 @@ include_once '../includes/page.php';
         <title>Portal</title>
         <link rel="stylesheet" href="../CSS/main.css">
         <link rel="stylesheet" href="../CSS/formc.css">
-        <!--script src="../JS/formc.js"></script-->
+        <script src="../JS/formc.js"></script>
     </head>
     <body style="margin: auto;">
         						
-		<button class="btn btn-success" name="openCEmail" data-toggle="modal" data-target="#emailFormC">Forward Case</button>
-		<form class="form-horizontal forward_case" id="forward_case" method="post">
+		<!--button type="submit" class="btn btn-success" name="openCEmail" data-toggle="modal" data-target="#emailFormC">Forward Case</button-->
+		<!--button type="submit" class="btn btn-success" name="openCEmail" onclick="showModelC()">Create Email</button-->
+		<form class="form-horizontal forward_case" id="schedule_meeting_C" method="post">
 			<div class="form-container">
 				<div id="emailFormC" class="modal fade" role="dialog">
 					<div class="modal-dialog">

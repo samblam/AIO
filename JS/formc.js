@@ -31,3 +31,18 @@ jQuery(function () {
 function loadFormC(caseID, studentID, num_students) {
     $("#formc").load("formc.php?case_id=" + caseID + "&student_id=" + studentID + "&num_students=" + num_students);
 };
+
+/**
+function formCValid() {
+	console.log("Checking form C");
+	//$("#formCFields").validate();
+	//$("#formCFields").validate();
+	return $("#formCFields").checkValidity();
+};
+*/
+
+function showModelC() {
+	console.log("Showing");
+	console.log($("#emailFormC"));
+	//$("#emailFormC").fade = false;
+};
