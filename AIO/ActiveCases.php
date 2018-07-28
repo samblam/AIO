@@ -93,8 +93,9 @@ include '../includes/formProcess.php';
                 </td>
               </tr>
 ViewAllPost;
-              CloseCon( $conn );
+
             }
+            CloseCon( $conn );
           ?>
         </tbody>
       </table>

@@ -367,19 +367,19 @@ DisplayFormTabs;
     <script type="text/javascript">
         $(document).ready( function() {
             // pass the case id on to form A via POST
-             $("#forma").load("forma.php", {"caseId": <?php echo $caseIdValue; ?> });
+             $("#forma").load("forma.php", {"caseId": <?php echo $caseIdValue; ?>, "internal": "true" });
          });
 
          $(document).ready( function() {
-             $("#formb").load("formb.php");
+             $("#formb").load("formb.php", {"internal": "true"});
          });
 
          $(document).ready( function() {
-             $("#formc").load("formc.php");
+             $("#formc").load("formc.php", {"internal": "true"});
          });
 
          $(document).ready( function() {
-             $("#formd").load("formd.php");
+             $("#formd").load("formd.php", {"internal": "true"});
          });
     </script>
     
