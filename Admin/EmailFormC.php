@@ -23,8 +23,8 @@ include_once '../includes/page.php';
     </head>
     <body style="margin: auto;">
         						
-		<!--button type="submit" class="btn btn-success" name="openCEmail" data-toggle="modal" data-target="#emailFormC">Forward Case</button-->
-		<!--button type="submit" class="btn btn-success" name="openCEmail" onclick="showModelC()">Create Email</button-->
+		<button type="submit" class="btn btn-success" name="openCEmail" data-toggle="modal" data-target="#emailFormC" disabled>Forward Case</button>
+		<!--button type="submit" class="btn btn-success" name="openCEmail" onclick="formCValid()">Create Email</button-->
 		<form class="form-horizontal forward_case" id="schedule_meeting_C" method="post">
 			<div class="form-container">
 				<div id="emailFormC" class="modal fade" role="dialog">
@@ -35,8 +35,8 @@ include_once '../includes/page.php';
 								<h2 class="modal-title">Forward Case Email Form</h2>
 							</div>
 							<div class="modal-body">
-								<p>Fill out the form below to forward this case to the senate via email. All of the evidence and case files will be attached and sent in this email.</p>
-								<p>To send email to multiple addresses, enter email addresses in a comma seperated list.</p>
+								<p>Fill out the form below to forward this case to the senate via email. All of the evidence and case files will be attached and sent in this email. FORMC</p>
+								<p>To send email to multiple addresses, enter email addresses in a comma separated list.</p>
 								<div class="form-group">
 									<label for="email-to" class="col-sm-3 control-label">To:</label>
 									<div class="col-sm-9">

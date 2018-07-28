@@ -151,7 +151,7 @@ NoStuIDError;
 
         <div class="form-container">
             <!--form class="form-horizontal" id="" action="../Admin/processFormC.php" method="post"-->
-			<form class="form-horizontal" id="formCFields" onsubmit="">
+			<form class="form-horizontal" id="formCFields">
                 <div class="form-group">
                     <label class="control-label col-sm-3">Student Name:</label>
                     <div class="col-sm-9">
