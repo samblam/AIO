@@ -10,7 +10,7 @@
    *     lname         -> the user's last name
    *     phone         -> the user's phone number
    *     email         -> the user's email address
-   *     loggedIn      -> TRUE is a user is logged in
+   *     loggedIn      -> TRUE if a user is logged in
    */
   session_start();
 

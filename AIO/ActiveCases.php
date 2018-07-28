@@ -22,7 +22,7 @@ include '../includes/formProcess.php';
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
   </head>
   <body style="margin: auto;">
-    <!-- Headder div + Logout button -->
+    <!-- Header div + Logout button -->
     <?php include_once '../includes/navbar.php' ?>
 
     <div>
@@ -62,7 +62,7 @@ include '../includes/formProcess.php';
                             active_cases.aio_id = ?
                           ");
 
-    		    $statement->bind_param("d", $id); //bind the csid to the prepared statements
+    		$statement->bind_param("d", $id); //bind the csid to the prepared statements
             $csid = $_SESSION['csid'];
             $result = $conn->query( "SELECT aio_id FROM `aio` WHERE csid='$csid'" );
             if( !$result ) {

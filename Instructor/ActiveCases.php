@@ -50,8 +50,23 @@ include '../includes/formProcess.php';
                   <?php
                     $conn = OpenCon();
                     //Get all active cases created by this professor and bind the returned database fields to php variables
-                    $statement = $conn->prepare("SELECT aio.fname, aio.lname, student.fname, student.lname, student.csid, active_cases.case_id, active_cases.form_a_submit_date FROM active_cases LEFT JOIN student ON student.case_id = active_cases.case_id LEFT JOIN aio ON aio.aio_id = active_cases.aio_id WHERE active_cases.prof_id = ?");
+                    $statement = $conn->prepare("
+					SELECT
+						aio.fname,
+						aio.lname,
+						student.fname,
+						student.lname,
+						student.csid,
+						active_cases.case_id,
+						active_cases.form_a_submit_date
+					FROM active_cases
+						LEFT JOIN student ON student.case_id = active_cases.case_id
+						LEFT JOIN aio ON aio.aio_id = active_cases.aio_id
+					WHERE active_cases.prof_id = ?
+					");
+
                     $statement->bind_param("d", $id); //bind the csid to the prepared statements
+
                     $id = (int)$_SESSION['csid'];
                     if(!$statement->execute()){
                       echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
