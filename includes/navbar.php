@@ -4,12 +4,14 @@
 
 <script type="text/javascript">
   window.onload=function() {
-    document.getElementById("roleSelect").onchange=function() {
-      if(this.options[this.selectedIndex].value=='default') {
-        document.getElementById("btnSwitch").disabled=true;
-      }
-      else {
-        document.getElementById("btnSwitch").disabled=false;
+    if( document.getElementById("roleSelect") ){
+      document.getElementById("roleSelect").onchange=function() {
+        if(this.options[this.selectedIndex].value=='default') {
+          document.getElementById("btnSwitch").disabled=true;
+        }
+        else {
+          document.getElementById("btnSwitch").disabled=false;
+        }
       }
     }
   }
@@ -58,7 +60,7 @@
       }
     ?>
     
-    <button class="btn btn-danger" style="margin-left: 10pt;" formaction=<?php echo "\"$logOutScript\""; ?>>Logout</button>
     <button class="btn btn-default" style="margin-left: 10pt;" formaction=<?php echo "\"$faqLink\""; ?>>FAQ</button>
+    <button class="btn btn-danger" style="margin-left: 10pt;" formaction=<?php echo "\"$logOutScript\""; ?>>Logout</button>
   </form>
 </nav>
