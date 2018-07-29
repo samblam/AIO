@@ -1,7 +1,5 @@
 <?php
 require_once 'includes/session.php';
-//Open the db connection
-include 'includes/db.php';
 require_once 'includes/top-header-full.php';
 
 //These are the variables that will later be converted to session variables
@@ -9,11 +7,6 @@ $role;
 $csid;
 //benefited from https://www.tutorialrepublic.com/twitter-bootstrap-tutorial/bootstrap-accordion.php
 
-
-/* This should not be on login page - session should always be empty when on this page
-//Check if the form variables have been submitted, store them in the session variables
-include 'includes/formProcess.php';
-*/
 ?>
 <!DOCTYPE html>
 
@@ -49,8 +42,8 @@ include 'includes/formProcess.php';
 </script>
 </head>
 <body style="margin: auto;">
-    <br></br>
-    <br></br>
+    <br>
+    <br>
 <div class="bs-example">
     <div class="panel-group" id="accordion">
         <div class="panel panel-default">
@@ -64,7 +57,6 @@ include 'includes/formProcess.php';
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam diam ex, suscipit non congue eget, accumsan a lacus. 
                     Morbi accumsan neque a est mattis porttitor. Vestibulum porttitor eros in vehicula molestie. Vestibulum tristique congue neque ut ornare. 
                     Nam at rhoncus risus.
-                     <a href="https://www.tutorialrepublic.com/html-tutorial/" target="_blank">Learn more.</a></p>
                 </div>
             </div>
         </div>
@@ -79,7 +71,6 @@ include 'includes/formProcess.php';
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam diam ex, suscipit non congue eget, accumsan a lacus. 
                     Morbi accumsan neque a est mattis porttitor. Vestibulum porttitor eros in vehicula molestie. Vestibulum tristique congue neque ut ornare. 
                     Nam at rhoncus risus.
-                     <a href="https://www.tutorialrepublic.com/html-tutorial/" target="_blank">Learn more.</a></p>
                 </div>
             </div>
         </div>
@@ -95,7 +86,6 @@ include 'includes/formProcess.php';
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam diam ex, suscipit non congue eget, accumsan a lacus. 
                     Morbi accumsan neque a est mattis porttitor. Vestibulum porttitor eros in vehicula molestie. Vestibulum tristique congue neque ut ornare. 
                     Nam at rhoncus risus.
-                     <a href="https://www.tutorialrepublic.com/html-tutorial/" target="_blank">Learn more.</a></p>
                 </div>
             </div>
         </div>
@@ -111,14 +101,15 @@ include 'includes/formProcess.php';
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam diam ex, suscipit non congue eget, accumsan a lacus. 
                     Morbi accumsan neque a est mattis porttitor. Vestibulum porttitor eros in vehicula molestie. Vestibulum tristique congue neque ut ornare. 
                     Nam at rhoncus risus.
-                     <a href="https://www.tutorialrepublic.com/html-tutorial/" target="_blank">Learn more.</a></p>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="center-block text-center">
-    <p><strong>Note: </strong>For further inquiries please contact the Administrator at ADMIN@cs.dal.ca</p>
+    <p><strong>Note: </strong>For further inquiries please contact the Administrator at
+    <a href="mailto:Admin@cs.dal.ca?Subject=Hello%20again" target="_top">Admin@cs.dal.ca</a>
+    </p>
     </div>
 </div>
 </body>
