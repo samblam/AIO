@@ -26,7 +26,7 @@
       echo "Execute failed: (" . $CaseInfo->errno . ") " . $CaseInfo->error;
     }
 
-    CloseCon();
+    CloseCon( $conn );
     header('location: ../AIO/ActiveCases.php');
   }
 
