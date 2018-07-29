@@ -16,9 +16,28 @@
 
 	//Form A processing
 	if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
+		$profId = -1;
 
-		$userId = $_SESSION['csid'];//first column of the current user's role table in the database
-
+		if( isset($_POST['SubmitFormA']) && 
+			      isset($_POST["AdminSubmittedProfId"]) ) {
+			$profId = intval($_POST["AdminSubmittedProfId"]);
+		}
+		else {
+			$csid = $_SESSION['csid'];
+			$res = $conn->query( "SELECT professor_id FROM `professor` WHERE csid=\"$csid\"" );
+			if( !$res ) {
+				echo "Database Error. Please contact admin.";
+				echo $conn->error;
+			}
+		  else {
+			  $profId = $res->fetch_array()[0];
+		  }
+		}
+		if( $profId == -1 ) {
+			echo "Critical Error. Could not determine Instructor ID.";
+			echo "Please contact admin.";
+			exit();
+		}
 		//Grabs all form data and sanatize it
 		$prof = htmlspecialchars(trim(stripslashes($_POST['ProfessorName'])));
 		$email = htmlspecialchars(trim(stripslashes($_POST['email'])));
@@ -36,10 +55,6 @@
 			$submitDate = date('Y-m-d', time());
 			$caseId;
 
-			if(isset($_POST["AdminSubmittedProfId"])){
-				$userId = intval($_POST["AdminSubmittedProfId"]);
-			}
-
 			// If you are submitting a form A, it cant have multiple students with the same csid. So, return to the form.
 			// The "multiIds" query string might be useful for displaying an error message once you return to the form page.
 			if(count($boos) != count(array_unique($boos)) && isset($_POST['case_id'])){
@@ -52,7 +67,7 @@
 				// form was previously saved and is now being submitted
 				$caseId = (int)$_POST['case_id'];
 				$statement = $conn->prepare("UPDATE active_cases SET prof_id = ?, class_name_code = ?, date_aware = ?, description = ?, form_a_submit_date = ? WHERE case_id = ?");
-				$statement->bind_param("issssd",$userId, $cname, $date, $comments, $submitDate, $caseId); //bind the values to be inserted to the query
+				$statement->bind_param("issssd",$profId, $cname, $date, $comments, $submitDate, $caseId); //bind the values to be inserted to the query
 
 				if(!$statement->execute()) {
 					//might want to replace this with header("location: ../forma.php"); so that you aren't executing the script further if there is an error
@@ -64,7 +79,7 @@
 			else {
 				//Create new case entry
 				$statement = $conn->prepare("INSERT INTO active_cases (prof_id, class_name_code, date_aware, description, form_a_submit_date) VALUES (?, ?, ?, ?, ?)");
-				$statement->bind_param("issss",$userId, $cname, $date, $comments, $submitDate); //bind the values to be inserted to the query
+				$statement->bind_param("issss",$profId, $cname, $date, $comments, $submitDate); //bind the values to be inserted to the query
 
 				if(!$statement->execute()) {
 					//might want to replace this with header("location: ../forma.php"); so that you aren't executing the script further if there is an error
@@ -130,7 +145,7 @@
 		if(isset($_POST['SaveFormA']) && !isset($_POST['case_id'])){
 			//Create new case entry
 			$statement = $conn->prepare("INSERT INTO active_cases (prof_id, class_name_code, date_aware, description) VALUES (?, ?, ?, ?)");
-			$statement->bind_param("ssss",$userId, $cname, $date, $comments); //bind initial values to the prepared statements
+			$statement->bind_param("sss",$profId, $cname, $date, $comments); //bind initial values to the prepared statements
 
 			if (!$statement->execute()) {
 				echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
@@ -177,7 +192,7 @@
 		if(isset($_POST['SaveFormA']) && isset($_POST['case_id'])){
 			//Create new case entry
 			$statement = $conn->prepare("UPDATE active_cases SET prof_id = ?, class_name_code = ?, date_aware = ?, description = ? WHERE case_id = " . (int)$_POST['case_id']);
-			$statement->bind_param("isss",$userId, $cname, $date, $comments); //bind initial values to the prepared statements
+			$statement->bind_param("isss",$profId, $cname, $date, $comments); //bind initial values to the prepared statements
 			
 			if (!$statement->execute()) {
 			   echo "Execute failed: (" . $statement->errno . ") " . $statement->error;

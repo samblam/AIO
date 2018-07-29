@@ -22,7 +22,7 @@ include_once '../includes/page.php';
     </head>
     <body style="margin: auto;">
         <?php
-            if( $_POST['internal'] != 'true' ) {
+            if( !isset($_POST['internal']) || $_POST['internal'] != 'true' ) {
                 include_once '../includes/navbar.php';
             }
         ?>

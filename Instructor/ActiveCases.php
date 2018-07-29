@@ -49,6 +49,14 @@ include '../includes/formProcess.php';
                 <tbody>
                   <?php
                     $conn = OpenCon();
+                    $csid = $_SESSION['csid'];
+                    $res = $conn->query( "SELECT professor_id FROM `professor` WHERE csid=\"$csid\"" );
+                    if( !$res ){
+                        echo "Database Error. Contact admin.";
+                        echo $conn->error;
+                    }
+                    $id = (int)$res->fetch_array()[0];
+
                     //Get all active cases created by this professor and bind the returned database fields to php variables
                     $statement = $conn->prepare("
 					SELECT
@@ -62,19 +70,18 @@ include '../includes/formProcess.php';
 					FROM active_cases
 						LEFT JOIN student ON student.case_id = active_cases.case_id
 						LEFT JOIN aio ON aio.aio_id = active_cases.aio_id
-					WHERE active_cases.prof_id = ?
+					WHERE active_cases.prof_id = $id
 					");
 
-                    $statement->bind_param("d", $id); //bind the csid to the prepared statements
-
-                    $id = (int)$_SESSION['csid'];
                     if(!$statement->execute()){
                       echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                     }
                     $statement->bind_result($afname, $alname, $sfname, $slname, $scsid, $caseId, $subDate);
 
                     //Fetches each query result, one by one, and prints out a row for each active case created by this professor
-                    while($statement->fetch()){
+                    $count = 0;
+                    while( $statement->fetch() ) {
+                      $count++;
                       $submitted = "Submitted";
                       if($subDate == NULL){
                         $submitted = "Not Submitted";
@@ -95,6 +102,9 @@ include '../includes/formProcess.php';
                       </tr>
 ViewAllPost;
                       
+                    }
+                    if( $count == 0 ) {
+                        echo "No cases";
                     }
                     CloseCon( $conn );
                     ?>
