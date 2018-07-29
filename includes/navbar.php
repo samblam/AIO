@@ -19,10 +19,12 @@
   if( $_SERVER["HTTP_HOST"] == "localhost" ) {
     $switchRolesScript = "http://localhost/includes/switchRoles.php";
     $logOutScript = "http://localhost/includes/logout.php";
+    $faqLink = "http://localhost/faq.php";
   }
   else {
     $switchRolesScript = "http://projects.cs.dal.ca/aio/includes/switchRoles.php";
     $logOutScript = "http://projects.cs.dal.ca/aio/includes/logout.php";
+    $faqLink = "http://projects.cs.dal.ca/aio/faq.php";
   }
 ?>
 
@@ -57,5 +59,6 @@
     ?>
     
     <button class="btn btn-danger" style="margin-left: 10pt;" formaction=<?php echo "\"$logOutScript\""; ?>>Logout</button>
+    <button class="btn btn-default" style="margin-left: 10pt;" formaction=<?php echo "\"$faqLink\""; ?>>FAQ</button>
   </form>
 </nav>
