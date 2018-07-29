@@ -150,9 +150,8 @@ NoStuIDError;
         </div>
 
         <div class="form-container">
-            <!--form class="form-horizontal" id="" action="../Admin/processFormC.php" method="post"-->
-			<form class="form-horizontal" id="formCFields">
-                <div class="form-group">
+            <form class="form-horizontal" id="formC" action="../Admin/SubmitFormC" method="post">
+			    <div class="form-group">
                     <label class="control-label col-sm-3">Student Name:</label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control" placeholder="Student Name"
@@ -231,11 +230,11 @@ NoStuIDError;
                 <!--save button, submit button-->
                 <div class="form-group">
                     <div class="center-block text-center">
-                        <button type="submit" class="btn btn-success" name="SubmitFormA">
+                        <button type="submit" class="btn btn-success" name="SubmitFormC">
 						Submit</button>
 
 						<?php
-							include '../Admin/EmailFormC.php';
+							//include '../Admin/EmailFormC.php';
 						?>
                     </div>
                 </div>
