@@ -5,6 +5,17 @@
 ?>
 
 <?php
+  // If logged in already, redirects to current role's landing page
+  if( isset($_SESSION['loggedIn']) &&
+      $_SESSION['loggedIn'] /* == true */ &&
+      isset($_SESSION['role']) ) {
+    header( 'Location: ' . $start_pages[$_SESSION['role']], false, 303 );
+    exit;
+  }
+?>
+
+
+<?php
   // Testing from localhost
   if( $_SERVER["HTTP_HOST"] == 'localhost' ) {
     if( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
