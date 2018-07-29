@@ -24,6 +24,11 @@ include_once '../includes/page.php';
     <!-- Form B -->
 
     <body style="margin: auto;">
+        <?php
+            if( !isset($_POST['internal']) || $_POST['internal'] != 'true' ) {
+                include_once '../includes/navbar.php';
+            }
+        ?>
         <div class="form-container">
             <h2 class="form-b-title" style="text-align: left">Form B</h2>
             <p>AIO Transfer to Senate</p>

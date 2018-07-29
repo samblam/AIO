@@ -15,7 +15,8 @@ $evidenceFileDir = "";
 $case_id = "";
 
 // check if URL contains the case_id variable
-if(isset($_POST["caseId"])){
+if(isset($_GET["case_id"])){
+    $conn = OpenCon();
     $statement = $conn->prepare("SELECT evidence_fileDir, form_a_submit_date FROM active_cases WHERE case_id = ?");
     // get the case_id from the URL
     $case_id = (int)$_POST["caseId"];
@@ -27,6 +28,7 @@ if(isset($_POST["caseId"])){
     // get the case information from the database
     $statement->bind_result($evidenceFileDir, $formSubmissionDate);
     $statement->fetch();
+    CloseCon( $conn );
 }
 ?>
 
@@ -41,6 +43,12 @@ if(isset($_POST["caseId"])){
         <script src="../JS/forma.js"></script>
     </head>
     <body style="margin:auto;">
+        <?php
+            if( !isset($_POST['internal']) || $_POST['internal'] != 'true' ) {
+                include_once '../includes/navbar.php';
+            }
+        ?>
+
 
         <div class="form-container">
             <h2 class="form-a-title" style="text-align: left">Form A</h2>
@@ -69,7 +77,8 @@ if(isset($_POST["caseId"])){
                                 echo "<option disabled selected value> -- select an option -- </option>";
                                 
                                 //grab all the professors
-                                $statement = $conn->prepare("SELECT professor_id, fname, lname, email, phone FROM professor");
+                                $conn = OpenCon();
+                                $statement = $conn->prepare("SELECT fname, lname, email, phone FROM professor");
                                 if(!$statement->execute()){
                                   echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                                 }
@@ -80,6 +89,7 @@ if(isset($_POST["caseId"])){
                                     echo"<option value='$email,$phone,$pid' data-tokens='$pfname,$plname'>$profName</option>";   
                                 }
                                 echo"</select>";
+                                CloseCon( $conn );
                             }
                                 
                             else{

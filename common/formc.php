@@ -21,6 +21,11 @@ include_once '../includes/page.php';
         <script src="../JS/formc.js"></script>
     </head>
     <body style="margin: auto;">
+        <?php
+            if( !isset($_POST['internal']) || $_POST['internal'] != 'true' ) {
+                include_once '../includes/navbar.php';
+            }
+        ?>
         <div class="form-container">
             <h2 class="form-d-title">Form C</h2>
             <p>AIO Allegation Letter</p>

@@ -11,26 +11,22 @@ include '../includes/formProcess.php';
 <!DOCTYPE html>
 
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>Admin</title>
-        <link rel="stylesheet" href="../CSS/formA.css">
+  <head>
+    <meta charset="utf-8">
+    <title>Admin</title>
+    <link rel="stylesheet" href="../CSS/formA.css">
 
-        <link rel="stylesheet" href="../CSS/main.css">
+    <link rel="stylesheet" href="../CSS/main.css">
 
-      <!-- bootstrap imports -->
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- bootstrap imports -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-
-        <!-- the header; logout and back buttons -->
-        <script src="../JS/top-header.js"></script>
-    </head>
+  </head>
 
      <body style="margin: auto;">
-        <!-- Headder div + Logout button -->
-        <div class="top-header"></div>
+        <?php include_once '../includes/navbar.php'; ?>
         <div>
             <h2>Active Cases</h2>
         </div>
@@ -57,22 +53,27 @@ include '../includes/formProcess.php';
                 </thead>
                 <tbody>
                   <?php
+                    $conn = OpenCon();
                     //Get all active cases and bind the returned database fields to php variables
-                    $statement = $conn->prepare("SELECT active_cases.case_id, 
-                                                        active_cases.class_name_code, 
-                                                        professor.fname, 
-                                                        professor.lname, 
-                                                        aio.fname, 
-                                                        aio.lname  
-                                                    FROM active_cases 
-                                                    LEFT JOIN professor 
-                                                    ON professor.professor_id = active_cases.prof_id 
-                                                    LEFT JOIN aio 
-                                                    ON aio.aio_id = active_cases.aio_id");
-                    if(!$statement->execute()){
-                      echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+                    $result = $conn->query("
+                                  SELECT 
+                                    active_cases.case_id, 
+                                    active_cases.class_name_code, 
+                                    professor.fname, 
+                                    professor.lname, 
+                                    aio.fname, 
+                                    aio.lname  
+                                  FROM active_cases 
+                                  LEFT JOIN professor 
+                                  ON professor.professor_id = active_cases.prof_id 
+                                  LEFT JOIN aio 
+                                  ON aio.aio_id = active_cases.aio_id");
+                    if( !$result ) {
+                      echo "Database Error. Please contact admin.";
+                      echo $conn->error;
                     }
-                    $statement->bind_result($caseId, $className, $pfname, $plname, $afname, $alname);
+
+                    //$statement->bind_result($caseId, $className, $pfname, $plname, $afname, $alname);
 
                     /**
                      * Fetches each query result, one by one, and prints out a row for each case.
@@ -81,7 +82,13 @@ include '../includes/formProcess.php';
                      * If you click yes, the form will continue and it will delete the case.
                      * If you click no, nothing will happen.
                      */
-                    while($statement->fetch()){
+                    while( $row = $result->fetch_array() ) {
+                      $caseId = $row[0];
+                      $className = $row[1];
+                      $pfname = $row[2];
+                      $plname = $row[3];
+                      $afname = $row[4];
+                      $alname = $row[5];
                       echo <<<ViewAllPost
                       <tr>
                           <td>$caseId</td>
@@ -119,7 +126,10 @@ include '../includes/formProcess.php';
                       </tr>
 ViewAllPost;
                     }
-                    ?>
+
+                    $result->close();
+                    CloseCon( $conn );
+                  ?>
                 </tbody>
             </table>
         </div>

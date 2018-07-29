@@ -21,6 +21,11 @@ include_once '../includes/page.php';
         <script src="../JS/formd.js"></script>
     </head>
     <body style="margin: auto;">
+        <?php
+            if( !isset($_POST['internal']) || $_POST['internal'] != 'true' ) {
+                include_once '../includes/navbar.php';
+            }
+        ?>
         <div class="form-container">
             <h2 class="form-d-title">Form D</h2>
             <p>AIO Assessment and Recommendations</p>

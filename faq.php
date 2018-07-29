@@ -1,6 +1,5 @@
 <?php
 require_once 'includes/session.php';
-require_once 'includes/top-header-full.php';
 
 //These are the variables that will later be converted to session variables
 $role;
@@ -30,18 +29,21 @@ $csid;
         // Add minus icon for collapse element which is open by default
         $(".collapse.in").each(function(){
             $(this).siblings(".panel-heading").find(".glyphicon").addClass("glyphicon-minus").removeClass("glyphicon-plus");
+            });
+            
+            // Toggle plus minus icon on show hide of collapse element
+            $(".collapse").on('show.bs.collapse', function(){
+                $(this).parent().find(".glyphicon").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+            }).on('hide.bs.collapse', function(){
+                $(this).parent().find(".glyphicon").removeClass("glyphicon-minus").addClass("glyphicon-plus");
+            });
         });
-        
-        // Toggle plus minus icon on show hide of collapse element
-        $(".collapse").on('show.bs.collapse', function(){
-            $(this).parent().find(".glyphicon").removeClass("glyphicon-plus").addClass("glyphicon-minus");
-        }).on('hide.bs.collapse', function(){
-            $(this).parent().find(".glyphicon").removeClass("glyphicon-minus").addClass("glyphicon-plus");
-        });
-    });
-</script>
+    </script>
 </head>
 <body style="margin: auto;">
+    <?php 
+        include_once './includes/navbar.php';
+    ?>
     <br>
     <br>
 <div class="bs-example">
