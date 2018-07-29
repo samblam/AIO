@@ -156,9 +156,18 @@ NoStuIDError;
         </div>
 
         <div class="form-container">
-            <form class="form-horizontal" id="formC" action="../Admin/SubmitFormC" method="post">
+            <form class="form-horizontal" id="formC" action="../Admin/processFormC.php" method="post">
+				<div class="form-group" hidden>
+					<label class="control-label col-sm-3" for="case_id">Case ID:</label>
+					<div class="col-sm-9">
+						<input type="number" class="form-control" placeholder="Case ID"
+							id="case_id" name="case_id"
+							value=<?php echo ('"' . $caseId . '"'); ?>
+							required readonly>
+					</div>
+                </div>
 			    <div class="form-group">
-                    <label class="control-label col-sm-3">Student Name:</label>
+                    <label class="control-label col-sm-3" for="student_name">Student Name:</label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control" placeholder="Student Name"
 						id="student_name" name="student_name"
@@ -167,7 +176,7 @@ NoStuIDError;
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-3">Student B00:</label>
+                    <label class="control-label col-sm-3" for="b00_num">Student B00:</label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control" placeholder="B00 Number"
 							id="b00_num" name="b00_num"

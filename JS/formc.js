@@ -35,15 +35,6 @@ function loadFormC(caseID, studentID, num_students) {
 	);
 };
 
-/**
-function formCValid() {
-	console.log("Checking form C");
-	//$("#formCFields").validate();
-	//$("#formCFields").validate();
-	return $("#formCFields").checkValidity();
-};
-*/
-
 function showModelC() {
 	console.log("Showing");
 	console.log($("#emailFormC"));

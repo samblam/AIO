@@ -1,13 +1,26 @@
 <?php
-require_once '../includes/session.php';
+	require_once '../includes/session.php';
 
-require_once 'secure.php';
-//Open the db connection
-//include_once '../includes/db.php';
-//include_once '../includes/getCaseID.php';
-//Check if the form variables have been submitted, store them in the session variables
-include_once '../includes/formProcess.php';
-include_once '../includes/page.php';
+	require_once 'secure.php';
+	//Open the db connection
+	include_once '../includes/db.php';
+	//include_once '../includes/getCaseID.php';
+	//Check if the form variables have been submitted, store them in the session variables
+	include_once '../includes/page.php';
+
+
+
+
+    // Deletes all students and active cases with the given case id from Admin/ACtiveCases.php
+    if(isset($_POST['aio_email']) && isset($_POST['case_id']) && $_SESSION['role'] == "admin") {
+        echo "Test1";
+    }
+	else {
+		echo "Test fail";
+	}
+
+
+
 
 ?>
 
