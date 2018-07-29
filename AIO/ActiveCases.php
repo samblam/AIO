@@ -150,8 +150,8 @@ ViewAllPost;
                   </td>
               </tr>
 ViewAllPost;
-              CloseCon( $conn );
             }
+            CloseCon( $conn );
           ?>
         </tbody> 
       </table>

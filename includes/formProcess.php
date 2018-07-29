@@ -48,6 +48,8 @@
     // form B processing
     if(isset($_POST['SaveFormB']) || isset($_POST['SubmitFormB'])){ }
 
+    // form C processing
+    if(isset($_POST['SaveFormC']) || isset($_POST['SubmitFormC'])){ }
 
     // form D processing
     if(isset($_POST['SaveFormD']) || isset($_POST['SubmitFormD'])){ }

@@ -125,7 +125,6 @@ include '../includes/formProcess.php';
                           </td>
                       </tr>
 ViewAllPost;
-                      CloseCon( $conn );
                     }
 
                     $result->close();
