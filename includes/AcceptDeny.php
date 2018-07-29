@@ -26,11 +26,13 @@
       echo "Execute failed: (" . $CaseInfo->errno . ") " . $CaseInfo->error;
     }
 
+    CloseCon();
     header('location: ../AIO/ActiveCases.php');
   }
 
   //The case where this Form A set aio_id null
   if(isset($_POST['DenyFormA'])){
+    $conn = OpenCon();
 
     // Grabs case_id of the just inserted case and uses it to set aio id to null
     $CurrCaseId=(int)$_POST['CurrCaseId'];
@@ -42,6 +44,7 @@
       echo "Execute failed: (" . $CaseInfo->errno . ") " . $CaseInfo->error;
     }
 
+    CloseCon( $conn );
     header('location: ../AIO/ActiveCases.php');
     
   }
