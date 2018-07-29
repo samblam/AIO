@@ -19,12 +19,9 @@ include '../includes/formProcess.php';
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
-        <script src="../JS/top-header.js"></script>
-
     </head>
     <body style="margin: auto;">
-        <!-- Headder div + Logout button -->
-        <div class="top-header"></div>
+        <?php include_once '../includes/navbar.php'; ?>
 
         <div>
             <h2>Active Cases</h2>
@@ -51,17 +48,40 @@ include '../includes/formProcess.php';
                 </thead>
                 <tbody>
                   <?php
+                    $conn = OpenCon();
+                    $csid = $_SESSION['csid'];
+                    $res = $conn->query( "SELECT professor_id FROM `professor` WHERE csid=\"$csid\"" );
+                    if( !$res ){
+                        echo "Database Error. Contact admin.";
+                        echo $conn->error;
+                    }
+                    $id = (int)$res->fetch_array()[0];
+
                     //Get all active cases created by this professor and bind the returned database fields to php variables
-                    $statement = $conn->prepare("SELECT aio.fname, aio.lname, student.fname, student.lname, student.csid, active_cases.case_id, active_cases.form_a_submit_date FROM active_cases LEFT JOIN student ON student.case_id = active_cases.case_id LEFT JOIN aio ON aio.aio_id = active_cases.aio_id WHERE active_cases.prof_id = ?");
-                    $statement->bind_param("d", $id); //bind the csid to the prepared statements
-                    $id = (int)$_SESSION['userId'];
+                    $statement = $conn->prepare("
+					SELECT
+						aio.fname,
+						aio.lname,
+						student.fname,
+						student.lname,
+						student.csid,
+						active_cases.case_id,
+						active_cases.form_a_submit_date
+					FROM active_cases
+						LEFT JOIN student ON student.case_id = active_cases.case_id
+						LEFT JOIN aio ON aio.aio_id = active_cases.aio_id
+					WHERE active_cases.prof_id = $id
+					");
+
                     if(!$statement->execute()){
                       echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                     }
                     $statement->bind_result($afname, $alname, $sfname, $slname, $scsid, $caseId, $subDate);
 
                     //Fetches each query result, one by one, and prints out a row for each active case created by this professor
-                    while($statement->fetch()){
+                    $count = 0;
+                    while( $statement->fetch() ) {
+                      $count++;
                       $submitted = "Submitted";
                       if($subDate == NULL){
                         $submitted = "Not Submitted";
@@ -81,7 +101,12 @@ include '../includes/formProcess.php';
                         </td>
                       </tr>
 ViewAllPost;
+                      
                     }
+                    if( $count == 0 ) {
+                        echo "No cases";
+                    }
+                    CloseCon( $conn );
                     ?>
                 </tbody>
             </table>

@@ -22,6 +22,11 @@ include_once '../includes/page.php';
         <script src="../JS/formc.js"></script>
     </head>
     <body style="margin: auto;">
+        <?php
+            if( !isset($_POST['internal']) || $_POST['internal'] != 'true' ) {
+                include_once '../includes/navbar.php';
+            }
+        ?>
         <div class="form-container">
             <h2 class="form-d-title">Form C</h2>
             <p>AIO Allegation Letter</p>
@@ -36,6 +41,7 @@ include_once '../includes/page.php';
 					$num_students = 1;
 				}
 
+				$conn = OpenCon();
 				//Get the IDs of students involved in the case and make a button for each one.
 				if ($num_students > 1) {
 					$getStudentList = $conn->prepare("

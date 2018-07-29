@@ -24,14 +24,14 @@
 	}
 
 	if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] && 
-			isset($_SESSION["userId"]) && isset($_SESSION["role"]) && isset($_POST["caseId"])){
+			isset($_SESSION["csid"]) && isset($_SESSION["role"]) && isset($_POST["caseId"])){
 
-		$caseId = intval($_POST['caseId']);
-		$userId = intval($_SESSION["userId"]);
-		$role = $_SESSION["role"];
+  		$caseId = intval($_POST['caseId']);
+  		$userId = intval($_SESSION["csid"]);
+  		$role = $_SESSION["role"];
 
-		// get case information to check if the user has permission to view this file
-		$conn = OpenCon();
+  		// get case information to check if the user has permission to view this file
+  		$conn = OpenCon();
 
 	    $statement = $conn->prepare("SELECT evidence_fileDir, aio_id, prof_id FROM active_cases WHERE case_id = " . $caseId);
 	    if(!$statement->execute()){

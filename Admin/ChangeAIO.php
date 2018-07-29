@@ -19,12 +19,10 @@ include '../includes/formProcess.php';
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
-        <script src="../JS/top-header-full.js"></script>
 
     </head>
     <body style="margin: auto;">
-        <!-- Headder div + Logout button -->
-        <div class="top-header-full"></div>
+        <?php include_once '../includes/navbar.php'; ?>
 
         <div style="display: inline-block;">
             <h2>Case Information</h2>
@@ -76,6 +74,7 @@ include '../includes/formProcess.php';
                 //Gets case id from URL
                 $caseId = $_POST['caseId'];
                 //Get aio_id and aio name.
+                $conn = OpenCon();
                 $statement = $conn->prepare("SELECT active_cases.aio_id, aio.fname, aio.lname FROM active_cases LEFT JOIN aio ON aio.aio_id = active_cases.aio_id WHERE active_cases.case_id = '$caseId' "); 
                 if(!$statement->execute()){
                     echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
@@ -93,11 +92,13 @@ NoAIO;
 CurrentAIO;
                     }
                 }
+                CloseCon( $conn );
             ?>
             
             <!-- Dropdown for selecting AIO-->    
             <?php
                 //Get aio_id and aio name.
+                $conn = OpenCon();
                 $statement = $conn->prepare("SELECT fname, lname FROM aio"); 
                 if(!$statement->execute()){
                     echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
@@ -126,6 +127,7 @@ OptionAIO;
                         <button class="btn btn-success" value="true" type="submit" name="submitChangeAIO">Submit</button>
                     </form>
 Button;
+                CloseCon( $conn );
             ?>
         </div>
     </body>

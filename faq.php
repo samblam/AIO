@@ -1,6 +1,5 @@
 <?php
 require_once 'includes/session.php';
-require_once 'includes/top-header-full.php';
 
 //These are the variables that will later be converted to session variables
 $role;
@@ -15,7 +14,7 @@ $csid;
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Example of Bootstrap 3 Accordion</title>
+<title>FAQ</title>
 <link rel="stylesheet" href="../CSS/main.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -30,18 +29,21 @@ $csid;
         // Add minus icon for collapse element which is open by default
         $(".collapse.in").each(function(){
             $(this).siblings(".panel-heading").find(".glyphicon").addClass("glyphicon-minus").removeClass("glyphicon-plus");
+            });
+            
+            // Toggle plus minus icon on show hide of collapse element
+            $(".collapse").on('show.bs.collapse', function(){
+                $(this).parent().find(".glyphicon").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+            }).on('hide.bs.collapse', function(){
+                $(this).parent().find(".glyphicon").removeClass("glyphicon-minus").addClass("glyphicon-plus");
+            });
         });
-        
-        // Toggle plus minus icon on show hide of collapse element
-        $(".collapse").on('show.bs.collapse', function(){
-            $(this).parent().find(".glyphicon").removeClass("glyphicon-plus").addClass("glyphicon-minus");
-        }).on('hide.bs.collapse', function(){
-            $(this).parent().find(".glyphicon").removeClass("glyphicon-minus").addClass("glyphicon-plus");
-        });
-    });
-</script>
+    </script>
 </head>
 <body style="margin: auto;">
+    <?php 
+        include_once './includes/navbar.php';
+    ?>
     <br>
     <br>
 <div class="bs-example">
