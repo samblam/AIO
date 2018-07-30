@@ -15,6 +15,22 @@
 	//Form A processing
 	if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
 
+		//TODO: Also include evidence file in the email.
+		$data = array("ProfessorName", "email", "phoneNum", "faculty", "class-name", "Name", "B00");//Could add DateAlleged, additionalComments
+
+			foreach ($data as $field) {
+				//Post fields are set, but have no value
+				if ($_POST[$field] == "") {
+					include_once '../includes/page.php';	//Styling for button
+					echo <<<MissingDataError
+						<link rel="stylesheet" href="../CSS/main.css">	<!-- Styling for error -->
+						<p>Error: $_POST[$field] not set.</p>
+						<a href="../Instructor/ActiveCases.php?" class="btn btn-primary">Return to Active Cases</a>
+MissingDataError;
+					exit();
+				}
+			}
+
 		$userId = $_SESSION['userId'];//first column of the current user's role table in the database
 
 		//Grabs all form data and sanatize it

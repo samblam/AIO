@@ -1,13 +1,13 @@
-fw
-2r
-q@f
+1
+1
+1@1
 FCS
 FCS
 CSCI 2100
 (anotherEmail@dal.ca)
-14
-13131
-2018-07-03
+1
+1
+1970-01-01
 NO
 N/A
 N/A
