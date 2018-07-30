@@ -242,8 +242,8 @@ NoStuIDError;
                     <div class="col-sm-3">
 						<!--
 						//The 'selectpicker' class is causing the field to not appear in sub-forms.
-                        <select class="selectpicker" id="time" name="time" data-live-search="true" required"-->
-						<select id="timepickerC" name="timepickerC" required">
+                        <select class="selectpicker" id="time" name="time" data-live-search="true" required-->
+						<select id="timepickerC" name="timepickerC" required>
 							<?php
 							createTimeOptions();
 							?>
