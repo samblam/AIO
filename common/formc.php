@@ -166,6 +166,15 @@ NoStuIDError;
 							required readonly>
 					</div>
                 </div>
+				<div class="form-group" hidden>
+					<label class="control-label col-sm-3" for="student_id">Student ID:</label>
+					<div class="col-sm-9">
+						<input type="number" class="form-control" placeholder="Student ID"
+							id="student_id" name="student_id"
+							value=<?php echo ('"' . $student_id . '"'); ?>
+							required readonly>
+					</div>
+                </div>
 			    <div class="form-group">
                     <label class="control-label col-sm-3" for="student_name">Student Name:</label>
                     <div class="col-sm-9">
@@ -176,16 +185,16 @@ NoStuIDError;
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-3" for="b00_num">Student B00:</label>
+                    <label class="control-label col-sm-3" for="csid">Student B00:</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" placeholder="B00 Number"
-							id="b00_num" name="b00_num"
+                        <input type="text" class="form-control" placeholder="CSID"
+							id="csid" name="csid"
 							value=<?php echo ('"' . $stu_csid . '"'); ?>
 							required readonly>
                     </div>
                 </div>
 				<div class="form-group">
-                    <label class="control-label col-sm-3">Student Email:</label>
+                    <label class="control-label col-sm-3" for="student_email_C">Student Email:</label>
                     <div class="col-sm-9">
                         <input type="email" class="form-control" placeholder="student@dal.ca"
 							id="student_email_C" name="student_email_C"
@@ -194,7 +203,7 @@ NoStuIDError;
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-3">Professor Name:</label>
+                    <label class="control-label col-sm-3" for="prof_name">Professor Name:</label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control" placeholder="Professor Name"
 						id="prof_name" name="prof_name"
@@ -205,12 +214,13 @@ NoStuIDError;
 
                 <!-- TODO: Fix date select box -->
                 <div class="form-group date">
-                    <label class="col-sm-3" >Meeting Date/Time:</label>
+                    <label class="col-sm-3">Meeting Date/Time:</label>
                     <div class="col-sm-3">
                         <input type="text" class="form-control" placeholder="MM/DD/YYY" id="date" name="date" required>
                     </div>
                     <div class="col-sm-6">
-                        <input class="timepicker form-control" id="timepickerC" name="timepickerC" required>
+						<!-- Note: Will be treated as a normal input box on Safari -->
+                        <input type="time" class="timepicker form-control" id="timepickerC" name="timepickerC" required>
                     </div>
                 </div>
                 <div class="form-group">
@@ -239,7 +249,8 @@ NoStuIDError;
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-3"><input type="checkbox"> Notify Professor</label>
+                    <label class="control-label col-sm-3" for="notify_prof">
+					<input type="checkbox" id="notify_prof" name="notify_prof" value="true"> Notify Professor</label>
                 </div>
 
                 <!--save button, submit button-->
@@ -247,10 +258,6 @@ NoStuIDError;
                     <div class="center-block text-center">
                         <button type="submit" class="btn btn-success" name="SubmitFormC">
 						Submit</button>
-
-						<?php
-							//include '../Admin/EmailFormC.php';
-						?>
                     </div>
                 </div>
             </form>
