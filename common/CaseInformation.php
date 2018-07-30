@@ -406,12 +406,4 @@ LoadFormC;
              $("#formd").load("formd.php", {"internal": "true"});
          });
     </script>
-    
-    <!-- script that allows the email field to accept more than one email -->
-    <!--script type="text/javascript">
-        $(document).ready( function() {
-            document.getElementById("email-to").multiple = true;
-            document.getElementById("email-cc").multiple = true;
-        });
-    </script-->
 </html>
