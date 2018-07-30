@@ -186,7 +186,7 @@
 
 			$statement->bind_result($fname, $csid);
 
-			$statement = $conn->prepare("INSERT INTO saved_info (professor, email, course, faculty, student_name, student_bannerid, date, comments, case_id, phone) VALUES ('{$prof}', '{$email}', '{$cname}', '{$faculty}', '{$students[0]}', '{$boos[0]}', '{$date}', '{$comments}', '{$caseId}', '{$phone}')");
+			$statement = $conn->prepare("UPDATE saved_info SET professor='{$prof}', email='{$email}', course='{$cname}', faculty='{$faculty}', student_name='{students[0]}', student_bannerid='{$boos[0]}', date='{$date}', comments='{$comments}', phone='{$phone}' WHERE case_id='{$caseId}'");
 
     		if (!$statement->execute()) {
        			echo "Execute failed";
