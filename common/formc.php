@@ -211,12 +211,21 @@ NoStuIDError;
 						required>
                     </div>
                 </div>
+				<div class="form-group">
+                    <label class="control-label col-sm-3" for="prof_email_C">Professor Email:</label>
+                    <div class="col-sm-9">
+                        <input type="email" class="form-control" placeholder="professor@dal.ca"
+							id="prof_email_C" name="prof_email_C"
+							value=<?php echo ('"' . $prof_email . '"'); ?>
+							required>
+                    </div>
+                </div>
 
                 <!-- TODO: Fix date select box -->
                 <div class="form-group date">
                     <label class="col-sm-3">Meeting Date/Time:</label>
                     <div class="col-sm-3">
-                        <input type="text" class="form-control" placeholder="MM/DD/YYYY" id="date" name="date" required>
+                        <input type="text" class="form-control" placeholder="MM/DD/YYYY" id="date" name="date" autocomplete="off" required>
                     </div>
                     <div class="col-sm-6">
 						<!-- Note: Will be treated as a normal input box on Safari -->

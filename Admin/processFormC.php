@@ -4,23 +4,25 @@
 	require_once 'secure.php';
 	//Open the db connection
 	include_once '../includes/db.php';
-	//Check if the form variables have been submitted, store them in the session variables
-	include_once '../includes/page.php';
 
 	//TODO: Also include evidence file in the email.
-	$data = array("case_id", "student_name", "csid", "student_email_C", "prof_name", "date", "timepickerC", "room_num", "building", "aio_phone", "aio_email", "student_id");
+	$data = array("case_id", "student_name", "csid", "student_email_C", "prof_name", "date", "timepickerC", "room_num", "building", "aio_phone", "aio_email", "student_id", "prof_email_C");
 
 	/**
 	 * Checks all the required fields and sanitizes them.
 	 *
 	 * Sanitization method inspired by:	https://stackoverflow.com/questions/1885979/php-get-variable-array-injection
-	*/
+	 **/
 	foreach ($data as $field) {
 		if (isset($_POST[$field])) {
 			$data[$field] = preg_replace('/[^a-zA-Z0-9_\.\-&=]/', '', $_POST[$field]);
-			echo ("<p>\n" . $data[$field] . "</p>");
 		} else {
-			echo ("<p>Error, field " . $field . " was not set.</p>");
+			include_once '../includes/page.php';	//Styling for button
+			echo <<<MissingDataError
+				<link rel="stylesheet" href="../CSS/main.css">	<!-- Styling for error -->
+				<p>Error: $field not set.</p>
+				<a href="ActiveCases.php?" class="btn btn-primary">Return to Active Cases</a>
+MissingDataError;
 			exit();
 		}
 	}
@@ -33,22 +35,6 @@
 	);
 
 	$room = ($data['building'] . " " . $data['room_num']);
-
-	//TODO: Receive copy from the client and make it match this.
-	$studentEmailText = ("Dear " . $data['student_name'] .
-		",\n\nA meeting has been scheduled to discuss your academic integrity case. Please find the details below." .
-		"Should you need to reschedule this meeting, please contact your assigned academic integrity officer at " .
-		$data['aio_email']) . " or " . $data['aio_phone'] . "\n\nCase details: COMING SOON";
-
-	//Check that the form submission is valid: Has all the required fields.
-    if(isset($_POST['notify_prof']) && ($_POST['notify_prof'] == true)) {
-        echo "\nWill send to prof";
-    }
-	else {
-		echo "\nWill not send to prof";
-	}
-
-	echo ("<p>" . $studentEmailText . "</p>");
 
 	//Edit database to record meeting
     $conn = OpenCon();
@@ -71,7 +57,52 @@
       echo "Execute failed: (" . $setMeeting->errno . ") " . $setMeeting->error;
     }
 
-    CloseCon( $conn )
+    CloseCon( $conn );
 
-	//TODO: Send the email.
+	//TODO: Receive copy from the client and make it match this.
+	$studentEmailText = ("Dear " . $data['student_name'] .
+		",\n\nA meeting has been scheduled to discuss your academic integrity case. Please find the details below." .
+		"Should you need to reschedule this meeting, please contact your assigned academic integrity officer at " .
+		$data['aio_email'] . " or " . $data['aio_phone'] . "\n\nCase details: COMING SOON");
+
+	$EmailSubject = "Meeting to discuss academic integrity";
+
+	$errorSending = false;
+
+	//Try to send email to student; '@' suppresses warnings.
+	if (!@mail($data['student_email_C'], $EmailSubject, $studentEmailText)) {
+		include_once '../includes/page.php';	//Styling for button
+		echo <<<SendToStudentError
+			<link rel="stylesheet" href="../CSS/main.css">	<!-- Styling for error -->
+			<p>Error: Could not send email to student.</p>
+SendToStudentError;
+		echo ('<a href="mailto:' . $data['student_email_C'] . '?Subject=' . $EmailSubject . '&body=' . $studentEmailText . '">Send Mail Manually</a><br><br>');
+
+		$errorSending = true;
+	}
+
+	//If user has checked "Notify Professor", send email to the professor.
+    if(isset($_POST['notify_prof']) && ($_POST['notify_prof'] == true)) {
+        $profEmailText = ("Dear " . $data['prof_name'] .
+		",\n\nA meeting has been scheduled to discuss an academic integrity case you filed, relating to " .
+		$data['student_name'] . " Please find the details below." .
+		"\n\nCase details: COMING SOON");
+
+		if (!@mail($data['prof_email_C'], $EmailSubject, $profEmailText)) {
+			include_once '../includes/page.php';	//Styling for button
+			echo <<<SendToProfError
+				<link rel="stylesheet" href="../CSS/main.css">	<!-- Styling for error -->
+				<p>Error: Could not send email to professor.</p>
+SendToProfError;
+		echo ('<a href="mailto:' . $data['prof_email_C'] . '?Subject=' . $EmailSubject . '&body=' . $profEmailText . '">Send Mail Manually</a><br><br>');
+		
+		$errorSending = true;
+		}
+    }
+
+	if ($errorSending) {
+		echo ("<a href=\"ActiveCases.php?\" class=\"btn btn-primary\">Return to Active Cases</a>");
+	} else {
+		header("Location: ../Admin/ActiveCases.php");
+	}
 ?>

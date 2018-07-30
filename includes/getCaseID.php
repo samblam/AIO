@@ -18,7 +18,6 @@
 
 		} else {
 			include_once '../includes/page.php';	//Styling for button
-			//$errro = $_GET["case_id"];
 			echo <<<NoIDError
 				<link rel="stylesheet" href="../CSS/main.css">	<!-- Styling for error -->
 				<p>Error: Case ID not set.</p>
