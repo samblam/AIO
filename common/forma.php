@@ -29,7 +29,6 @@ if(isset($_POST["caseId"])){
     $statement->bind_result($evidenceFileDir, $formSubmissionDate);
     $statement->fetch();
     CloseCon( $conn );
-    //echo "caseId:" . $case_id;
 }
 ?>
 
@@ -178,7 +177,7 @@ if(isset($_POST["caseId"])){
               </div>
           </div>
 
-          <!-- this refreshes page. try to fix if time permits -->
+          <!-- Add or Remove Students -->
           <div class="form-group">
               <label class="col-sm-3 control-label"></label>
               <div class="col-sm-9">

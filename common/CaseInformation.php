@@ -90,9 +90,6 @@
                 }
                 $statement->bind_result($submissionDate, $studentList, $pfname, $plname, $sfname, $slname, $scsid);
                 $statement->fetch();
-                echo "userId: " . $userId;
-                echo "<br>";
-                echo "role: " . $role;
             ?>
             <table class="table table-bordered" style="font-size: 14px;">
                 <tbody>
@@ -102,7 +99,7 @@
                     </tr>
                     <tr>
                         <td>Student name</td>
-                        <td class="studentName"><?php echo $sfname . ", " . $scsid ?></td>
+                        <td class="studentName"><?php echo $sfname; ?></td>
                     </tr>
                     <tr>
                         <td>Other Students</td>
