@@ -77,7 +77,7 @@
                         student.fname, 
                         student.lname, 
                         student.csid,
-						student.student_id
+                        student.student_id
                     FROM 
                         professor 
                         LEFT JOIN active_cases ON professor.professor_id = active_cases.prof_id 
@@ -117,12 +117,12 @@
                                         <li><button class='btn' type='submit'><?php echo $sfname . ", " . $scsid ?></button></li>
                                         <?php
 											$num_students = 1;
-                                            while($statement->fetch()){
+											while($statement->fetch()){
 												$num_students++;
-                                                echo"<input id='caseId' name='caseId' value='$caseIdValue' type='hidden'>";
-                                                echo "<li><button class='btn' type='submit'>$sfname, $scsid</button></li>";
-                                            }
-                                        ?>
+												echo"<input id='caseId' name='caseId' value='$caseIdValue' type='hidden'>";
+												echo "<li><button class='btn' type='submit'>$sfname, $scsid</button></li>";
+											}
+										?>
                                     </ul>
                                 </form>
                             </div>

@@ -30,7 +30,6 @@ include_once '../includes/page.php';
         <div class="form-container">
             <h2 class="form-d-title">Form C</h2>
             <p>AIO Allegation Letter</p>
-
 			<?php
 				$caseId = getCaseID();
 
@@ -178,10 +177,10 @@ NoStuIDError;
 			    <div class="form-group">
                     <label class="control-label col-sm-3" for="student_name">Student Name:</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" placeholder="Student Name"
-						id="student_name" name="student_name"
-						value=<?php echo ('"' . $stu_fname . ' ' . $stu_lname . '"'); ?>
-						required readonly>
+						<input type="text" class="form-control" placeholder="Student Name"
+							id="student_name" name="student_name"
+							value=<?php echo ('"' . $stu_fname . ' ' . $stu_lname . '"'); ?>
+							required readonly>
                     </div>
                 </div>
                 <div class="form-group">

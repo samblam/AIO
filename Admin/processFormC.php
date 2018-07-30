@@ -27,11 +27,11 @@ MissingDataError;
 		}
 	}
 
-	//Modify date to match format DB wants.
+	//Modify date to match format DB wants: YYYY-MM-DD
 	$forattedDate = (
-		$data['date'][4] . $data['date'][5] . $data['date'][6] . $data['date'][7] .	//Year
-		"-" . $data['date'][0] . $data['date'][1] .									//Month
-		"-" . $data['date'][2] . $data['date'][3]									//Day
+		$data['date'][4] . $data['date'][5] . $data['date'][6] . $data['date'][7] .
+		"-" . $data['date'][0] . $data['date'][1] .
+		"-" . $data['date'][2] . $data['date'][3]
 	);
 
 	$room = ($data['building'] . " " . $data['room_num']);
@@ -47,12 +47,8 @@ MissingDataError;
 			c_meetingTime = ?
 		WHERE student_id = ?
 	");
-    $setMeeting->bind_param("sssd",
-		$forattedDate,
-		$room,
-		$data['timepickerC'],
-		$data['student_id']
-	);	//Bind vars to '?' parameters in SQL.
+	//Bind vars to '?' parameters in SQL.
+    $setMeeting->bind_param("sssd", $forattedDate, $room, $data['timepickerC'], $data['student_id']);
     if (!$setMeeting->execute()) {
       echo "Execute failed: (" . $setMeeting->errno . ") " . $setMeeting->error;
     }
@@ -71,12 +67,9 @@ MissingDataError;
 
 	//Try to send email to student; '@' suppresses warnings.
 	if (!@mail($data['student_email_C'], $EmailSubject, $studentEmailText)) {
-		include_once '../includes/page.php';	//Styling for button
-		echo <<<SendToStudentError
-			<link rel="stylesheet" href="../CSS/main.css">	<!-- Styling for error -->
-			<p>Error: Could not send email to student.</p>
-SendToStudentError;
-		echo ('<a href="mailto:' . $data['student_email_C'] . '?Subject=' . $EmailSubject . '&body=' . $studentEmailText . '">Send Mail Manually</a><br><br>');
+		echo ('<p>Error: Could not send email to student.</p>');
+		echo ('<a href="mailto:' . $data['student_email_C'] . '?Subject=' . $EmailSubject .
+			'&body=' . $studentEmailText . '">Send Mail Manually</a><br><br>');
 
 		$errorSending = true;
 	}
@@ -89,19 +82,18 @@ SendToStudentError;
 		"\n\nCase details: COMING SOON");
 
 		if (!@mail($data['prof_email_C'], $EmailSubject, $profEmailText)) {
-			include_once '../includes/page.php';	//Styling for button
-			echo <<<SendToProfError
-				<link rel="stylesheet" href="../CSS/main.css">	<!-- Styling for error -->
-				<p>Error: Could not send email to professor.</p>
-SendToProfError;
-		echo ('<a href="mailto:' . $data['prof_email_C'] . '?Subject=' . $EmailSubject . '&body=' . $profEmailText . '">Send Mail Manually</a><br><br>');
-		
-		$errorSending = true;
+			echo ('<p>Error: Could not send email to professor.</p>');
+			echo ('<a href="mailto:' . $data['prof_email_C'] . '?Subject=' . $EmailSubject .
+			'&body=' . $profEmailText . '">Send Mail Manually</a><br><br>');
+
+			$errorSending = true;
 		}
     }
 
 	if ($errorSending) {
-		echo ("<a href=\"ActiveCases.php?\" class=\"btn btn-primary\">Return to Active Cases</a>");
+		include_once '../includes/page.php';	//Styling for button
+		echo ('<link rel="stylesheet" href="../CSS/main.css">');	//Styling for error
+		echo ('<a href="ActiveCases.php?" class="btn btn-primary">Return to Active Cases</a>');
 	} else {
 		header("Location: ../Admin/ActiveCases.php");
 	}

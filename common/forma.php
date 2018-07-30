@@ -16,7 +16,7 @@ $case_id = "";
 
 // check if URL contains the case_id variable
 if(isset($_GET["case_id"])){
-	$statement = $conn->prepare("SELECT evidence_fileDir, form_a_submit_date FROM active_cases WHERE case_id = ?");
+    $statement = $conn->prepare("SELECT evidence_fileDir, form_a_submit_date FROM active_cases WHERE case_id = ?");
     // get the case_id from the URL
     $case_id = (int)$_POST["caseId"];
     $statement->bind_param("d", $case_id);
