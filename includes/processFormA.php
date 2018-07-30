@@ -24,7 +24,7 @@
 					include_once '../includes/page.php';	//Styling for button
 					echo <<<MissingDataError
 						<link rel="stylesheet" href="../CSS/main.css">	<!-- Styling for error -->
-						<p>Error: $_POST[$field] not set.</p>
+						<p>Error: $field not set.</p>
 						<a href="../Instructor/ActiveCases.php?" class="btn btn-primary">Return to Active Cases</a>
 MissingDataError;
 					exit();
