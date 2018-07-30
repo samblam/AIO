@@ -216,8 +216,7 @@ if(isset($_POST["caseId"])){
               </div>
           </div>
 
-          <!--save button, submit button-->
-          <!--made type button to test things-->
+          <!-- Form Buttons -->
 
           <div class="form-group">
               <div class="center-block text-center">
