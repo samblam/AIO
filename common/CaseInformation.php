@@ -136,37 +136,34 @@
                     <tr>
                         <td>Files</td>
                         <?php
+                            echo "<td>";
                             if ($path_to_evidence_dir != "" && file_exists("../evidence/" . $path_to_evidence_dir . "/evidence.zip")) {
                                 // user should be shown the link to the evidence file
                                 $path_to_zip_file = "../evidence/" . $path_to_evidence_dir . "/evidence.zip";
-                                echo "<td>
-                                        <form action=\"/downloadRequest.php\" method=\"post\">
+                                echo "<form action=\"/downloadRequest.php\" method=\"post\">
                                             <input hidden name=\"caseId\" id=\"caseId\" value=\"$caseId\"/>
                                             <input type=\"submit\" class=\"submitLink\" name=\"evidenceLink\" value=\"evidence.zip\"/>
-                                        </form>
-                                    </td>";
+                                        </form>,br />";
                             }
                             
                             else {
                                 // no evidence has been submitted
-                                echo "<td>No evidence submitted</td>";
+                                echo "No evidence submitted<br />";
                             }
-                            
+                            $path_to_PDF_dir = $caseId;
                             if ($path_to_PDF_dir != "" && file_exists("../evidence/" . $caseId . "/{$caseId}.pdf")){
                                 // user should be shown the link to the pdf 
-                                echo "</tr>
-                                    <tr><td></td><td>
-                                        <form action=\"/downloadRequest.php\" method=\"post\">
+                                echo "<form action=\"/downloadRequest.php\" method=\"post\">
                                             <input hidden name=\"caseId\" id=\"caseId\" value=\"$caseId\"/>
                                             <input type=\"submit\" class=\"submitLink\" name=\"PDFLink\" value=\"{$caseId}_formA.pdf\"/>
-                                        </form>
-                                    </td>";
+                                        </form>";
                             }
 
                             else{
                                 //no PDF generated
-                                echo "<td>No PDF submitted</td>";
+                                echo "No PDF submitted";
                             }
+                            echo "</td>";
                         ?>
                     </tr>
                     <tr>
@@ -234,11 +231,13 @@ DenyButtons;
                     $caseIdValue = $_POST['caseId'];
                     $_SESSION['lastCaseId'] = $_POST['caseId'];
                 }
-                //echo "caseIdValue:" . $caseIdValue;
+                
                 //Get case verdict from db
                 $statement = $conn->prepare("SELECT case_verdict FROM active_cases WHERE case_id = '$caseIdValue' AND aio_id = ?"); 
                 $statement->bind_param("d", $id); //bind the csid to the prepared statements
-                $id = (int)$_SESSION['csid'];
+                $id = $_SESSION['csid'];
+                $res = $conn->query( "SELECT aio_id FROM `aio` WHERE csid=\"$id\"" );
+                $id = $res->fetch_array()[0];
                 if(!$statement->execute()){
                     echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                 }
