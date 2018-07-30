@@ -115,14 +115,8 @@
 			$uploadSuccessful = moveUploadedFilesToZip($allFilesAreValid, $zipFileLocation);
 
 			//PDF function 
-			if(isset($_POST['case_id'])){
-				$case_id = $_POST['case_id'];
-			}
-			else{
-				$case_id = "N/A";
-			}
 
-			$PDFFunction = PDFFormA ($prof, $email, $phone, $faculty, $cname, $students, $boos, $date, $comments, $case_id);
+			$PDFFunction = PDFFormA ($prof, $email, $phone, $faculty, $cname, $students, $boos, $date, $comments, $caseId);
 
 			if(!$uploadSuccessful){
 				echo "Failed to upload the given files";
