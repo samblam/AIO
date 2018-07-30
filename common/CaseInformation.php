@@ -1,42 +1,34 @@
 <?php
-require_once '../includes/session.php';
+    require_once '../includes/session.php';
+    require_once 'secure.php';
+    //Open the db connection
+    include_once '../includes/db.php';
+    //Check if the form variables have been submitted, store them in the session variables
+    include '../includes/formProcess.php';
+    include_once '../includes/page.php';
 
-require_once 'secure.php';
-//Open the db connection
-include_once '../includes/db.php';
-//Check if the form variables have been submitted, store them in the session variables
-include '../includes/formProcess.php';
-include_once '../includes/page.php';
-
-$role = $_SESSION["role"];
-$userId = (int) $_SESSION["userId"];
-
-// get information related to evidence files that have been submitted for this case
-$path_to_evidence_dir = "";
-$aio_id = "";
-$prof_id = "";
-$caseId = "";
-
-if(isset($_POST['caseId'])){
-    //Gets case id from URL
-    $caseId = intval($_POST['caseId']);
-
-    $statement = $conn->prepare("SELECT evidence_fileDir, aio_id, prof_id FROM active_cases WHERE case_id = " . $caseId);
-    if(!$statement->execute()){
-        echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+    $role = $_SESSION["role"];
+    $userId = (int) $_SESSION["userId"];
+    // get information related to evidence files that have been submitted for this case
+    $path_to_evidence_dir = "";
+    $aio_id = "";
+    $prof_id = "";
+    $caseId = "";
+    if(isset($_POST['caseId'])){
+        //Gets case id from URL
+        $caseId = intval($_POST['caseId']);
+        $statement = $conn->prepare("SELECT evidence_fileDir, aio_id, prof_id FROM active_cases WHERE case_id = " . $caseId);
+        if(!$statement->execute()){
+            echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+        }
+        $statement->bind_result($path_to_evidence_dir, $aio_id, $prof_id);
+        $statement->fetch();
+        CloseCon($conn);
     }
-
-    $statement->bind_result($path_to_evidence_dir, $aio_id, $prof_id);
-    $statement->fetch();
-
-    CloseCon($conn);
-}
-
 ?>
 
 <!DOCTYPE html>
 <html> 
-
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -45,10 +37,12 @@ if(isset($_POST['caseId'])){
         <link rel="stylesheet" href="../CSS/caseInformation.css">
         <script src="../JS/top-header-full.js"></script>
     </head>
+    
     <body style="margin: auto;">
         <!-- Headder div + Logout button -->
         <div class="top-header-full"></div>
-
+        
+        <!-- Title  div -->
         <div style="display: inline-block;">
             <h2>Case Information</h2>
         </div>
@@ -57,13 +51,9 @@ if(isset($_POST['caseId'])){
         <!-- TODO: Table will need to populate based on the entries in the DB(server side) -->
         <!-- TODO: I think to properly link the buttons, each row might have to be an input form(haven't looked it up) -->
         <div>
-            
             <?php
-
-            $conn = OpenCon();
-                
-            //This fixes an issues with going back, or reloading the page as the caseId is lost
-
+                $conn = OpenCon();
+                //This fixes an issues with going back, or reloading the page as the caseId is lost
                 if(!isset($_POST['caseId'])){
                     if(!isset($_SESSION['lastCaseId'])){
                         header('ActiveCases.php');
@@ -76,34 +66,29 @@ if(isset($_POST['caseId'])){
                     $caseIdValue = $_POST['caseId'];
                     $_SESSION['lastCaseId'] = $_POST['caseId'];
                 }
-
-
                 //Get all relevent feilds and bind them to php variables
                 $statement = $conn->prepare("
-                SELECT
-                    active_cases.form_a_submit_date,
-                    active_cases.stu_csid_list,
-                    professor.fname, 
-                    professor.lname, 
-                    student.fname, 
-                    student.lname, 
-                    student.csid 
-                FROM 
-                    professor 
-                    LEFT JOIN active_cases ON professor.professor_id = active_cases.prof_id 
-                    LEFT JOIN student ON student.case_id = $caseIdValue
-                WHERE 
-                    active_cases.case_id = $caseIdValue
-                    ");
-
+                    SELECT
+                        active_cases.form_a_submit_date,
+                        active_cases.stu_csid_list,
+                        professor.fname, 
+                        professor.lname, 
+                        student.fname, 
+                        student.lname, 
+                        student.csid 
+                    FROM 
+                        professor 
+                        LEFT JOIN active_cases ON professor.professor_id = active_cases.prof_id 
+                        LEFT JOIN student ON student.case_id = $caseIdValue
+                    WHERE 
+                        active_cases.case_id = $caseIdValue
+                        ");
                 if(!$statement->execute()){
                     echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                 }
                 $statement->bind_result($submissionDate, $studentList, $pfname, $plname, $sfname, $slname, $scsid);
                 $statement->fetch();
-
             ?>
-
             <table class="table table-bordered" style="font-size: 14px;">
                 <tbody>
                     <tr>
@@ -124,7 +109,6 @@ if(isset($_POST['caseId'])){
                                         Other Students
                                         <span class="caret"></span>
                                     </button>
-
                                     <ul class="dropdown-menu" onchange="warning()">
                                         <input id='caseId' name='caseId' value='$caseIdValue' type='hidden'>
                                         <li><button class='btn' type='submit'><?php echo $sfname . ", " . $scsid ?></button></li>
@@ -157,9 +141,9 @@ if(isset($_POST['caseId'])){
                             // OR user is an admin
 
                             if ( ($role == "aio" && $aio_id == $userId) || ($role == "professor" && $prof_id == $userId) || ($role == "admin") ){
-                                //$case_id = $caseId;
                                 $path_to_PDF_dir = $caseId;
-                                if ($path_to_evidence_dir != "" && file_exists("../evidence/" . $path_to_evidence_dir . "/evidence.zip")) {
+                                $PDF = "../evidence/" . $path_to_evidence_dir . "/evidence.zip";
+                                if ($path_to_evidence_dir != "" && file_exists($PDF)) {
                                     // user should be shown the link to the evidence file
                                     $path_to_zip_file = "../evidence/" . $path_to_evidence_dir . "/evidence.zip";
                                     echo "<td>
@@ -169,7 +153,6 @@ if(isset($_POST['caseId'])){
                                             </form>
                                         </td>";
                                 }
-
                                 else {
                                     // no evidence has been submitted
                                     echo "<td>No evidence submitted</td>";
@@ -190,82 +173,65 @@ if(isset($_POST['caseId'])){
                                     echo "<td>No PDF submitted</td>";
                                 }
                             }
-
-                            else{
+                            else {
                                 // viewer of the page does not meet the permission requirements to view the evidence
                                 echo "<td>Insufficient permission to view evidence</td>";
                             }
                         ?>
                     </tr>
-
                     <tr>
                         <td>Case status</td>
                         <!-- needs to come from backend -->
                         <td>Waiting for student to confirm meeting date</td>
                     </tr>
-
                 </tbody>
             </table>
         </div>
-                
-
-                <div class="center-block text-center">
-        <?php 
-        //setting original AIO id to null for bind parameter
-        $aio_id=NULL;
-
-        // check if URL contains the case_id variable
-        if(isset($_SESSION["lastCaseId"])){
-        $statement = $conn->prepare("SELECT aio_id FROM active_cases WHERE case_id = ?");
-
-        //binding current cases aio id to variable
-        $case_id = (int)$_SESSION["lastCaseId"];
-        $statement->bind_param("i", $case_id);
-        if(!$statement->execute()){
-        echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
-        }
-
-        // get the case information from the database
-        $statement->bind_result($aio_id);
-        $statement->fetch();
-
-        //echoing button actions to Accept Deny php file 
-        if($_SESSION['role']=="aio" && $aio_id==NULL){
-
-        echo <<<AcceptButtons
-                    <form action="../includes/AcceptDeny.php" method="post">
-                        <button type="submit" class="btn btn-success" name="AcceptFormA">Accept Case</button>
-                        <input type="hidden" name="CurrCaseId" value="$case_id"></input>
-                    </form>
+        
+        <!-- Accept/deny buttons div -->
+        <div class="center-block text-center">
+            <?php 
+                //setting original AIO id to null for bind parameter
+                $aio_id=NULL;
+                // check if URL contains the case_id variable
+                if(isset($_SESSION["lastCaseId"])){
+                    $statement = $conn->prepare("SELECT aio_id FROM active_cases WHERE case_id = ?");
+                    //binding current cases aio id to variable
+                    $case_id = (int)$_SESSION["lastCaseId"];
+                    $statement->bind_param("i", $case_id);
+                    if(!$statement->execute()){
+                        echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+                    }
+                    // get the case information from the database
+                    $statement->bind_result($aio_id);
+                    $statement->fetch();
+                    //echoing button actions to Accept Deny php file 
+                    if($_SESSION['role']=="aio" && $aio_id==NULL){
+                        echo <<<AcceptButtons
+                            <form action="../includes/AcceptDeny.php" method="post">
+                                <button type="submit" class="btn btn-success" name="AcceptFormA">Accept Case</button>
+                                <input type="hidden" name="CurrCaseId" value="$case_id"></input>
+                            </form>
 AcceptButtons;
-       
-        }
-
-        //echoing button actions to Accept Deny php file 
-        if($_SESSION['role']=="aio" && $aio_id!=NULL){
-
-        echo <<<DenyButtons
-                    <form action="../includes/AcceptDeny.php" method="post">
-                        <button type="submit" class="btn btn-danger" name="DenyFormA">Decline Case</button>
-                        <input type="hidden" name="CurrCaseId" value="$case_id"></input>
-                    </form>
+                    }
+                    //echoing button actions to Accept Deny php file 
+                    if($_SESSION['role']=="aio" && $aio_id!=NULL){
+                        echo <<<DenyButtons
+                            <form action="../includes/AcceptDeny.php" method="post">
+                                <button type="submit" class="btn btn-danger" name="DenyFormA">Decline Case</button>
+                                <input type="hidden" name="CurrCaseId" value="$case_id"></input>
+                            </form>
 DenyButtons;
-       
-        }
+                    }
+                }
+                CloseCon($conn);
+                $conn=OpenCon();
+            ?>
+        </div>
 
-
-
-    }
-        CloseCon($conn);
-        $conn=OpenCon();
-    ?>
-</div>
-
-
-        <!-- CLose case and insufficient evidence buttons -->
+        <!-- Close case and insufficient evidence buttons -->
         <div class="center-block text-center">
             <?php
-            
                 if(!isset($_POST['caseId'])){
                     if(!isset($_SESSION['lastCaseId'])){
                         header('ActiveCases.php');
@@ -278,59 +244,103 @@ DenyButtons;
                     $caseIdValue = $_POST['caseId'];
                     $_SESSION['lastCaseId'] = $_POST['caseId'];
                 }
-            
                 //Get case verdict from db
                 $statement = $conn->prepare("SELECT case_verdict FROM active_cases WHERE case_id = '$caseIdValue' AND aio_id = ?"); 
                 $statement->bind_param("d", $id); //bind the csid to the prepared statements
-
                 $id = (int)$_SESSION['userId'];
                 if(!$statement->execute()){
                     echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                 }
-                
-                    
                 $statement->bind_result($caseVerdict);
-                    
+                while($statement->fetch()){
                     if($caseVerdict == NULL){
                         // Insufficient Evidence Button
-                        echo <<<ViewAllPost
+                        echo <<<InsufficientEvidence
 
-                            <form class="delete_this_case" method="post" action="AioActiveCases.php" onclick="return confirm('Are you sure you want to remove this case for insufficient evidence? This will permanently delete the case.\\nClick OK to continue.')">
+                            <form class="delete_this_case" method="post" onclick="return confirm('Are you sure you want to remove this case for insufficient evidence? This will permanently delete the case.\\nClick OK to continue.')">
                                 <input type="text" name="case_id" value="$caseIdValue" hidden>
                                 <button class="btn btn-danger" value="true" type="submit" name="insufficientEvidence">Insufficient Evidence</button>
-
-                            </form>                 
-
-ViewAllPost;
-                        }
-                        else if ($caseVerdict == "guilty"){
-                            // Close case Button guilty
-                            echo <<<ViewAllPost2
-
-                                <form class="delete_this_case" method="post" action="ActiveCases.php" onclick="return confirm('Are you sure you want to close this case? \\nIf the verdict is guilty the case gets archived in our system, and if the verdict is not guilty the case is permanently deleted. \\nClick OK to continue.')">
-                                    <input type="text" name="case_id"   hidden>
-                                    <button class="btn btn-danger" value="true" type="submit" name="closeCaseGuilty">Close Case</button>
-                                </form>
-ViewAllPost2;
-
-                        }
-                        else if ($caseVerdict == "not guilty"){
-                            // Close case Button not guilty
-                            echo <<<ViewAllPost3
-
-                                <form class="delete_this_case" method="post" action="AioActiveCases.php" onclick="return confirm('Are you sure you want to close this case? \\nIf the verdict is guilty the case gets archived in our system, and if the verdict is not guilty the case is permanently deleted. \\nClick OK to continue.')">
-                                    <input type="text" name="case_id" value="$caseIdValue" hidden>
-                                    <button class="btn btn-danger" value="true" type="submit" name="closeCaseNotGuilty">Close Case</button>
-                                </form>
-ViewAllPost3;
-                        }
-                    ?>
+                            </form>
+InsufficientEvidence;
+                    }
+                    else if ($caseVerdict == "guilty" && $_SESSION['role'] != "professor"){
+                        // Close case Button guilty
+                        echo <<<GuiltyClose
+                            <form class="delete_this_case" method="post" action="ActiveCases.php" onclick="return confirm('Are you sure you want to close this case? \\nIf the verdict is guilty the case gets archived in our system, and if the verdict is not guilty the case is permanently deleted. \\nClick OK to continue.')">
+                                <input type="text" name="case_id" value="$caseIdValue" hidden>
+                                <button class="btn btn-danger" value="true" type="submit" name="closeCaseGuilty">Close Case</button>
+                            </form>
+GuiltyClose;
+                    }
+                    else if ($caseVerdict == "not guilty" && $_SESSION['role'] != "professor"){
+                        // Close case Button not guilty
+                        echo <<<NotGuiltyClose
+                            <form class="delete_this_case" method="post" action="ActiveCases.php" onclick="return confirm('Are you sure you want to close this case? \\nIf the verdict is guilty the case gets archived in our system, and if the verdict is not guilty the case is permanently deleted. \\nClick OK to continue.')">
+                                <input type="text" name="case_id" value="$caseIdValue" hidden>
+                                <button class="btn btn-danger" value="true" type="submit" name="closeCaseNotGuilty">Close Case</button>
+                            </form>
+NotGuiltyClose;
+                    }
+                    // TODO: Add functionality so a zip folder with all of the case files is sent with the email
+                    // Forward case button
+                    echo <<<ForwardCase
+                        <button class="btn btn-success" name="forwardCaseButton" data-toggle="modal" data-target="#emailForm">Forward Case</button>
+                        <form class="form-horizontal forward_case" id="forward_case" method="post">
+                            <div class="form-container">
+                                <div id="emailForm" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h2 class="modal-title">Forward Case Email Form</h2>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Fill out the form below to forward this case to the senate via email. All of the evidence and case files will be attached and sent in this email.</p>
+                                                <p>To send email to multiple addresses, enter email addresses in a comma seperated list.</p>
+                                                <div class="form-group">
+                                                    <label for="email-to" class="col-sm-3 control-label">To:</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="email" class="form-control" placeholder="Email Address" id="email-to" name="email_to" required>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="email-cc" class="col-sm-3 control-label">Cc:</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="email" class="form-control" placeholder="Email Address" id="email-cc" name="email_cc">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="subject" class="col-sm-3 control-label">Subject:</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" placeholder="Subject" id="email-subject" name="email_subject" required>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="email-message" class="col-sm-3 control-label">Message:</label>
+                                                    <div class="col-sm-9">
+                                                        <textarea type="text" class="form-control" rows="5" placeholder="Message" name="email_message"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <input type="text" name="case_id" value="$caseIdValue" hidden>
+                                                <input type="text" name="caseId" value="$caseIdValue" hidden>
+                                                <button class="btn btn-success pull-left" name="forwardCase" value="true" type="submit">Send Email</button>
+                                                <button class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>    
+ForwardCase;
+                }
+            ?>   
         </div>
             
         <!-- Form display div -->
         <div>
             <ul class="nav nav-tabs nav-justified">
-
                 <li class="active"><a data-toggle="tab" href="#forma">Form A</a></li>
                 <?php
                     if($_SESSION['role'] != "professor"){
@@ -342,13 +352,11 @@ DisplayFormTabs;
                     }
                 ?>
             </ul>
-
             <div class="tab-content">
                 <!-- Not sure why form A is loaded here? Someone who knows should check... - Bjorn -->
                 <div id="forma" class="tab-pane fade active in">
                     <?php //include 'forma.php' ?>
                 </div>
-                
                 <?php
                     //if it's a professor visiting, only display from A 
                     if($_SESSION['role'] != "professor"){
@@ -369,14 +377,13 @@ DisplayFormTabs;
                 ?>
             </div>
         </div>
-        </div>
     </body>
-
+    
+    <!-- script for loading forms -->
     <script type="text/javascript">
-
         $(document).ready( function() {
             // pass the case id on to form A via POST
-             $("#forma").load("forma.php", {"caseId": <?php echo $caseId; ?> });
+             $("#forma").load("forma.php", {"caseId": <?php echo $caseIdValue; ?> });
          });
 
          $(document).ready( function() {
@@ -391,5 +398,12 @@ DisplayFormTabs;
              $("#formd").load("formd.php");
          });
     </script>
+    
+    <!-- script that allows the email field to accept more than one email -->
+    <script type="text/javascript">
+        $(document).ready( function() {
+            document.getElementById("email-to").multiple = true;
+            document.getElementById("email-cc").multiple = true;
+        });
+    </script>
 </html>
-
