@@ -10,6 +10,8 @@
     $conn = OpenCon();
 
     $role = $_SESSION["role"];
+    $userId = (int) $_SESSION["csid"];
+
     // get information related to evidence files that have been submitted for this case
     $path_to_evidence_dir = "";
     $aio_id = "";
@@ -25,7 +27,6 @@
         $statement->bind_result($path_to_evidence_dir, $aio_id, $prof_id);
         $statement->fetch();
         CloseCon($conn);
-    $userId = (int) $_SESSION["csid"];
     }
 ?>
 
@@ -66,6 +67,7 @@
                     $caseIdValue = $_POST['caseId'];
                     $_SESSION['lastCaseId'] = $_POST['caseId'];
                 }
+
                 //Get all relevent feilds and bind them to php variables
                 $statement = $conn->prepare("
                     SELECT
@@ -88,6 +90,9 @@
                 }
                 $statement->bind_result($submissionDate, $studentList, $pfname, $plname, $sfname, $slname, $scsid);
                 $statement->fetch();
+                echo "userId: " . $userId;
+                echo "<br>";
+                echo "role: " . $role;
             ?>
             <table class="table table-bordered" style="font-size: 14px;">
                 <tbody>
@@ -135,30 +140,20 @@
                     <tr>
                         <td>Files</td>
                         <?php
-                            $userId = $_SESSION['csid'];
-                            // user has permission to view evidence files if:
-                            // user is an AIO and the AIO id assigned to this case matches user's id
-                            // OR user is a professor and the professor id for this case matches user's id
-                            // OR user is an admin
-                            if(($role == "aio" && $aio_id == $userId) || ($role == "professor" && $prof_id == $userId) || ($role == "admin")){
-                                if ($path_to_evidence_dir != "" && file_exists("../evidence/" . $path_to_evidence_dir . "/evidence.zip")) {
-                                    // user should be shown the link to the evidence file
-                                    $path_to_zip_file = "../evidence/" . $path_to_evidence_dir . "/evidence.zip";
-                                    echo "<td>
-                                            <form action=\"/downloadRequest.php\" method=\"post\">
-                                                <input hidden name=\"caseId\" id=\"caseId\" value=\"$caseId\"/>
-                                                <input type=\"submit\" class=\"submitLink\" name=\"evidenceLink\" value=\"evidence.zip\"/>
-                                            </form>
-                                        </td>";
-                                }
-                                else {
-                                    // no evidence has been submitted
-                                    echo "<td>No evidence submitted</td>";
-                                }
+                            if ($path_to_evidence_dir != "" && file_exists("../evidence/" . $path_to_evidence_dir . "/evidence.zip")) {
+                                // user should be shown the link to the evidence file
+                                $path_to_zip_file = "../evidence/" . $path_to_evidence_dir . "/evidence.zip";
+                                echo "<td>
+                                        <form action=\"/downloadRequest.php\" method=\"post\">
+                                            <input hidden name=\"caseId\" id=\"caseId\" value=\"$caseId\"/>
+                                            <input type=\"submit\" class=\"submitLink\" name=\"evidenceLink\" value=\"evidence.zip\"/>
+                                        </form>
+                                    </td>";
                             }
+                            
                             else {
-                                // viewer of the page does not meet the permission requirements to view the evidence
-                                echo "<td>Insufficient permission to view evidence</td>";
+                                // no evidence has been submitted
+                                echo "<td>No evidence submitted</td>";
                             }
                         ?>
                     </tr>
@@ -227,6 +222,7 @@ DenyButtons;
                     $caseIdValue = $_POST['caseId'];
                     $_SESSION['lastCaseId'] = $_POST['caseId'];
                 }
+                //echo "caseIdValue:" . $caseIdValue;
                 //Get case verdict from db
                 $statement = $conn->prepare("SELECT case_verdict FROM active_cases WHERE case_id = '$caseIdValue' AND aio_id = ?"); 
                 $statement->bind_param("d", $id); //bind the csid to the prepared statements
