@@ -12,12 +12,13 @@
 
 	/**
 	 * Prints a list of option values.
-	 * Each looks like:		<option value="8:30">8:30</option>
+	 * Each looks like:		<option value="8:30:00">8:30</option>
 	 */
 	function createTimeOptions() {
 		for ($i = 8; $i < 18; $i++) {
 			for ($j = 0; $j < 60; $j += 15) {
-				echo ('<option value="' . $i . ':' . sprintf("%'.02d", $j) . '">' . $i . ':' . sprintf("%'.02d", $j) . '</option>');
+				$theTime = ($i . ':' . sprintf("%'.02d", $j));
+				echo ('<option value="' . $theTime . ':00' .  '">' . $theTime . '</option>');
 			}
 		}
 	};
@@ -242,7 +243,7 @@ NoStuIDError;
 						<!--
 						//The 'selectpicker' class is causing the field to not appear in sub-forms.
                         <select class="selectpicker" id="time" name="time" data-live-search="true" required"-->
-						<select id="time" name="time" required">
+						<select id="timepickerC" name="timepickerC" required">
 							<?php
 							createTimeOptions();
 							?>
