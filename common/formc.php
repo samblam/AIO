@@ -216,7 +216,7 @@ NoStuIDError;
                 <div class="form-group date">
                     <label class="col-sm-3">Meeting Date/Time:</label>
                     <div class="col-sm-3">
-                        <input type="text" class="form-control" placeholder="MM/DD/YYY" id="date" name="date" required>
+                        <input type="text" class="form-control" placeholder="MM/DD/YYYY" id="date" name="date" required>
                     </div>
                     <div class="col-sm-6">
 						<!-- Note: Will be treated as a normal input box on Safari -->
