@@ -117,7 +117,8 @@ ViewAllPost;
         <tbody>  
           <?php
             $conn = OpenCon();
-            $query = $conn->prepare("
+            $query = $conn->prepare(
+                      "
                       SELECT 
                         active_cases.case_id, 
                         active_cases.class_name_code, 
@@ -125,8 +126,7 @@ ViewAllPost;
                         professor.lname 
                       FROM 
                         professor 
-                        LEFT JOIN active_cases ON professor.professor_id = active_cases.prof_id 
-                        LEFT JOIN student ON student.case_id = active_cases.case_id 
+                        RIGHT JOIN active_cases ON professor.professor_id = active_cases.prof_id 
                       WHERE 
                         active_cases.aio_id IS NULL
                       ");
@@ -150,8 +150,8 @@ ViewAllPost;
                   </td>
               </tr>
 ViewAllPost;
-              CloseCon( $conn );
             }
+            CloseCon( $conn );
           ?>
         </tbody> 
       </table>

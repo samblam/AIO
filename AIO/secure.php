@@ -2,8 +2,8 @@
   require_once '../includes/session.php';
 
   $login_link = "";
-  if( $_SERVER['HTTP_HOST'] == 'localhost' ) {
-    $login_link = 'http://localhost/login.php';
+  if( substr($_SERVER["HTTP_HOST"], 0, 9) == 'localhost' ) {
+    $login_link = 'http://' . $_SERVER["HTTP_HOST"] . '/login.php';
 
   }
   else {
