@@ -38,6 +38,24 @@
 			echo "Please contact admin.";
 			exit();
 		}
+		//Checks that all fields are set in the form to prevent users from deleting HTML required field
+		$data = array("ProfessorName", "email", "phoneNum", "faculty", "class-name", "Name", "B00");//Could add DateAlleged, additionalComments
+
+			foreach ($data as $field) {
+				//Post fields are set, but have no value
+				if ($_POST[$field] == "") {
+					include_once '../includes/page.php';	//Styling for button
+					echo <<<MissingDataError
+						<link rel="stylesheet" href="../CSS/main.css">	<!-- Styling for error -->
+						<p>Error: $field not set.</p>
+						<a href="../Instructor/ActiveCases.php?" class="btn btn-primary">Return to Active Cases</a>
+MissingDataError;
+					exit();
+				}
+			}
+
+		$userId = $_SESSION['userId'];//first column of the current user's role table in the database
+
 		//Grabs all form data and sanatize it
 		$prof = htmlspecialchars(trim(stripslashes($_POST['ProfessorName'])));
 		$email = htmlspecialchars(trim(stripslashes($_POST['email'])));
@@ -130,6 +148,10 @@
 			$zipFileLocation = $baseEvidenceDir . $caseId; 
 
 			$uploadSuccessful = moveUploadedFilesToZip($allFilesAreValid, $zipFileLocation);
+
+			//PDF function 
+
+			$PDFFunction = PDFFormA ($prof, $email, $phone, $faculty, $cname, $students, $boos, $date, $comments, $caseId);
 
 			if(!$uploadSuccessful){
 				echo "Failed to upload the given files";

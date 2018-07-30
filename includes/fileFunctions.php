@@ -61,4 +61,36 @@
 
 		return false;
 	}
+
+	function PDFFormA ($prof, $email, $phone, $faculty, $cname, $students, $boos, $date, $comments, $case_id){
+	$numberStudents = count($students);
+	$fileText = <<<_END
+{$prof}
+{$phone}
+{$email}
+{$faculty}
+{$faculty}
+{$cname}
+(anotherEmail@dal.ca)
+{$students[0]}
+{$boos[0]}
+{$date}
+NO
+N/A
+N/A
+_END;
+
+	$fileName = "../LaTeX/info.txt";
+	$fileHandle = fopen($fileName, "w") or die("Sorry! Unable to open file!");
+	fwrite($fileHandle, $fileText);
+	fclose($fileHandle);
+	//Change to run
+	$dir = "C:\Users\stuam\Google Drive\CSCI 3190\AIO Curr\aio-summer-2018\LaTeX";
+	//Maybe a security issue
+	$redir = chdir("{$dir}");
+	$console = shell_exec("xelatex FormA.TeX");
+	$rename = "{$case_id}.pdf";
+	//To change name and file location of PDF
+	rename ("FormA.pdf", "../evidence/{$case_id}/{$rename}");
+}
 ?>

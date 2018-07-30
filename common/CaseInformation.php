@@ -145,8 +145,11 @@
                             // user is an AIO and the AIO id assigned to this case matches user's id
                             // OR user is a professor and the professor id for this case matches user's id
                             // OR user is an admin
-                            if(($role == "aio" && $aio_id == $userId) || ($role == "professor" && $prof_id == $userId) || ($role == "admin")){
-                                if ($path_to_evidence_dir != "" && file_exists("../evidence/" . $path_to_evidence_dir . "/evidence.zip")) {
+
+                            if ( ($role == "aio" && $aio_id == $userId) || ($role == "professor" && $prof_id == $userId) || ($role == "admin") ){
+                                $path_to_PDF_dir = $caseId;
+                                $PDF = "../evidence/" . $path_to_evidence_dir . "/evidence.zip";
+                                if ($path_to_evidence_dir != "" && file_exists($PDF)) {
                                     // user should be shown the link to the evidence file
                                     $path_to_zip_file = "../evidence/" . $path_to_evidence_dir . "/evidence.zip";
                                     echo "<td>
@@ -159,6 +162,21 @@
                                 else {
                                     // no evidence has been submitted
                                     echo "<td>No evidence submitted</td>";
+                                }
+                                if ($path_to_PDF_dir != "" && file_exists("../evidence/" . $caseId . "/{$caseId}.pdf")){
+                                    // user should be shown the link to the pdf 
+                                    echo "</tr>
+                                        <tr><td></td><td>
+                                            <form action=\"/downloadRequest.php\" method=\"post\">
+                                                <input hidden name=\"caseId\" id=\"caseId\" value=\"$caseId\"/>
+                                                <input type=\"submit\" class=\"submitLink\" name=\"PDFLink\" value=\"{$caseId}_formA.pdf\"/>
+                                            </form>
+                                        </td>";
+                                }
+
+                                else{
+                                    //no PDF generated
+                                    echo "<td>No PDF submitted</td>";
                                 }
                             }
                             else {
