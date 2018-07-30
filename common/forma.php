@@ -69,6 +69,7 @@ if(isset($_POST["caseId"])){
             
             <?php
               //this check is to see if the admin is submitting the form
+              // Bjorn recommends changing this to $_SESSION['role'] == 'admin' to erradicate the GET requirements
               if( isset($_GET['ProfRequired']) ) {
                 //show dropdown here
                 echo "<select data-live-search='true' id='profSelect' class='selectpicker form-control' onchange='fillProf()''>";
@@ -91,7 +92,7 @@ if(isset($_POST["caseId"])){
               }
               // If submitting for self 
               elseif( $_SESSION['role'] == "professor" ) {
-                $profName = $_SESSION['fname'] . " " . $_SESSION['lname'];
+                $profName = "$_SESSION[fname] $_SESSION[lname]";
                 echo "<input type='text' class='form-control' id='ProfessorName' name='ProfessorName' disabled value='$profName'>";
               }
               // Bail-out incase of error
