@@ -245,7 +245,7 @@ if(isset($_POST["caseId"])){
                               echo "<input type=\"hidden\" name=\"EvidenceDirectory\" value=\"$evidenceFileDir\"/>";
                           }
                       }
-      			?>
+      			      ?>
               </div>
           </div>
       </form>
