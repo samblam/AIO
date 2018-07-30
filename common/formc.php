@@ -9,6 +9,19 @@ include_once '../includes/getCaseID.php';
 include '../includes/formProcess.php';
 include_once '../includes/page.php';
 
+
+/**
+ * Prints a list of option values.
+ * Each looks like:		<option value="8:30">8:30</option>
+ */
+function createTimeOptions() {
+	for ($i = 8; $i < 18; $i++) {
+		for ($j = 0; $j <= 60; $j += 15) {
+			echo ('<option value="' . $i . ':' . $j . '">' . $i . ':' . $j . '</option>');
+	}
+};
+
+
 ?>
 
 <!DOCTYPE html>
@@ -227,10 +240,25 @@ NoStuIDError;
                         <input type="text" class="form-control" placeholder="MM/DD/YYYY" id="date" name="date" autocomplete="off" required>
                     </div>
                     <div class="col-sm-6">
-						<!-- Note: Will be treated as a normal input box on Safari -->
-                        <input type="time" class="timepicker form-control" id="timepickerC" name="timepickerC" required>
+                        <input class="timepicker form-control" id="tsime" name="timse" required>
                     </div>
                 </div>
+
+
+				<!-- course picker drop-down-->
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Class Name:</label>
+					<div class="dropdown col-sm-9">
+						<select class="selectpicker" id="time" name="time" data-live-search="true" required">
+							<?php
+								createTimeOptions();
+							?>
+						</select>
+					</div>
+				</div>
+
+
+
                 <div class="form-group">
                     <label class="control-label col-sm-3">Meeting Location:</label>
                     <div class="col-sm-3">
