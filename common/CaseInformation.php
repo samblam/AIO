@@ -163,7 +163,7 @@
                                         <tr><td></td><td>
                                             <form action=\"/downloadRequest.php\" method=\"post\">
                                                 <input hidden name=\"caseId\" id=\"caseId\" value=\"$caseId\"/>
-                                                <input type=\"submit\" class=\"submitLink\" name=\"PDFLink\" value=\"formA.pdf\"/>
+                                                <input type=\"submit\" class=\"submitLink\" name=\"PDFLink\" value=\"{$caseId}_formA.pdf\"/>
                                             </form>
                                         </td>";
                                 }
