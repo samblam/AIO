@@ -157,9 +157,9 @@ if(isset($_POST['caseId'])){
                             // OR user is an admin
 
                             if ( ($role == "aio" && $aio_id == $userId) || ($role == "professor" && $prof_id == $userId) || ($role == "admin") ){
-                                //$case_id = $caseId;
                                 $path_to_PDF_dir = $caseId;
-                                if ($path_to_evidence_dir != "" && file_exists("../evidence/" . $path_to_evidence_dir . "/evidence.zip")) {
+                                $PDF = "../evidence/" . $path_to_evidence_dir . "/evidence.zip";
+                                if ($path_to_evidence_dir != "" && file_exists($PDF)) {
                                     // user should be shown the link to the evidence file
                                     $path_to_zip_file = "../evidence/" . $path_to_evidence_dir . "/evidence.zip";
                                     echo "<td>

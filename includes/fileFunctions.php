@@ -83,17 +83,12 @@ _END;
 	$fileName = "../LaTeX/info.txt";
 	$fileHandle = fopen($fileName, "w") or die("Sorry! Unable to open file!");
 	fwrite($fileHandle, $fileText);
-	//$command = escapeshellcmd('/usr/custom/test.py');
-	//$output = shell_exec($command);
-	//echo $output;
 	fclose($fileHandle);
 	//Change to run
 	$dir = "C:\Users\stuam\Google Drive\CSCI 3190\AIO Curr\aio-summer-2018\LaTeX";
 	//Maybe a security issue
 	$redir = chdir("{$dir}");
-	//echo $redir;
 	$console = shell_exec("xelatex FormA.TeX");
-	//echo $console;
 	$rename = "{$case_id}.pdf";
 	//To change name and file location of PDF
 	rename ("FormA.pdf", "../evidence/{$case_id}/{$rename}");
