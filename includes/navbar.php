@@ -18,10 +18,10 @@
 </script>
 
 <?php
-  if( $_SERVER["HTTP_HOST"] == "localhost" ) {
-    $switchRolesScript = "http://localhost/includes/switchRoles.php";
-    $logOutScript = "http://localhost/includes/logout.php";
-    $faqLink = "http://localhost/faq.php";
+  if( substr($_SERVER["HTTP_HOST"], 0, 9) == "localhost" ) {
+    $switchRolesScript = "http://" . $_SERVER["HTTP_HOST"] . "/includes/switchRoles.php";
+    $logOutScript = "http://" . $_SERVER["HTTP_HOST"] . "/includes/logout.php";
+    $faqLink = "http://" . $_SERVER["HTTP_HOST"] . "/faq.php";
   }
   else {
     $switchRolesScript = "http://projects.cs.dal.ca/aio/includes/switchRoles.php";

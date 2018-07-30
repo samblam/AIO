@@ -17,7 +17,7 @@
 
 <?php
   // Testing from localhost
-  if( $_SERVER["HTTP_HOST"] == 'localhost' ) {
+  if( substr($_SERVER["HTTP_HOST"], 0, 9) == 'localhost' ) {
     if( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
       $csid = $_POST['csid'];
       $pass = $_POST['password'];
