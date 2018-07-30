@@ -15,7 +15,7 @@
 	//Form A processing
 	if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
 
-		//TODO: Also include evidence file in the email.
+		//Checks that all fields are set in the form to prevent users from deleting HTML required field
 		$data = array("ProfessorName", "email", "phoneNum", "faculty", "class-name", "Name", "B00");//Could add DateAlleged, additionalComments
 
 			foreach ($data as $field) {
