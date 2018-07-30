@@ -41,7 +41,6 @@
     </head>
     
     <body style="margin: auto;">
-        <!-- Headder div + Logout button -->
         <?php include_once '../includes/navbar.php'; ?>
 
         <div style="display: inline-block;">
@@ -146,25 +145,27 @@
                                             <input type=\"submit\" class=\"submitLink\" name=\"evidenceLink\" value=\"evidence.zip\"/>
                                         </form>
                                     </td>";
-                                if ($path_to_PDF_dir != "" && file_exists("../evidence/" . $caseId . "/{$caseId}.pdf")){
-                                    // user should be shown the link to the pdf 
-                                    echo "</tr>
-                                        <tr><td></td><td>
-                                            <form action=\"/downloadRequest.php\" method=\"post\">
-                                                <input hidden name=\"caseId\" id=\"caseId\" value=\"$caseId\"/>
-                                                <input type=\"submit\" class=\"submitLink\" name=\"PDFLink\" value=\"{$caseId}_formA.pdf\"/>
-                                            </form>
-                                        </td>";
-                                }
-
-                                else{
-                                    //no PDF generated
-                                    echo "<td>No PDF submitted</td>";
                             }
                             
                             else {
                                 // no evidence has been submitted
                                 echo "<td>No evidence submitted</td>";
+                            }
+                            
+                            if ($path_to_PDF_dir != "" && file_exists("../evidence/" . $caseId . "/{$caseId}.pdf")){
+                                // user should be shown the link to the pdf 
+                                echo "</tr>
+                                    <tr><td></td><td>
+                                        <form action=\"/downloadRequest.php\" method=\"post\">
+                                            <input hidden name=\"caseId\" id=\"caseId\" value=\"$caseId\"/>
+                                            <input type=\"submit\" class=\"submitLink\" name=\"PDFLink\" value=\"{$caseId}_formA.pdf\"/>
+                                        </form>
+                                    </td>";
+                            }
+
+                            else{
+                                //no PDF generated
+                                echo "<td>No PDF submitted</td>";
                             }
                         ?>
                     </tr>
