@@ -53,7 +53,8 @@ include_once '../includes/page.php';
                 <div class="form-group">
                     <label class="control-label col-sm-3">Class Name:</label>
                     <div class="dropdown col-sm-4">
-                        <select class="selectpicker" id="class_name" name="class_name" data-show-subtext="true" data-live-search="true">
+                        <!--select class="selectpicker" id="class_name" name="class_name" data-show-subtext="true" data-live-search="true"-->
+                        <select id="class_name" name="class_name">
                             <option data-subtext="Communication Skills: Oral and Written">CSCI 2100</option>
                             <option data-subtext="Network Security">CSCI 4174</option>
                             <option data-subtext="Introduction to web site creation">INFX 1606</option>
@@ -85,6 +86,7 @@ include_once '../includes/page.php';
                 <div class="form-group">
                     <label class="control-label col-sm-3">Penalty:</label>
                     <div class="dropdown col-sm-4">
+                        <!--select class="selectpicker" data-show-subtext="true" data-live-search="true" id="penalty" name="penalty" multiple-->
                         <select class="selectpicker" data-show-subtext="true" data-live-search="true" id="penalty" name="penalty" multiple>
                             <option data-subtext="2 days">Suspension</option>
                             <option data-subtext="Penalty #2">Poop</option>

@@ -120,7 +120,8 @@ if(isset($_GET["case_id"])){
                 <div class="form-group">
                     <label class="col-sm-3 control-label">Faculty:</label>
                     <div class="dropdown col-sm-9">
-                        <select class="selectpicker" id="faculty" name="faculty" data-show-subtext="true" data-live-search="true" required>
+                        <!--select class="selectpicker" id="faculty" name="faculty" data-show-subtext="true" data-live-search="true" required-->
+                        <select id="faculty" name="faculty" required>
                             <option data-subtext="Faculty of Computer Science" value="FCS" >FCS</option>
                         </select>
                     </div>
@@ -130,7 +131,8 @@ if(isset($_GET["case_id"])){
                 <div class="form-group">
                     <label class="col-sm-3 control-label">Class Name:</label>
                     <div class="dropdown col-sm-9">
-                        <select class="selectpicker" id="class-name" name="class-name" data-show-subtext="true" data-live-search="true" required value="<?php if (isset($course_name)) { echo $course_name;} ?>">
+                        <!--select class="selectpicker" id="class-name" name="class-name" data-show-subtext="true" data-live-search="true" required value="<?php //if (isset($course_name)) { echo $course_name;} ?>"-->
+                        <select id="class-name" name="class-name" required value="<?php if (isset($course_name)) { echo $course_name;} ?>">
                             <option data-subtext="Communication Skills: Oral and Written" value="CSCI 2100" >CSCI 2100</option>
                                 <option data-subtext="Network Security" value="CSCI 4174">CSCI 4174</option>
                                 <option data-subtext="Introduction to web site creation" value="INFX 1606">INFX 1606</option>

@@ -16,8 +16,8 @@
 	 */
 	function createTimeOptions() {
 		for ($i = 8; $i < 18; $i++) {
-			for ($j = 0; $j <= 60; $j += 15) {
-				echo ('<option value="' . $i . ':' . $j . '">' . $i . ':' . $j . '</option>');
+			for ($j = 0; $j < 60; $j += 15) {
+				echo ('<option value="' . $i . ':' . sprintf("%'.02d", $j) . '">' . $i . ':' . sprintf("%'.02d", $j) . '</option>');
 			}
 		}
 	};
@@ -239,24 +239,16 @@ NoStuIDError;
                         <input type="text" class="form-control" placeholder="MM/DD/YYYY" id="date" name="date" autocomplete="off" required>
                     </div>
                     <div class="col-sm-3">
-                        <select class="selectpicker" id="time" name="time" data-live-search="true" required">
+						<!--
+						//The 'selectpicker' class is causing the field to not appear in sub-forms.
+                        <select class="selectpicker" id="time" name="time" data-live-search="true" required"-->
+						<select id="time" name="time" required">
 							<?php
-								createTimeOptions();
+							createTimeOptions();
 							?>
 						</select>
                     </div>
                 </div>
-
-
-				<!-- course picker drop-down-->
-				<!--div class="form-group">
-					<label class="col-sm-3 control-label">Class Name:</label>
-					<div class="dropdown col-sm-9">
-						
-					</div>
-				</div-->
-
-
 
                 <div class="form-group">
                     <label class="control-label col-sm-3">Meeting Location:</label>
