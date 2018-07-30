@@ -1,27 +1,26 @@
 <?php
-require_once '../includes/session.php';
+	require_once '../includes/session.php';
 
-require_once 'secure.php';
-//Open the db connection
-include_once '../includes/db.php';
-include_once '../includes/getCaseID.php';
-//Check if the form variables have been submitted, store them in the session variables
-include '../includes/formProcess.php';
-include_once '../includes/page.php';
-
-
-/**
- * Prints a list of option values.
- * Each looks like:		<option value="8:30">8:30</option>
- */
-function createTimeOptions() {
-	for ($i = 8; $i < 18; $i++) {
-		for ($j = 0; $j <= 60; $j += 15) {
-			echo ('<option value="' . $i . ':' . $j . '">' . $i . ':' . $j . '</option>');
-	}
-};
+	require_once 'secure.php';
+	//Open the db connection
+	include_once '../includes/db.php';
+	include_once '../includes/getCaseID.php';
+	//Check if the form variables have been submitted, store them in the session variables
+	include '../includes/formProcess.php';
+	include_once '../includes/page.php';
 
 
+	/**
+	 * Prints a list of option values.
+	 * Each looks like:		<option value="8:30">8:30</option>
+	 */
+	function createTimeOptions() {
+		for ($i = 8; $i < 18; $i++) {
+			for ($j = 0; $j <= 60; $j += 15) {
+				echo ('<option value="' . $i . ':' . $j . '">' . $i . ':' . $j . '</option>');
+			}
+		}
+	};
 ?>
 
 <!DOCTYPE html>
@@ -239,23 +238,23 @@ NoStuIDError;
                     <div class="col-sm-3">
                         <input type="text" class="form-control" placeholder="MM/DD/YYYY" id="date" name="date" autocomplete="off" required>
                     </div>
-                    <div class="col-sm-6">
-                        <input class="timepicker form-control" id="tsime" name="timse" required>
+                    <div class="col-sm-3">
+                        <select class="selectpicker" id="time" name="time" data-live-search="true" required">
+							<?php
+								createTimeOptions();
+							?>
+						</select>
                     </div>
                 </div>
 
 
 				<!-- course picker drop-down-->
-				<div class="form-group">
+				<!--div class="form-group">
 					<label class="col-sm-3 control-label">Class Name:</label>
 					<div class="dropdown col-sm-9">
-						<select class="selectpicker" id="time" name="time" data-live-search="true" required">
-							<?php
-								createTimeOptions();
-							?>
-						</select>
+						
 					</div>
-				</div>
+				</div-->
 
 
 
