@@ -49,8 +49,8 @@
         // 		OR user is an admin
 	    if (($role == "aio" && $aio_id == $userId) || ($role == "professor" && $prof_id == $userId) || $role == "admin"){
 	    	$path_to_evidence_dir = "evidence/" . $evidence_folder . "/evidence.zip";
-            
-            if ($evidence_folder != "" && file_exists($path_to_evidence_dir)) {
+	    	$path_to_PDF_dir = "evidence/" . $caseId . "/{$caseId}.pdf";
+            if (isset ($_POST['evidenceLink']) && $evidence_folder != "" && file_exists($path_to_evidence_dir)) {
                 // user should be shown the link to the evidence file
                 header("Cache-Control: public");
 				header("Content-Description: File Transfer");
@@ -61,6 +61,16 @@
 				exit();
             }
 
+            else if (isset ($_POST['PDFLink']) && file_exists($path_to_PDF_dir)) {
+            	 // user should be shown the link to the evidence file
+                header("Cache-Control: public");
+				header("Content-Description: File Transfer");
+				header("Content-Disposition: attachment; filename={$caseId}.pdf");
+				header("Content-Type: application/pdf");
+				header("Content-Transfer-Encoding: binary");
+				readfile($path_to_PDF_dir);
+				exit();
+            }
             else {
                 // no evidence has been submitted
                 does_not_exist();

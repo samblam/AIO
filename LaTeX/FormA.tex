@@ -1,0 +1,136 @@
+\documentclass[]{article}
+\usepackage[letterpaper,margin=1.8cm]{geometry}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{color}
+\usepackage{booktabs,hhline}
+\renewcommand{\rmdefault}{phv}		%apparently this changes the default font from Roman to Helvetica! :)
+									%More info about fonts here:
+									% -- https://www.tug.org/pracjourn/2006-1/schmidt/schmidt.pdf
+									% -- http://en.wikibooks.org/wiki/LaTeX/Fonts
+
+
+% NEW COMMANDS
+% [1] pspin - This command adds a vertical space and removes the default text indent when added before the start of a new paragraph.
+\newcommand{\pspin}{\vspace{0.3cm}\noindent}
+
+\newcommand{\NoItemSpace}{ \setlength{\parsep}{0pt} \setlength{\partopsep}{0pt}
+                           \setlength{\parskip}{0pt} \setlength{\itemsep}{0pt}}
+\newcommand{\ignore}[1]{}
+
+
+% VARIABLES -- DETAILS FROM THE FILES ARE READ INTO THESE.
+% Date Informed to AIO is automatically set to TODAY's date using the \today command.
+\newread\myread
+\openin\myread=info.txt
+\read\myread to \instructor
+\read\myread to \instructorPhone
+\read\myread to \instructorEmail
+\read\myread to \faculty
+\read\myread to \dept
+\read\myread to \course
+\read\myread to \alternativeInstructor
+\read\myread to \studentName
+\read\myread to \studentBanner
+\read\myread to \dateAwareOfOffence
+\read\myread to \commonAllegation
+\read\myread to \numStudentsCommonAllegation
+\read\myread to \detailsOfAllegation
+
+\newcommand{\dateInformedAIO}{\today}
+
+
+\title{
+	\vspace{-4ex}
+	\hfill {\normalsize CONFIDENTIAL}\\
+	\vspace{0.3cm} \textbf{{\Large FORM A -- Instructor Allegation of Academic Offence}}
+}
+\date{\vspace{-5ex}}
+
+
+\begin{document}
+
+\maketitle
+
+\noindent
+This form may be used to report any alleged academic offence. Please refer to the Dalhousie University
+Faculty Discipline Procedures Concerning Allegations of Academic Offences, available here:
+{\small \url{https://www.dal.ca/campus_life/safety-respect/student-rights-and-responsibilities/academic-policies/academic-offences.html}}\\
+\vspace{1.0cm}
+
+\noindent
+Name of instructor submitting the allegation: \textbf{\textit{\instructor}}
+
+\begin{table}[!h]
+	\renewcommand{\arraystretch}{1.1}
+	\begin{flushleft}
+		\begin{tabular}{@{}l@{\hspace{0.25in}}l@{\hspace{1in}}l@{\hspace{0.13in}}l}
+			Faculty:		& \textbf{\textit{\faculty}}					& Department:			& \textbf{\textit{\dept}}\vspace{0.1cm}\\
+			Phone Number:		& \textbf{\textit{\instructorPhone}}					& E-Mail:			& \textbf{\textit{\instructorEmail}}\vspace{0.1cm}\\
+			Class Name and Code:		& \multicolumn{3}{@{}l}{\textbf{\textit{\course}}}\vspace{0.4cm}\\
+			\multicolumn{4}{@{}l}{Name and email address of instructor authorized to submit grades to Registrar, if different from above:}\\
+			\multicolumn{4}{@{}l}{\textbf{\textit{\alternativeInstructor}}}\vspace{1.0cm}
+		\end{tabular}
+	\end{flushleft}
+\end{table}
+\vspace{-4ex}
+
+
+\begin{table}[!h]
+	\renewcommand{\arraystretch}{1.1}
+	\begin{flushleft}
+		\begin{tabular}{@{}l@{\hspace{0.25in}}l@{\hspace{1in}}l@{\hspace{0.13in}}l}
+			Student Name:		& \textbf{\textit{\studentName}}					& Banner ID:			& \textbf{\textit{\studentBanner}}\vspace{1.0cm}\\
+		\end{tabular}
+	\end{flushleft}
+\end{table}
+\vspace{-4ex}
+
+
+\begin{table}[!h]
+	\renewcommand{\arraystretch}{1.1}
+	\begin{flushleft}
+		\begin{tabular}{@{}l@{\hspace{0.13in}}l@{\hspace{0.13in}}l@{\hspace{0.13in}}l}
+			\multicolumn{2}{@{}l}{Date I became aware of alleged academic offence:}		& \textbf{\textit{\dateAwareOfOffence}}\vspace{0.3cm}&\\
+			Is this a \textit{common allegation}?		& \textbf{\textit{\commonAllegation}}\vspace{0.1cm}&&\\
+			\multicolumn{4}{@{}l}{(A \textit{common allegation} is a case involving 2 or more students facing allegations arising from the same fact situation.)}\vspace{0.3cm}\\
+			\multicolumn{2}{@{}l}{If yes, how many students are known to be involved?}		& \textbf{\textit{\numStudentsCommonAllegation}}\vspace{0.3cm}\\
+			\multicolumn{4}{@{}l}{(\textit{Please note}: In the case of a common allegation, please endeavour to submit allegations and supporting documents}\\
+			\multicolumn{4}{@{}l}{against all students in the group at the same time.)}\vspace{1.0cm}\\
+			\multicolumn{3}{@{}l}{Date allegation and supporting documents submitted to Academic Integrity Officer:}		& \textbf{\textit{\dateInformedAIO}}\vspace{1.0cm}\\
+		\end{tabular}
+	\end{flushleft}
+\end{table}
+\vspace{-4ex}
+
+
+\noindent
+Please describe the incident below or attach a memo. \textbf{Please attach the original piece of work in which
+the offence occurred, the class syllabus, and any supporting material.} If there are comparisons to be
+noted between documents (e.g., sections of a paper assignment and \textit{SafeAssign} results), instructors are
+asked to mark relevant sections in ink or \textit{\textbf{purple highlighter}}.\\
+
+
+\noindent
+\textbf{Description of the incident:} \textit{\detailsOfAllegation}
+
+
+\vspace{0.8cm}
+\noindent
+Instructor's Signature:
+\IfFileExists{signature.png}{\includegraphics[width=1.5in]{signature}}{}
+\vspace{0.8cm}
+
+\noindent
+Date: \textbf{\textit{\today}}
+\vspace{0.8cm}
+
+
+\vspace{0.8cm}
+\noindent
+\textbf{Please note: While the use of this Form is optional, the details and information outlined in this Form are required.}
+
+\end{document}
