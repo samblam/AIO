@@ -34,20 +34,20 @@ if(isset($_POST["caseId"])){
 
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Portal</title>
-        <link rel="stylesheet" href="../CSS/formA.css">
-        <link rel="stylesheet" href="../CSS/main.css">
-        <script src="../JS/forma.js"></script>
-    </head>
-    <body style="margin:auto;">
-        <?php
-            if( !isset($_POST['internal']) || $_POST['internal'] != 'true' ) {
-                include_once '../includes/navbar.php';
-            }
-        ?>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Portal</title>
+    <link rel="stylesheet" href="../CSS/formA.css">
+    <link rel="stylesheet" href="../CSS/main.css">
+    <script src="../JS/forma.js"></script>
+  </head>
+  <body style="margin:auto;">
+    <?php
+      if( !isset($_POST['internal']) || $_POST['internal'] != 'true' ) {
+        include_once '../includes/navbar.php';
+      }
+    ?>
     <div class="form-container">
       <h2 class="form-a-title" style="text-align: left">Form A</h2>
       <p>Report of Academic Integrity Violation</p>
@@ -62,18 +62,19 @@ if(isset($_POST["caseId"])){
             echo "<input type=\"hidden\" name=\"case_id\" value=\"$case_id\">";
           }
         ?>
+
         <!-- Name -->
         <div class="form-group">
           <label for="ProfessorName" class="col-sm-3 control-label">Professor:</label>
           <div class="col-sm-9">
             
             <?php
-              //this check is to see if the admin is submitting the form
+              // If admin is submitting form
               // Bjorn recommends changing this to $_SESSION['role'] == 'admin' to erradicate the GET requirements
               if( isset($_GET['ProfRequired']) ) {
                 //show dropdown here
-                echo "<select data-live-search='true' id='profSelect' class='selectpicker form-control' onchange='fillProf()''>";
-                echo "<option disabled selected value> -- select an option -- </option>";
+                echo "<select data-live-search='true' id='profSelect' class='selectpicker form-control' onchange='fillProf()''>\n";
+                echo "<option disabled selected value> -- select an option -- </option>\n";
                 
                 //grab all the professors
                 $conn = OpenCon();
@@ -85,19 +86,18 @@ if(isset($_POST["caseId"])){
                 while($statement->fetch()){
                   //add each professor to the dropdown, and tie the email/phone number to the value in order to auto fill
                   $profName = $pfname . ' ' . $plname;
-                  echo"<option value='$email,$phone,$pid' data-tokens='$pfname,$plname'>$profName</option>";   
+                  echo "<option value='$profName,$email,$phone,$pid' data-tokens='$pfname,$plname'>$profName</option>\n";   
                 }
-                echo"</select>";
+                echo "</select>";
+                echo "<input type='hidden' id='ProfessorName' name='ProfessorName' value=''>";
                 CloseCon( $conn );
               }
               // If submitting for self 
               elseif( $_SESSION['role'] == "professor" ) {
-                $profName = "$_SESSION[fname] $_SESSION[lname]";
-                echo "<input type='text' class='form-control' id='ProfessorName' name='ProfessorName' disabled value='$profName'>";
+                echo "<input type='text' class='form-control' id='ProfessorName' name='ProfessorName' value='$_SESSION[fname] $_SESSION[lname]'>";
               }
               // Bail-out incase of error
               else {
-              //else auto fill professor name
                 echo "<input type='text' class='form-control' placeholder='Name' id='ProfessorName' name='ProfessorName' required value='";
                 if (isset($prof_name)) { echo $prof_name;}
                 echo"'>";
@@ -112,7 +112,7 @@ if(isset($_POST["caseId"])){
           <div class="col-sm-9">
             <?php
               if( $_SESSION['role'] == "professor" ) {
-                echo "<input type='email' class='form-control' id='email' name='email' disabled value='" . $_SESSION['email'] . "'>";
+                echo "<input type='email' class='form-control' id='email' name='email' value='" . $_SESSION['email'] . "'>";
               }
               else {
                 echo "<input type='email' class='form-control' placeholder='Email' id='email' name='email' required value='";
@@ -129,7 +129,7 @@ if(isset($_POST["caseId"])){
           <div class="col-sm-9">
             <?php
               if( $_SESSION['role'] == "professor" ){
-                echo "<input type='tel' class='form-control' id='phoneNum' name='phoneNum' disabled value='" . parsePhoneNumber($_SESSION['phone']) . "'>";
+                echo "<input type='tel' class='form-control' id='phoneNum' name='phoneNum' value='" . parsePhoneNumber($_SESSION['phone']) . "'>";
               }
               else {
                 echo "<input type='tel' class='form-control' placeholder='Phone Number' id='phoneNum' name='phoneNum' required value='";
@@ -150,105 +150,104 @@ if(isset($_POST["caseId"])){
             </div>
         </div>
 
-          <!-- course picker drop-down-->
+        <!-- course picker drop-down-->
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Class Name:</label>
+          <div class="dropdown col-sm-9">
+            <select class="selectpicker" id="class-name" name="class-name" data-show-subtext="true" data-live-search="true" required value="<?php if (isset($course_name)) { echo $course_name;} ?>">
+              <option data-subtext="Communication Skills: Oral and Written" value="CSCI 2100" >CSCI 2100</option>
+              <option data-subtext="Network Security" value="CSCI 4174">CSCI 4174</option>
+              <option data-subtext="Introduction to web site creation" value="INFX 1606">INFX 1606</option>
+              <option data-subtext="Etc" value="Etc XXXX" >Etc XXXX</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- student name(s) and banner id(s) -->
+        <div>
           <div class="form-group">
-              <label class="col-sm-3 control-label">Class Name:</label>
-              <div class="dropdown col-sm-9">
-                  <select class="selectpicker" id="class-name" name="class-name" data-show-subtext="true" data-live-search="true" required value="<?php if (isset($course_name)) { echo $course_name;} ?>">
-                      <option data-subtext="Communication Skills: Oral and Written" value="CSCI 2100" >CSCI 2100</option>
-                          <option data-subtext="Network Security" value="CSCI 4174">CSCI 4174</option>
-                          <option data-subtext="Introduction to web site creation" value="INFX 1606">INFX 1606</option>
-                          <option data-subtext="Etc" value="Etc XXXX" >Etc XXXX</option>
-                  </select>
+            <label class="col-sm-3">Student(s): </label>
+            <div class="col-sm-9" id="students_group" name="students_group">
+              <div class="input-group students" name="students">
+                <span class="input-group-addon">Student Name</span>
+                <input type="text" class="form-control" aria-label="Name" required name="Name[]">
+                <span class="input-group-addon">Banner Number</span>
+                <input type="text" class="form-control" aria-label="B00" required name="B00[]">
               </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add or Remove Students -->
+        <div class="form-group">
+          <label class="col-sm-3 control-label"></label>
+          <div class="col-sm-9">
+            <button onClick="add_Student()" class="btn btn-success" id="addStudent" name="addStudent" type="button">+ Student</button>
+            <button onClick="remove_student()" class="btn btn-success" id="removeStudent" name="removeStudent" type="button">- Student</button>
+          </div>
+        </div>
+
+        <!--date of allegation -->
+        <div class="form-group">
+          <label for="date" class="col-sm-3 control-label">Date of Alleged Offense:</label>
+          <div class="col-sm-9">
+            <input class="form-control" placeholder="MM/DD/YYYY" name="DateAlleged" id="date" value="<?php if (isset($date_alleg)) { echo $date_alleg;} ?>" autocomplete="off">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <p class="col-sm-12">Please describe the incident below or attach a memo. Please attach the original piece of work in which the offence occurred, the class syllabus, and any supporting material. If there are comparisons to be noted between documents (e.g., sections of a paper assignment and Urkund results), instructors are asked to clearly mark relevant sections in ink or highlighter.</p>
+        </div>
+
+        <!-- file input for evidence. Needs to append to files selected, not replace. Should be able to remove files too.-->
+        <div class="form-group">
+          <label for="fileInput" class="col-sm-3 control-label">Evidence:</label>
+          <div class="col-sm-9">
+            <input type="file" id="fileInput" name="fileInput[]" onchange="getFileInfo()" multiple>
           </div>
 
-          <!-- student name(s) and banner id(s) -->
-          <div>
-              <div class="form-group">
-                  <label class="col-sm-3">Student(s): </label>
-                  <div class="col-sm-9" id="students_group" name="students_group">
-                      <div class="input-group students" name="students">
-                          <span class="input-group-addon">Student Name</span>
-                          <input type="text" class="form-control" aria-label="Name" required name="Name[]">
-                          <span class="input-group-addon">Banner Number</span>
-                          <input type="text" class="form-control" aria-label="B00" required name="B00[]">
-                      </div>
-                  </div>
-              </div>
+          <div id="fileInfo" class="col-sm-12"/>
+        </div>
+
+        <!-- text input for additional comments-->
+        <div class="form-group">
+          <label for="additionalComments" class="col-sm-9 control-label">Description of Allegation and Comments:</label>
+          <div class="col-sm-12">
+            <textarea class="form-control" rows="5" placeholder="Write additional comments here" id="additionalComments" name="additionalComments"></textarea>
           </div>
+        </div>
 
-          <!-- Add or Remove Students -->
-          <div class="form-group">
-              <label class="col-sm-3 control-label"></label>
-              <div class="col-sm-9">
-                  <button onClick="add_Student()" class="btn btn-success" id="addStudent" name="addStudent" type="button">+ Student</button>
-                  <button onClick="remove_student()" class="btn btn-success" id="removeStudent" name="removeStudent" type="button">- Student</button>
-              </div>
+        <!-- Form Buttons -->
+        <div class="form-group">
+          <div class="center-block text-center">
+            <button type="submit" class="btn btn-primary" name="PreviewPDF">Preview PDF</button>
+            <button id="SaveFormA" type="submit" class="btn btn-primary" name="SaveFormA">Save</button>
+            <?php
+              $role = $_SESSION['role'];
+
+              if($role == "admin"){
+                // admin is submitting the case for the selected professor. Pass this info as a hidden input to the form processing file.
+                // the value is set in profAutoFill.js
+                echo "<input type=\"hidden\" id=\"AdminSubmittedProfId\" name=\"AdminSubmittedProfId\" value=\"\"/>";
+              }
+
+              if(($role == "professor" || $role == "admin") && $formSubmissionDate == ""){
+                  // form has not been submitted
+  	            echo"<button type=\"submit\" class=\"btn btn-success\" id=\"SubmitFormA\" name=\"SubmitFormA\">Submit</button>";
+              } 
+
+              elseif (($role == "professor" || $role == "admin") && $formSubmissionDate != "") {
+                // form has been submitted. Add submit button for adding more evidence to a previously submitted case
+                echo "<button type=\"submit\" class=\"btn btn-success\" id=\"AddEvidence\" name=\"AddEvidence\" disabled>Upload Selected Evidence</button>";
+
+                if($evidenceFileDir!=""){
+                  // add a hidden field that passes on the file directory in which to add the files
+                  echo "<input type=\"hidden\" name=\"EvidenceDirectory\" value=\"$evidenceFileDir\"/>";
+                }
+              }
+			      ?>
           </div>
-
-          <!--date of allegation -->
-          <div class="form-group">
-              <label for="date" class="col-sm-3 control-label">Date of Alleged Offense:</label>
-              <div class="col-sm-9">
-                  <input class="form-control" placeholder="MM/DD/YYYY" name="DateAlleged" id="date" value="<?php if (isset($date_alleg)) { echo $date_alleg;} ?>" autocomplete="off">
-              </div>
-          </div>
-
-          <div class="form-group">
-              <p class="col-sm-12">Please describe the incident below or attach a memo. Please attach the original piece of work in which the offence occurred, the class syllabus, and any supporting material. If there are comparisons to be noted between documents (e.g., sections of a paper assignment and Urkund results), instructors are asked to clearly mark relevant sections in ink or highlighter.</p>
-          </div>
-
-          <!-- file input for evidence. Needs to append to files selected, not replace. Should be able to remove files too.-->
-          <div class="form-group">
-              <label for="fileInput" class="col-sm-3 control-label">Evidence:</label>
-              <div class="col-sm-9">
-                  <input type="file" id="fileInput" name="fileInput[]" onchange="getFileInfo()" multiple>
-              </div>
-
-              <div id="fileInfo" class="col-sm-12"/>
-          </div>
-
-          <!-- text input for additional comments-->
-          <div class="form-group">
-              <label for="additionalComments" class="col-sm-9 control-label">Description of Allegation and Comments:</label>
-              <div class="col-sm-12">
-                  <textarea class="form-control" rows="5" placeholder="Write additional comments here" id="additionalComments" name="additionalComments"></textarea>
-              </div>
-          </div>
-
-          <!-- Form Buttons -->
-
-          <div class="form-group">
-              <div class="center-block text-center">
-                  <button type="submit" class="btn btn-primary" name="PreviewPDF">Preview PDF</button>
-                  <button id="SaveFormA" type="submit" class="btn btn-primary" name="SaveFormA">Save</button>
-                  <?php
-                      $role = $_SESSION['role'];
-
-                      if($role == "admin"){
-                          // admin is submitting the case for the selected professor. Pass this info as a hidden input to the form processing file.
-                          // the value is set in profAutoFill.js
-                          echo "<input type=\"hidden\" id=\"AdminSubmittedProfId\" name=\"AdminSubmittedProfId\" value=\"\"/>";
-                      }
-
-                      if(($role == "professor" || $role == "admin") && $formSubmissionDate == ""){
-                          // form has not been submitted
-          	            echo"<button type=\"submit\" class=\"btn btn-success\" id=\"SubmitFormA\" name=\"SubmitFormA\">Submit</button>";
-                      } 
-
-                      elseif (($role == "professor" || $role == "admin") && $formSubmissionDate != "") {
-                          // form has been submitted. Add submit button for adding more evidence to a previously submitted case
-                          echo "<button type=\"submit\" class=\"btn btn-success\" id=\"AddEvidence\" name=\"AddEvidence\" disabled>Upload Selected Evidence</button>";
-
-                          if($evidenceFileDir!=""){
-                              // add a hidden field that passes on the file directory in which to add the files
-                              echo "<input type=\"hidden\" name=\"EvidenceDirectory\" value=\"$evidenceFileDir\"/>";
-                          }
-                      }
-      			      ?>
-              </div>
-          </div>
+        </div>
       </form>
     </div>
   </body>
