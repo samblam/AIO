@@ -1,6 +1,20 @@
 <?php
   require_once "globalSecure.php";
   
+  function parsePhoneNumber( $number ) {
+    if( is_int( $number ) ) {
+      $areacode = $number % 10000000;
+      $blockcode = ($number-$areacode) % 10000;
+      $num = ($number-$blockcode-$areacode);
+      return "(" . $areacode . ") " . $blockcode . "-" . $num;
+    }
+    elseif( strlen( $number ) == 10 ) {
+      return "(" . substr($number, 0, 3) . ") " . substr($number, 3, 3) . "-" . substr($number, 6, 4);
+    }
+    else
+      return $number;
+  }
+
   // Creates the variables for professor info to be automatically inputed into form A
   if(basename($_SERVER['PHP_SELF']) == "forma.php" && $_SESSION['role'] == "professor"){
     $conn = OpenCon();

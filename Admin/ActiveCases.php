@@ -67,7 +67,8 @@ include '../includes/formProcess.php';
                                   LEFT JOIN professor 
                                   ON professor.professor_id = active_cases.prof_id 
                                   LEFT JOIN aio 
-                                  ON aio.aio_id = active_cases.aio_id");
+                                  ON aio.aio_id = active_cases.aio_id
+                                  ORDER BY active_cases.case_id ");
                     if( !$result ) {
                       echo "Database Error. Please contact admin.";
                       echo $conn->error;

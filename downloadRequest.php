@@ -43,11 +43,7 @@
 
 	    CloseCon($conn);
 
-	    // user has permission to view evidence files if:
-        // 		user is an AIO and the AIO id assigned to this case matches user's id
-        // 		OR user is a professor and the professor id for this case matches user's id
-        // 		OR user is an admin
-	    if (($role == "aio" && $aio_id == $userId) || ($role == "professor" && $prof_id == $userId) || $role == "admin"){
+	    if ($role == "aio" || $role == "professor" || $role == "admin"){
 	    	$path_to_evidence_dir = "evidence/" . $evidence_folder . "/evidence.zip";
 	    	$path_to_PDF_dir = "evidence/" . $caseId . "/{$caseId}.pdf";
             if (isset ($_POST['evidenceLink']) && $evidence_folder != "" && file_exists($path_to_evidence_dir)) {
