@@ -62,7 +62,8 @@ include_once '../includes/page.php';
                 <div class="form-group">
                     <label class="col-sm-3 control-label">Faculty:</label>
                     <div class="dropdown col-sm-9">
-                        <select class="selectpicker" id="faculty" data-show-subtext="true" data-live-search="true" required>
+                        <!--select class="selectpicker" id="faculty" data-show-subtext="true" data-live-search="true" required-->
+                        <select id="faculty" required>
                             <option data-subtext="Faculty of Computer Science">FCS</option>
                         </select>
                     </div>
@@ -84,7 +85,8 @@ include_once '../includes/page.php';
                 <div class="form-group">
                     <label class="col-sm-3 control-label">Class Name:</label>
                     <div class="dropdown col-sm-9">
-                        <select class="selectpicker" id="class-name" data-show-subtext="true" data-live-search="true" required>
+                        <!-- select class="selectpicker" id="class-name" data-show-subtext="true" data-live-search="true" required-->
+                        <select id="class-name" data-show-subtext="true" required>
                             <option data-subtext="Communication Skills: Oral and Written">CSCI 2100</option>
                                 <option data-subtext="Network Security">CSCI 4174</option>
                                 <option data-subtext="Introduction to web site creation">INFX 1606</option>

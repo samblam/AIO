@@ -67,7 +67,7 @@
                     $_SESSION['lastCaseId'] = $_POST['caseId'];
                 }
 
-                //Get all relevent feilds and bind them to php variables
+                //Get all relevant fields and bind them to php variables
                 $statement = $conn->prepare("
                     SELECT
                         active_cases.form_a_submit_date,
@@ -76,7 +76,8 @@
                         professor.lname, 
                         student.fname, 
                         student.lname, 
-                        student.csid 
+                        student.csid,
+                        student.student_id
                     FROM 
                         professor 
                         LEFT JOIN active_cases ON professor.professor_id = active_cases.prof_id 
@@ -87,9 +88,10 @@
                 if(!$statement->execute()){
                     echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                 }
-                $statement->bind_result($submissionDate, $studentList, $pfname, $plname, $sfname, $slname, $scsid);
+                $statement->bind_result($submissionDate, $studentList, $pfname, $plname, $sfname, $slname, $scsid, $studentID);
                 $statement->fetch();
             ?>
+
             <table class="table table-bordered" style="font-size: 14px;">
                 <tbody>
                     <tr>
@@ -114,11 +116,13 @@
                                         <input id='caseId' name='caseId' value='$caseIdValue' type='hidden'>
                                         <li><button class='btn' type='submit'><?php echo $sfname . ", " . $scsid ?></button></li>
                                         <?php
-                                            while($statement->fetch()){
-                                                echo"<input id='caseId' name='caseId' value='$caseIdValue' type='hidden'>";
-                                                echo "<li><button class='btn' type='submit'>$sfname, $scsid</button></li>";
-                                            }
-                                        ?>
+											$num_students = 1;
+											while($statement->fetch()){
+												$num_students++;
+												echo"<input id='caseId' name='caseId' value='$caseIdValue' type='hidden'>";
+												echo "<li><button class='btn' type='submit'>$sfname, $scsid</button></li>";
+											}
+										?>
                                     </ul>
                                 </form>
                             </div>
@@ -231,7 +235,7 @@ DenyButtons;
                     $caseIdValue = $_POST['caseId'];
                     $_SESSION['lastCaseId'] = $_POST['caseId'];
                 }
-                
+
                 //Get case verdict from db
                 $statement = $conn->prepare("SELECT case_verdict FROM active_cases WHERE case_id = '$caseIdValue' AND aio_id = ?"); 
                 $statement->bind_param("d", $id); //bind the csid to the prepared statements
@@ -290,13 +294,13 @@ NotGuiltyClose;
                                                 <div class="form-group">
                                                     <label for="email-to" class="col-sm-3 control-label">To:</label>
                                                     <div class="col-sm-9">
-                                                        <input type="email" class="form-control" placeholder="Email Address" id="email-to" name="email_to" required>
+                                                        <input type="email" class="form-control" placeholder="Email Address" id="email-to" name="email_to" required multiple>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="email-cc" class="col-sm-3 control-label">Cc:</label>
                                                     <div class="col-sm-9">
-                                                        <input type="email" class="form-control" placeholder="Email Address" id="email-cc" name="email_cc">
+                                                        <input type="email" class="form-control" placeholder="Email Address" id="email-cc" name="email_cc" multiple>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -335,34 +339,56 @@ ForwardCase;
                 <li class="active"><a data-toggle="tab" href="#forma">Form A</a></li>
                 <?php
                     if($_SESSION['role'] != "professor"){
-                        echo<<<DisplayFormTabs
-                        <li class=""><a data-toggle="tab" href="#formb">Form B</a></li>
-                        <li class=""><a data-toggle="tab" href="#formc">Form C</a></li>
-                        <li class=""><a data-toggle="tab" href="#formd">Form D</a></li>
-DisplayFormTabs;
+                        echo <<<DisplayFormTabsB
+							<li class=""><a data-toggle="tab" href="#formb">Form B</a></li>
+DisplayFormTabsB;
+					}
+
+                    if($_SESSION['role'] == "admin"){
+						echo <<<DisplayFormTabsC
+							<li class=""><a data-toggle="tab" href="#formc">Form C: Meeting</a></li>
+DisplayFormTabsC;
                     }
+
+					if($_SESSION['role'] != "professor"){
+						echo <<<DisplayFormTabsC
+							<li class=""><a data-toggle="tab" href="#formd">Form D</a></li>
+DisplayFormTabsC;
+					}
                 ?>
             </ul>
             <div class="tab-content">
                 <div id="forma" class="tab-pane fade active in">
-                    <?php //include 'forma.php' ?>
+					<?php //BUG: Faculty & Class name render 5x if this php tag is absent. ?>
                 </div>
+
                 <?php
+					//Pages are loaded using JS/formLoader.js
+
                     //if it's a professor visiting, only display from A 
                     if($_SESSION['role'] != "professor"){
-                        
                         echo"<div id=\"formb\" class='tab-pane fade'>";
-                            //include '../AIO/formb.php';
                         echo"</div>";
+					}
 
-                        echo"<div id=\"formc\" class='tab-pane fade'>";
-                            //include '../AIO/formc.php';
-                        echo"</div>";
+                    if($_SESSION['role'] == "admin"){
+                        echo<<<LoadFormC
+							<div id="formc" class='tab-pane fade'>";
+							</div>
+							<script>
+								$(document).ready( function() {
+									$("#formc").load(
+										("formc.php?case_id=" + $caseIdValue + "&student_id=" + $studentID + "&num_students=" + $num_students),
+										{"internal": "true"}
+									);
+								});
+							</script>
+LoadFormC;
+					}
 
+					if($_SESSION['role'] != "professor"){
                         echo"<div id=\"formd\" class='tab-pane fade'>";
-                            //include '../AIO/formd.php';
                         echo"</div>";
-            
                     }
                 ?>
             </div>
@@ -381,19 +407,7 @@ DisplayFormTabs;
          });
 
          $(document).ready( function() {
-             $("#formc").load("formc.php", {"internal": "true"});
-         });
-
-         $(document).ready( function() {
              $("#formd").load("formd.php", {"internal": "true"});
          });
-    </script>
-    
-    <!-- script that allows the email field to accept more than one email -->
-    <script type="text/javascript">
-        $(document).ready( function() {
-            document.getElementById("email-to").multiple = true;
-            document.getElementById("email-cc").multiple = true;
-        });
     </script>
 </html>
