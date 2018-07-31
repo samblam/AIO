@@ -344,7 +344,6 @@ DisplayFormTabs;
                 ?>
             </ul>
             <div class="tab-content">
-                <!-- Not sure why form A is loaded here? Someone who knows should check... - Bjorn -->
                 <div id="forma" class="tab-pane fade active in">
                     <?php //include 'forma.php' ?>
                 </div>
