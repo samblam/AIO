@@ -60,6 +60,8 @@ include '../includes/formProcess.php';
                             LEFT JOIN student ON student.case_id = active_cases.case_id 
                           WHERE 
                             active_cases.aio_id = ?
+                          ORDER BY
+                            active_cases.case_id
                           ");
 
     		$statement->bind_param("d", $id); //bind the csid to the prepared statements
@@ -129,6 +131,8 @@ ViewAllPost;
                         RIGHT JOIN active_cases ON professor.professor_id = active_cases.prof_id 
                       WHERE 
                         active_cases.aio_id IS NULL
+                      ORDER BY
+                        active_cases.case_id
                       ");
             
             if(!$query->execute()){
