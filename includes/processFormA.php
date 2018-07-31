@@ -41,18 +41,18 @@
 		//Checks that all fields are set in the form to prevent users from deleting HTML required field
 		$data = array("ProfessorName", "email", "phoneNum", "faculty", "class-name", "Name", "B00");//Could add DateAlleged, additionalComments
 
-			foreach ($data as $field) {
-				//Post fields are set, but have no value
-				if ($_POST[$field] == "") {
-					include_once '../includes/page.php';	//Styling for button
-					echo <<<MissingDataError
-						<link rel="stylesheet" href="../CSS/main.css">	<!-- Styling for error -->
-						<p>Error: $field not set.</p>
-						<a href="../Instructor/ActiveCases.php?" class="btn btn-primary">Return to Active Cases</a>
+		foreach ($data as $field) {
+			//Post fields are set, but have no value
+			if( !isset($_POST[$field]) || $_POST[$field] == "" ) {
+				include_once '../includes/page.php';	//Styling for button
+				echo <<<MissingDataError
+					<link rel="stylesheet" href="../CSS/main.css">	<!-- Styling for error -->
+					<p>Error: $field not set.</p>
+					<a href="../$_SESSION[role]/ActiveCases.php?" class="btn btn-primary">Return to Active Cases</a>
 MissingDataError;
-					exit();
-				}
+				exit();
 			}
+		}
 
 		$userId = $_SESSION['userId'];//first column of the current user's role table in the database
 

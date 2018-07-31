@@ -1,13 +1,13 @@
-1
-1
-1@1
+professor A
+(902) 111-1111
+professorA@DAL.CA
 FCS
 FCS
 CSCI 2100
 (anotherEmail@dal.ca)
-1
-1
-1970-01-01
+Billy 1
+B00BILL1
+2018-08-01
 NO
 N/A
 N/A

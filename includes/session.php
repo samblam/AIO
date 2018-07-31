@@ -16,16 +16,16 @@
 
   $start_pages = array();
   // Default redirect for each role
-  if( $_SERVER["HTTP_HOST"] == "localhost" ) {
+  if( substr($_SERVER["HTTP_HOST"], 0, 9) == "localhost" ) {
     $start_pages = array( 'professor' => 
-                            'http://localhost/Instructor/ActiveCases.php',
+                            'http://' . $_SERVER["HTTP_HOST"] . '/Instructor/ActiveCases.php',
                           'aio'       => 
-                            'http://localhost/AIO/ActiveCases.php',
+                            'http://' . $_SERVER["HTTP_HOST"] . '/AIO/ActiveCases.php',
                           'admin'     => 
-                            'http://localhost/Admin/ActiveCases.php',
+                            'http://' . $_SERVER["HTTP_HOST"] . '/Admin/ActiveCases.php',
                           // Replace when student stuff is built
                           'student'   => 
-                            'http://localhost/includes/logout.php'
+                            'http://' . $_SERVER["HTTP_HOST"] . '/includes/logout.php'
                         ); 
   }
   else {
