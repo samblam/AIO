@@ -143,7 +143,7 @@
                                 echo "<form action=\"/downloadRequest.php\" method=\"post\">
                                             <input hidden name=\"caseId\" id=\"caseId\" value=\"$caseId\"/>
                                             <input type=\"submit\" class=\"submitLink\" name=\"evidenceLink\" value=\"evidence.zip\"/>
-                                        </form>,br />";
+                                        </form><br />";
                             }
                             
                             else {
