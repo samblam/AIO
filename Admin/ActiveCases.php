@@ -33,7 +33,7 @@ include '../includes/formProcess.php';
          
          <div>
             <span class="pull-right" style="display: inline-block;"> 
-                <button class="btn btn-success" onclick="location.href='forma.php?ProfRequired=true'" style="font-size: 16px; vertical-align: bottom;">Submit new case</button>
+                <button class="btn btn-success" onclick="location.href='FormA.php?ProfRequired=true'" style="font-size: 16px; vertical-align: bottom;">Submit new case</button>
             </span>
          </div>
          
