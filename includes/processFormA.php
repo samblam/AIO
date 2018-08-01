@@ -54,8 +54,6 @@ MissingDataError;
 			}
 		}
 
-		$userId = $_SESSION['csid'];
-
 		//Grabs all form data and sanatize it
 		$prof = htmlspecialchars(trim(stripslashes($_POST['ProfessorName'])));
 		$email = htmlspecialchars(trim(stripslashes($_POST['email'])));
@@ -297,7 +295,7 @@ MissingDataError;
 			}
 		}
 	}
-	
+
 	CloseCon( $conn );
 	sendUserHome();
 
