@@ -20,7 +20,7 @@
     $conn = OpenCon();
 
     $query = $conn->prepare("SELECT fname, lname, phone, email, department FROM professor WHERE professor_id = ?");
-    $query->bind_param("i", $_SESSION['csid']);
+    $query->bind_param("s", $_SESSION['csid']);
     $query->execute();
     $query->store_result();
     $num_of_rows = $query->num_rows;

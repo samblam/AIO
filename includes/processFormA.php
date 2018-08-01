@@ -54,8 +54,6 @@ MissingDataError;
 			}
 		}
 
-		$userId = $_SESSION['userId'];//first column of the current user's role table in the database
-
 		//Grabs all form data and sanatize it
 		$prof = htmlspecialchars(trim(stripslashes($_POST['ProfessorName'])));
 		$email = htmlspecialchars(trim(stripslashes($_POST['email'])));
@@ -167,7 +165,7 @@ MissingDataError;
 		if(isset($_POST['SaveFormA']) && !isset($_POST['case_id'])){
 			//Create new case entry
 			$statement = $conn->prepare("INSERT INTO active_cases (prof_id, class_name_code, date_aware, description) VALUES (?, ?, ?, ?)");
-			$statement->bind_param("sss",$profId, $cname, $date, $comments); //bind initial values to the prepared statements
+			$statement->bind_param("dsss",$profId, $cname, $date, $comments); //bind initial values to the prepared statements
 
 			if (!$statement->execute()) {
 				echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
@@ -214,7 +212,7 @@ MissingDataError;
 		if(isset($_POST['SaveFormA']) && isset($_POST['case_id'])){
 			//Create new case entry
 			$statement = $conn->prepare("UPDATE active_cases SET prof_id = ?, class_name_code = ?, date_aware = ?, description = ? WHERE case_id = " . (int)$_POST['case_id']);
-			$statement->bind_param("isss",$profId, $cname, $date, $comments); //bind initial values to the prepared statements
+			$statement->bind_param("dsss",$profId, $cname, $date, $comments); //bind initial values to the prepared statements
 			
 			if (!$statement->execute()) {
 			   echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
@@ -297,6 +295,7 @@ MissingDataError;
 			}
 		}
 	}
+
 	CloseCon( $conn );
 	sendUserHome();
 

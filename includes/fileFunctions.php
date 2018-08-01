@@ -85,10 +85,10 @@ _END;
 	fwrite($fileHandle, $fileText);
 	fclose($fileHandle);
 	//Change to run
-	$dir = "C:\Users\stuam\Google Drive\CSCI 3190\AIO Curr\aio-summer-2018\LaTeX";
+	$dir = "../LaTeX";
 	//Maybe a security issue
 	$redir = chdir("{$dir}");
-	$console = shell_exec("xelatex FormA.TeX");
+	$console = shell_exec("xelatex FormA.tex");
 	$rename = "{$case_id}.pdf";
 	//To change name and file location of PDF
 	rename ("FormA.pdf", "../evidence/{$case_id}/{$rename}");
