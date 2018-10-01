@@ -44,7 +44,7 @@ include '../includes/formProcess.php';
                     </tr>
                     <tr>
                         <td>Student(s) name</td>
-                        <td>Mark Auto</td>
+                        <td>ButtLickero</td>
                     </tr>
                     <tr>
                         <td>Professor</td>
