@@ -3,11 +3,11 @@ professor A
 professorA@DAL.CA
 FCS
 FCS
-CSCI 2100
+INFX 1606
 (anotherEmail@dal.ca)
-Billy 1
-B00BILL1
-2018-08-01
+SamTest
+B00721422
+2017-05-09
 NO
 N/A
 N/A
