@@ -1,0 +1,64 @@
+{
+  "id": "5b93012c-f537-4ee7-ba6a-655772df6fd2",
+  "version": "1.1",
+  "name": "Untitled Project",
+  "url": "http://localhost",
+  "tests": [{
+    "id": "a4368134-c30a-4e9b-a1d6-a3cc23428cb9",
+    "name": "Untitled",
+    "commands": [{
+      "id": "3eed1c0d-003e-4236-90fd-6c1d79b7fec2",
+      "comment": "",
+      "command": "open",
+      "target": "/login.php",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "c3ea3970-c2e4-417b-8c8d-68f43166b6eb",
+      "comment": "",
+      "command": "type",
+      "target": "name=csid",
+      "targets": [
+        ["name=csid", "name"],
+        ["css=input[name=\"csid\"]", "css"],
+        ["xpath=//input[@name='csid']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "aio"
+    }, {
+      "id": "f01f14be-2644-40ea-b0f9-e6db8661e294",
+      "comment": "",
+      "command": "type",
+      "target": "name=password",
+      "targets": [
+        ["name=password", "name"],
+        ["css=input[name=\"password\"]", "css"],
+        ["xpath=//input[@name='password']", "xpath:attributes"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": "1"
+    }, {
+      "id": "6dc411bc-96eb-4c07-8ca2-6cf249b8bf3e",
+      "comment": "",
+      "command": "click",
+      "target": "name=LoginSubmit",
+      "targets": [
+        ["name=LoginSubmit", "name"],
+        ["css=button[name=\"LoginSubmit\"]", "css"],
+        ["xpath=//button[@name='LoginSubmit']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "9c34c43c-1273-44ff-93c4-afacc8f2235a",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["a4368134-c30a-4e9b-a1d6-a3cc23428cb9"]
+  }],
+  "urls": ["http://localhost/"],
+  "plugins": []
+}
