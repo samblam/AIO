@@ -50,6 +50,27 @@
       ],
       "value": ""
     }, {
+      "id": "ef864019-32e5-4389-bea7-6d944506c212",
+      "comment": "",
+      "command": "click",
+      "target": "css=button.btn.btn-primary",
+      "targets": [
+        ["css=button.btn.btn-primary", "css"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//td[5]/form/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "74a34673-6caa-48c4-b4f4-b1e28f0a5edb",
+      "comment": "",
+      "command": "click",
+      "target": "css=body",
+      "targets": [
+        ["css=body", "css"],
+        ["xpath=//body", "xpath:position"]
+      ],
+      "value": ""
+    }, {
       "id": "54c2e94e-ddc1-4df7-a876-a2ae8a5fc9b7",
       "comment": "",
       "command": "click",
