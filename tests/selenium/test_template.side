@@ -5,7 +5,7 @@
   "url": "http://localhost",
   "tests": [{
     "id": "a4368134-c30a-4e9b-a1d6-a3cc23428cb9",
-    "name": "Untitled",
+    "name": "test_template",
     "commands": [{
       "id": "3eed1c0d-003e-4236-90fd-6c1d79b7fec2",
       "comment": "",
