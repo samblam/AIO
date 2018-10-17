@@ -13,6 +13,7 @@ include '../includes/formProcess.php';
 <html lang="en">
   <head>
     <meta charset="utf-8">
+    <meta name="robots" content="noindex,nofollow">
     <title>Admin</title>
     <link rel="stylesheet" href="../CSS/formA.css">
 
@@ -30,13 +31,13 @@ include '../includes/formProcess.php';
         <div>
             <h2>Active Cases</h2>
         </div>
-         
+
          <div>
-            <span class="pull-right" style="display: inline-block;"> 
+            <span class="pull-right" style="display: inline-block;">
                 <button class="btn btn-success" onclick="location.href='forma.php?ProfRequired=true'" style="font-size: 16px; vertical-align: bottom;">Submit new case</button>
             </span>
          </div>
-         
+
         <div>
             <table class="table table-bordered" style="font-size: 12px;">
                 <thead class="cases-table">
@@ -56,17 +57,17 @@ include '../includes/formProcess.php';
                     $conn = OpenCon();
                     //Get all active cases and bind the returned database fields to php variables
                     $result = $conn->query("
-                                  SELECT 
-                                    active_cases.case_id, 
-                                    active_cases.class_name_code, 
-                                    professor.fname, 
-                                    professor.lname, 
-                                    aio.fname, 
-                                    aio.lname  
-                                  FROM active_cases 
-                                  LEFT JOIN professor 
-                                  ON professor.professor_id = active_cases.prof_id 
-                                  LEFT JOIN aio 
+                                  SELECT
+                                    active_cases.case_id,
+                                    active_cases.class_name_code,
+                                    professor.fname,
+                                    professor.lname,
+                                    aio.fname,
+                                    aio.lname
+                                  FROM active_cases
+                                  LEFT JOIN professor
+                                  ON professor.professor_id = active_cases.prof_id
+                                  LEFT JOIN aio
                                   ON aio.aio_id = active_cases.aio_id
                                   ORDER BY active_cases.case_id ");
                     if( !$result ) {

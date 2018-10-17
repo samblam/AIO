@@ -13,6 +13,7 @@ $csid;
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="robots" content="noindex,nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>FAQ</title>
 <link rel="stylesheet" href="../CSS/main.css">
@@ -30,7 +31,7 @@ $csid;
         $(".collapse.in").each(function(){
             $(this).siblings(".panel-heading").find(".glyphicon").addClass("glyphicon-minus").removeClass("glyphicon-plus");
             });
-            
+
             // Toggle plus minus icon on show hide of collapse element
             $(".collapse").on('show.bs.collapse', function(){
                 $(this).parent().find(".glyphicon").removeClass("glyphicon-plus").addClass("glyphicon-minus");
@@ -41,7 +42,7 @@ $csid;
     </script>
 </head>
 <body style="margin: auto;">
-    <?php 
+    <?php
         include_once './includes/navbar.php';
     ?>
     <br>
@@ -56,8 +57,8 @@ $csid;
             </div>
             <div id="collapseOne" class="panel-collapse collapse in">
                 <div class="panel-body">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam diam ex, suscipit non congue eget, accumsan a lacus. 
-                    Morbi accumsan neque a est mattis porttitor. Vestibulum porttitor eros in vehicula molestie. Vestibulum tristique congue neque ut ornare. 
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam diam ex, suscipit non congue eget, accumsan a lacus.
+                    Morbi accumsan neque a est mattis porttitor. Vestibulum porttitor eros in vehicula molestie. Vestibulum tristique congue neque ut ornare.
                     Nam at rhoncus risus.
                 </div>
             </div>
@@ -70,8 +71,8 @@ $csid;
             </div>
             <div id="collapseTwo" class="panel-collapse collapse">
                 <div class="panel-body">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam diam ex, suscipit non congue eget, accumsan a lacus. 
-                    Morbi accumsan neque a est mattis porttitor. Vestibulum porttitor eros in vehicula molestie. Vestibulum tristique congue neque ut ornare. 
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam diam ex, suscipit non congue eget, accumsan a lacus.
+                    Morbi accumsan neque a est mattis porttitor. Vestibulum porttitor eros in vehicula molestie. Vestibulum tristique congue neque ut ornare.
                     Nam at rhoncus risus.
                 </div>
             </div>
@@ -85,8 +86,8 @@ $csid;
             </div>
             <div id="collapseThree" class="panel-collapse collapse">
                 <div class="panel-body">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam diam ex, suscipit non congue eget, accumsan a lacus. 
-                    Morbi accumsan neque a est mattis porttitor. Vestibulum porttitor eros in vehicula molestie. Vestibulum tristique congue neque ut ornare. 
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam diam ex, suscipit non congue eget, accumsan a lacus.
+                    Morbi accumsan neque a est mattis porttitor. Vestibulum porttitor eros in vehicula molestie. Vestibulum tristique congue neque ut ornare.
                     Nam at rhoncus risus.
                 </div>
             </div>
@@ -100,8 +101,8 @@ $csid;
             </div>
             <div id="collapseFour" class="panel-collapse collapse">
                 <div class="panel-body">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam diam ex, suscipit non congue eget, accumsan a lacus. 
-                    Morbi accumsan neque a est mattis porttitor. Vestibulum porttitor eros in vehicula molestie. Vestibulum tristique congue neque ut ornare. 
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam diam ex, suscipit non congue eget, accumsan a lacus.
+                    Morbi accumsan neque a est mattis porttitor. Vestibulum porttitor eros in vehicula molestie. Vestibulum tristique congue neque ut ornare.
                     Nam at rhoncus risus.
                 </div>
             </div>
@@ -115,4 +116,4 @@ $csid;
     </div>
 </div>
 </body>
-</html>     
+</html>

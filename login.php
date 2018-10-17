@@ -42,7 +42,7 @@
         // Set to proper protocol version
         if( ldap_set_option($pass_serv,LDAP_OPT_PROTOCOL_VERSION,3) ) {
           // Establish connection
-          if( $pass_bind = ldap_bind( $pass_serv ) ) { 
+          if( $pass_bind = ldap_bind( $pass_serv ) ) {
             // Check credentials
             $cred_chck = ldap_compare( $pass_bind, "cn=". $_POST['csid'], "password", $_POST['password']);
             if( $cred_chck === -1 ) { // error in compare statement
@@ -83,10 +83,11 @@
 ?>
 
 <!DOCTYPE html>
-<html>    
+<html>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="robots" content="noindex,nofollow">
     <title>Login - FCS AIO</title>
     <link rel="icon" href="https://cdn.dal.ca/etc/designs/dalhousie/clientlibs/global/default/images/favicon/favicon-96x96.png.lt_99f65cb862044f8ef23bdf522c69c6f1.res/favicon-96x96.png">
     <link rel="stylesheet" href="CSS/main.css">
@@ -103,9 +104,9 @@
     <div>
       <h1>Academic Integrity Portal</h1>
       <h3>Faculty of Computer Science</h3>
-      
+
       <h3>Login</h3>
-      
+
       <!-- Login screen ready for back end php -->
       <form method="post">
         <div class="container" style="margin-bottom: 25px">

@@ -31,22 +31,23 @@
 ?>
 
 <!DOCTYPE html>
-<html> 
+<html>
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="robots" content="noindex,nofollow">
         <title>Student Case</title>
         <link rel="stylesheet" href="../CSS/main.css">
         <link rel="stylesheet" href="../CSS/caseInformation.css">
     </head>
-    
+
     <body style="margin: auto;">
         <?php include_once '../includes/navbar.php'; ?>
 
         <div style="display: inline-block;">
             <h2>Case Information</h2>
         </div>
-        
+
         <!-- Table div -->
         <!-- TODO: Table will need to populate based on the entries in the DB(server side) -->
         <!-- TODO: I think to properly link the buttons, each row might have to be an input form(haven't looked it up) -->
@@ -72,17 +73,17 @@
                     SELECT
                         active_cases.form_a_submit_date,
                         active_cases.stu_csid_list,
-                        professor.fname, 
-                        professor.lname, 
-                        student.fname, 
-                        student.lname, 
+                        professor.fname,
+                        professor.lname,
+                        student.fname,
+                        student.lname,
                         student.csid,
                         student.student_id
-                    FROM 
-                        professor 
-                        LEFT JOIN active_cases ON professor.professor_id = active_cases.prof_id 
+                    FROM
+                        professor
+                        LEFT JOIN active_cases ON professor.professor_id = active_cases.prof_id
                         LEFT JOIN student ON student.case_id = $caseIdValue
-                    WHERE 
+                    WHERE
                         active_cases.case_id = $caseIdValue
                         ");
                 if(!$statement->execute()){
@@ -149,14 +150,14 @@
                                             <input type=\"submit\" class=\"submitLink\" name=\"evidenceLink\" value=\"evidence.zip\"/>
                                         </form><br />";
                             }
-                            
+
                             else {
                                 // no evidence has been submitted
                                 echo "No evidence submitted<br />";
                             }
                             $path_to_PDF_dir = $caseId;
                             if ($path_to_PDF_dir != "" && file_exists("../evidence/" . $caseId . "/{$caseId}.pdf")){
-                                // user should be shown the link to the pdf 
+                                // user should be shown the link to the pdf
                                 echo "<form action=\"/downloadRequest.php\" method=\"post\">
                                             <input hidden name=\"caseId\" id=\"caseId\" value=\"$caseId\"/>
                                             <input type=\"submit\" class=\"submitLink\" name=\"PDFLink\" value=\"{$caseId}_formA.pdf\"/>
@@ -178,10 +179,10 @@
                 </tbody>
             </table>
         </div>
-        
+
         <!-- Accept/deny buttons div -->
         <div class="center-block text-center">
-            <?php 
+            <?php
                 //setting original AIO id to null for bind parameter
                 $aio_id=NULL;
                 // check if URL contains the case_id variable
@@ -196,7 +197,7 @@
                     // get the case information from the database
                     $statement->bind_result($aio_id);
                     $statement->fetch();
-                    //echoing button actions to Accept Deny php file 
+                    //echoing button actions to Accept Deny php file
                     if($_SESSION['role']=="aio" && $aio_id==NULL){
                         echo <<<AcceptButtons
                             <form action="../includes/AcceptDeny.php" method="post">
@@ -205,7 +206,7 @@
                             </form>
 AcceptButtons;
                     }
-                    //echoing button actions to Accept Deny php file 
+                    //echoing button actions to Accept Deny php file
                     if($_SESSION['role']=="aio" && $aio_id!=NULL){
                         echo <<<DenyButtons
                             <form action="../includes/AcceptDeny.php" method="post">
@@ -237,7 +238,7 @@ DenyButtons;
                 }
 
                 //Get case verdict from db
-                $statement = $conn->prepare("SELECT case_verdict FROM active_cases WHERE case_id = '$caseIdValue' AND aio_id = ?"); 
+                $statement = $conn->prepare("SELECT case_verdict FROM active_cases WHERE case_id = '$caseIdValue' AND aio_id = ?");
                 $statement->bind_param("d", $id); //bind the csid to the prepared statements
                 $id = $_SESSION['csid'];
                 $res = $conn->query( "SELECT aio_id FROM `aio` WHERE csid=\"$id\"" );
@@ -326,13 +327,13 @@ NotGuiltyClose;
                                     </div>
                                 </div>
                             </div>
-                        </form>    
+                        </form>
 ForwardCase;
                 }
                 CloseCon( $conn );
-            ?>   
+            ?>
         </div>
-            
+
         <!-- Form display div -->
         <div>
             <ul class="nav nav-tabs nav-justified">
@@ -365,7 +366,7 @@ DisplayFormTabsC;
                 <?php
 					//Pages are loaded using JS/formLoader.js
 
-                    //if it's a professor visiting, only display from A 
+                    //if it's a professor visiting, only display from A
                     if($_SESSION['role'] != "professor"){
                         echo"<div id=\"formb\" class='tab-pane fade'>";
                         echo"</div>";
@@ -394,7 +395,7 @@ LoadFormC;
             </div>
         </div>
     </body>
-    
+
     <!-- script for loading forms -->
     <script type="text/javascript">
         $(document).ready( function() {

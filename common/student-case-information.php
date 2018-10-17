@@ -18,7 +18,7 @@ $userId = (int) $_SESSION["csid"];
 if(isset($_POST['caseId'])){
     //Gets case id from URL
     $caseId = intval($_POST['caseId']);
-    
+
     $conn = OpenCon();
     $statement = $conn->prepare("SELECT evidence_fileDir, aio_id, prof_id FROM active_cases WHERE case_id = " . $caseId);
     if(!$statement->execute()){
@@ -38,6 +38,7 @@ if(isset($_POST['caseId'])){
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="robots" content="noindex,nofollow">
         <title>Portal</title>
         <link rel="stylesheet" href="../CSS/main.css">
         <link rel="stylesheet" href="../CSS/caseInformation.css">
@@ -125,12 +126,12 @@ if(isset($_POST['caseId'])){
                         <td>Ongoing</td>
                     </tr>
                 </tbody>
-            </table>   
+            </table>
         </div>
         <!-- TODO: Add verdict column to active cases table and pull the verdict for the case. If the verdict is null only show Insufficient evidence button, if the verdict is not null only show close case button and either delete or archive the case based on the verdict. -->
 
         <!-- Form display div -->
-        
+
         <!-- This should be displaying the form of the selected student -->
         <div>
             <ul class="nav nav-tabs nav-justified">

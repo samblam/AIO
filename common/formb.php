@@ -15,6 +15,7 @@ include_once '../includes/page.php';
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="robots" content="noindex,nofollow">
         <title>Portal</title>
         <link rel="stylesheet" href="../CSS/main.css">
         <link rel="stylesheet" href="../CSS/formb.css">

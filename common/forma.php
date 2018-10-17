@@ -37,6 +37,7 @@ if(isset($_POST["caseId"])){
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="robots" content="noindex,nofollow">
     <title>Portal</title>
     <link rel="stylesheet" href="../CSS/formA.css">
     <link rel="stylesheet" href="../CSS/main.css">
@@ -67,7 +68,7 @@ if(isset($_POST["caseId"])){
         <div class="form-group">
           <label for="ProfessorName" class="col-sm-3 control-label">Professor:</label>
           <div class="col-sm-9">
-            
+
             <?php
               // If admin is submitting form
               // Bjorn recommends changing this to $_SESSION['role'] == 'admin' to eradicate the GET requirements
@@ -75,7 +76,7 @@ if(isset($_POST["caseId"])){
                 //show dropdown here
                 echo "<select data-live-search='true' id='profSelect' class='selectpicker form-control' onchange='fillProf()''>\n";
                 echo "<option disabled selected value> -- select an option -- </option>\n";
-                
+
                 //grab all the professors
                 $conn = OpenCon();
                 $statement = $conn->prepare("SELECT professor_id, fname, lname, email, phone FROM professor");
@@ -86,13 +87,13 @@ if(isset($_POST["caseId"])){
                 while($statement->fetch()){
                   //add each professor to the dropdown, and tie the email/phone number to the value in order to auto fill
                   $profName = $pfname . ' ' . $plname;
-                  echo "<option value='$profName,$email,$phone,$pid' data-tokens='$pfname,$plname'>$profName</option>\n";   
+                  echo "<option value='$profName,$email,$phone,$pid' data-tokens='$pfname,$plname'>$profName</option>\n";
                 }
                 echo "</select>";
                 echo "<input type='hidden' id='ProfessorName' name='ProfessorName' value=''>";
                 CloseCon( $conn );
               }
-              // If submitting for self 
+              // If submitting for self
               elseif( $_SESSION['role'] == "professor" ) {
                 echo "<input type='text' class='form-control' id='ProfessorName' name='ProfessorName' value='$_SESSION[fname] $_SESSION[lname]'>";
               }
@@ -102,7 +103,7 @@ if(isset($_POST["caseId"])){
                 if (isset($prof_name)) { echo $prof_name;}
                 echo"'>";
               }
-            ?>                   
+            ?>
           </div>
         </div>
 
@@ -234,7 +235,7 @@ if(isset($_POST["caseId"])){
               if(($role == "professor" || $role == "admin") && $formSubmissionDate == ""){
                   // form has not been submitted
   	            echo"<button type=\"submit\" class=\"btn btn-success\" id=\"SubmitFormA\" name=\"SubmitFormA\">Submit</button>";
-              } 
+              }
 
               elseif (($role == "professor" || $role == "admin") && $formSubmissionDate != "") {
                 // form has been submitted. Add submit button for adding more evidence to a previously submitted case

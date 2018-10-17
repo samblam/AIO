@@ -15,6 +15,7 @@ include '../includes/formProcess.php';
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="robots" content="noindex,nofollow">
     <title>Portal</title>
     <link rel="stylesheet" href="../CSS/main.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -28,7 +29,7 @@ include '../includes/formProcess.php';
     <div>
       <h2>Active Cases</h2>
     </div>
-      
+
     <!-- Table div -->
     <div>
       <table class="table table-bordered" style="font-size: 12px;">
@@ -47,18 +48,18 @@ include '../includes/formProcess.php';
 
             //Get all active cases assigned to this AIO and bind the returned database fields to php variables
     		    $statement = $conn->prepare("
-                          SELECT 
-                            professor.fname, 
-                            professor.lname, 
-                            student.fname, 
-                            student.lname, 
-                            student.csid, 
-                            active_cases.case_id 
-                          FROM 
-                            professor 
-                            LEFT JOIN active_cases ON professor.professor_id = active_cases.prof_id 
-                            LEFT JOIN student ON student.case_id = active_cases.case_id 
-                          WHERE 
+                          SELECT
+                            professor.fname,
+                            professor.lname,
+                            student.fname,
+                            student.lname,
+                            student.csid,
+                            active_cases.case_id
+                          FROM
+                            professor
+                            LEFT JOIN active_cases ON professor.professor_id = active_cases.prof_id
+                            LEFT JOIN student ON student.case_id = active_cases.case_id
+                          WHERE
                             active_cases.aio_id = ?
                           ORDER BY
                             active_cases.case_id
@@ -102,12 +103,12 @@ ViewAllPost;
         </tbody>
       </table>
     </div>
-    
+
     <br />
 
     <div>
       <h3>Unassigned cases</h3>
-      
+
       <table class="table table-bordered" style="font-size: 12px;">
         <thead class="cases-table">
             <tr>
@@ -116,31 +117,31 @@ ViewAllPost;
                 <th>View</th>
             </tr>
         </thead>
-        <tbody>  
+        <tbody>
           <?php
             $conn = OpenCon();
             $query = $conn->prepare(
                       "
-                      SELECT 
-                        active_cases.case_id, 
-                        active_cases.class_name_code, 
-                        professor.fname, 
-                        professor.lname 
-                      FROM 
-                        professor 
-                        RIGHT JOIN active_cases ON professor.professor_id = active_cases.prof_id 
-                      WHERE 
+                      SELECT
+                        active_cases.case_id,
+                        active_cases.class_name_code,
+                        professor.fname,
+                        professor.lname
+                      FROM
+                        professor
+                        RIGHT JOIN active_cases ON professor.professor_id = active_cases.prof_id
+                      WHERE
                         active_cases.aio_id IS NULL
                       ORDER BY
                         active_cases.case_id
                       ");
-            
+
             if(!$query->execute()){
          		  echo "Execute failed: (" . $query->errno . ") " . $query->error;
             }
-            
+
             $query->bind_result($uCaseId, $uClassName, $uProfessorFN, $uProfessorLN);
-            
+
             while($query->fetch()){
               echo <<<ViewAllPost
               <tr>
@@ -157,7 +158,7 @@ ViewAllPost;
             }
             CloseCon( $conn );
           ?>
-        </tbody> 
+        </tbody>
       </table>
     </div>
   </body>

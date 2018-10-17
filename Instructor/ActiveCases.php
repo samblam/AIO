@@ -14,6 +14,7 @@ include '../includes/formProcess.php';
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="robots" content="noindex,nofollow">
         <title>Portal</title>
         <link rel="stylesheet" href="../CSS/main.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -101,7 +102,7 @@ include '../includes/formProcess.php';
                         </td>
                       </tr>
 ViewAllPost;
-                      
+
                     }
                     if( $count == 0 ) {
                         echo "No cases";
