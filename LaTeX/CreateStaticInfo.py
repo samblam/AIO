@@ -1,4 +1,8 @@
+import datetime
+
 filename = "InfoStatic.tex" #file name
+
+date = datetime.datetime.now()
 
 def newCom(command, value): #new command
 	file.write("\\newcommand{" + command + "}{" + value + "}\n")
@@ -113,6 +117,7 @@ nl()
 newCom("\\Professor", "Morie Artie")
 newCom("\\ProfessorEmail", "{\\tt martie@cs.dal.ca}")
 newCom("\\Class", "CSCI 1234: Water Computing")
+#newCom("\\DigSig", + date +, " by " + Professor)
 nl()
 
 newCom("\\Student", "Mr.~Joseph Public")
