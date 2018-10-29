@@ -6,44 +6,7 @@ require_once 'secure.php';
 include '../includes/db.php';
 //Check if the form variables have been submitted, store them in the session variables
 include '../includes/formProcess.php';
-$conn = OpenCon();
-                //This fixes an issues with going back, or reloading the page as the caseId is lost
-                if(!isset($_POST['caseId'])){
-                    if(!isset($_SESSION['lastCaseId'])){
-                        header('ActiveCases.php');
-                    }
-                    else{
-                        $caseIdValue = $_SESSION['lastCaseId'];
-                    }
-                }
-                else{
-                    $caseIdValue = $_POST['caseId'];
-                    $_SESSION['lastCaseId'] = $_POST['caseId'];
-                }
 
-                //Get all relevant fields and bind them to php variables
-                $statement = $conn->prepare("
-                    SELECT
-                        active_cases.form_a_submit_date,
-                        active_cases.stu_csid_list,
-                        professor.fname, 
-                        professor.lname, 
-                        student.fname, 
-                        student.lname, 
-                        student.csid,
-                        student.student_id
-                    FROM 
-                        professor 
-                        LEFT JOIN active_cases ON professor.professor_id = active_cases.prof_id 
-                        LEFT JOIN student ON student.case_id = $caseIdValue
-                    WHERE 
-                        active_cases.case_id = $caseIdValue
-                        ");
-                if(!$statement->execute()){
-                    echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
-                }
-                $statement->bind_result($submissionDate, $studentList, $pfname, $plname, $sfname, $slname, $scsid, $studentID);
-                $statement->fetch();
 ?>
 <!DOCTYPE html>
 <html>
@@ -77,52 +40,23 @@ $conn = OpenCon();
                 <tbody>
                     <tr>
                         <td>Banner number</td>
-                        <td><?php echo $scsid ?></td>
+                        <td>B00000000</td>
                     </tr>
                     <tr>
                         <td>Student(s) name</td>
-                        <td><?php echo "$sfname $slname" ?></td>
+                        <td>Mark Auto</td>
                     </tr>
                     <tr>
                         <td>Professor</td>
-                        <td><?php echo "$pfname $plname" ?></td>
+                        <td>Fred</td>
                     </tr>
                     <tr>
                         <td>Date</td>
-                        <td><?php echo $submissionDate?></td>
+                        <td>Jan 31st 2017</td>
                     </tr>
                     <tr>
                         <td>Files</td>
-                        <?php
-                            echo "<td>";
-                            if ($path_to_evidence_dir != "" && file_exists("../evidence/" . $path_to_evidence_dir . "/evidence.zip")) {
-                                // user should be shown the link to the evidence file
-                                $path_to_zip_file = "../evidence/" . $path_to_evidence_dir . "/evidence.zip";
-                                echo "<form action=\"/downloadRequest.php\" method=\"post\">
-                                            <input hidden name=\"caseId\" id=\"caseId\" value=\"$caseId\"/>
-                                            <input type=\"submit\" class=\"submitLink\" name=\"evidenceLink\" value=\"evidence.zip\"/>
-                                        </form><br />";
-                            }
-                            
-                            else {
-                                // no evidence has been submitted
-                                echo "No evidence submitted<br />";
-                            }
-                            $path_to_PDF_dir = $caseId;
-                            if ($path_to_PDF_dir != "" && file_exists("../evidence/" . $caseId . "/{$caseId}.pdf")){
-                                // user should be shown the link to the pdf 
-                                echo "<form action=\"/downloadRequest.php\" method=\"post\">
-                                            <input hidden name=\"caseId\" id=\"caseId\" value=\"$caseId\"/>
-                                            <input type=\"submit\" class=\"submitLink\" name=\"PDFLink\" value=\"{$caseId}_formA.pdf\"/>
-                                        </form>";
-                            }
-
-                            else{
-                                //no PDF generated
-                                echo "No PDF submitted";
-                            }
-                            echo "</td>";
-                        ?>
+                        <td><a href="#">Link.zip</a></td>
                     </tr>            
                     
                     <tr>
