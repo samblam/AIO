@@ -58,7 +58,11 @@
         }
         echo "<button class=\"btn btn-success\" type=\"submit\" formaction=\"$switchRolesScript\" name=\"newRole\" value=\"$other_role\"> Switch to $display_names[$other_role]</button>";
       }
+      // echo " The role is ". $_SESSION['role'] ."   ok";
     ?>
+    <?php if ($_SESSION['role'] =='admin') { ?>
+      <button class="btn btn-primary" style="margin-left: 10pt;" formaction=<?php echo "http://" . $_SERVER["HTTP_HOST"] . "/Admin/ManageUsers.php"; ?>>Manage Users</button>
+    <?php }?>
     
     <button class="btn btn-default" style="margin-left: 10pt;" formaction=<?php echo "\"$faqLink\""; ?>>FAQ</button>
     <button class="btn btn-danger" style="margin-left: 10pt;" formaction=<?php echo "\"$logOutScript\""; ?>>Logout</button>
