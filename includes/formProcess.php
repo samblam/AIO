@@ -23,7 +23,10 @@
     // require_once "globalSecure.php";
     require_once 'session.php';
     include_once 'db.php';
-
+    require_once '../Scripts/PHPMailer-master/src/PHPMailer.php';
+    require_once '../Scripts/PHPMailer-master/src/Exception.php';
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\Exception;
     // This returns you back to the role's active case page.
     // Might want to change admin and aio conditions and locations (elseif and else respectively)
     // as the professors is pretty obvious but admin and aio might want to return
@@ -132,14 +135,24 @@
     // sends email to forward case to senate from CaseInformation.php
     if(isset($_POST['forwardCase']) && isset($_POST['case_id']) && $_SESSION['role'] == "aio") {
         $caseId = htmlspecialchars(trim(stripslashes($_POST['case_id'])));
+        $filename = 'evidence.zip';
+        $path = '../evidence/' . $caseId . '/evidence.zip';
+        $file = $path . $filename;
         $email = htmlspecialchars(trim(stripslashes($_POST['email_to'])));
         $cc = htmlspecialchars(trim(stripslashes($_POST['email_cc'])));
         $subject = htmlspecialchars(trim(stripslashes($_POST['email_subject'])));
         $message = htmlspecialchars(trim(stripslashes($_POST['email_message'])));
         echo "<script>console.log( 'Debug Objects: " . $message . "' );</script>";
         $message = wordwrap($message,70);
-        $header = "CC:" . $cc . "\r\n";
-        mail($email, $subject, $message, $header); 
+        $mail = new PHPMailer();
+        $mail->SetFrom('aio@peso.cs.dal.ca');
+        $mail->Subject = $subject;
+        $mail->Body = $message;
+        $mail->AddAddress($email);
+        $mail->AddCC($cc);
+        $mail->AddAttachment($path);
+        return $mail->Send();
+        console.log($email->ErrorInfo);
         // Redircets to the CaseINformation.php page once the email is sent
         header("Location: ../AIO/CaseInformation.php");
     }
