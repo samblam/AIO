@@ -548,6 +548,221 @@
       ],
       "value": ""
     }]
+  }, {
+    "id": "0756a496-3a94-4112-8d67-49d3569886d4",
+    "name": "change_AIO",
+    "commands": [{
+      "id": "899c33ff-e070-4b55-ad97-eaa8339e9baf",
+      "comment": "",
+      "command": "open",
+      "target": "/login.php",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "33ece629-be3d-4352-bed5-072d4813aca2",
+      "comment": "",
+      "command": "type",
+      "target": "name=csid",
+      "targets": [
+        ["name=csid", "name"],
+        ["css=input[name=\"csid\"]", "css"],
+        ["xpath=//input[@name='csid']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "admin"
+    }, {
+      "id": "ead91438-700e-41cf-ab10-d6621d26b92f",
+      "comment": "",
+      "command": "type",
+      "target": "name=password",
+      "targets": [
+        ["name=password", "name"],
+        ["css=input[name=\"password\"]", "css"],
+        ["xpath=//input[@name='password']", "xpath:attributes"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": "1"
+    }, {
+      "id": "e3112686-f976-4a2a-b138-304f8fc15221",
+      "comment": "",
+      "command": "click",
+      "target": "name=LoginSubmit",
+      "targets": [
+        ["name=LoginSubmit", "name"],
+        ["css=button[name=\"LoginSubmit\"]", "css"],
+        ["xpath=//button[@name='LoginSubmit']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "63904c91-6027-4e14-bd62-cec7d2cd682b",
+      "comment": "",
+      "command": "click",
+      "target": "css=tr:nth-child(1) .dropdown > .btn",
+      "targets": [
+        ["css=tr:nth-child(1) .dropdown > .btn", "css:finder"],
+        ["xpath=//button[@type='button']", "xpath:attributes"],
+        ["xpath=//div/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e332d07c-47ac-4ee9-9103-f848f0f8b29c",
+      "comment": "",
+      "command": "click",
+      "target": "css=li > form > button.btn",
+      "targets": [
+        ["css=li > form > button.btn", "css"],
+        ["css=.dropdown-menu:nth-child(3) > li:nth-child(2) .btn", "css:finder"],
+        ["xpath=(//button[@type='submit'])[2]", "xpath:attributes"],
+        ["xpath=//li/form/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "681e221b-c556-4b68-9f8d-339918ce8f12",
+      "comment": "",
+      "command": "click",
+      "target": "name=selectedAIO",
+      "targets": [
+        ["name=selectedAIO", "name"],
+        ["css=select[name=\"selectedAIO\"]", "css"],
+        ["css=.border", "css:finder"],
+        ["xpath=//select[@name='selectedAIO']", "xpath:attributes"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "5ed02ff4-b164-4a64-b2fc-e2a870584910",
+      "comment": "",
+      "command": "select",
+      "target": "name=selectedAIO",
+      "targets": [],
+      "value": "label=Chris Connors"
+    }, {
+      "id": "2c9a6c2f-2836-4af4-ba8e-f3026e16cdcb",
+      "comment": "",
+      "command": "click",
+      "target": "css=option:nth-child(7)",
+      "targets": [
+        ["css=option:nth-child(7)", "css:finder"],
+        ["xpath=//option[7]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "33fee1d8-f448-48c0-9cde-efdeb3ccde27",
+      "comment": "",
+      "command": "click",
+      "target": "name=submitChangeAIO",
+      "targets": [
+        ["name=submitChangeAIO", "name"],
+        ["css=button[name=\"submitChangeAIO\"]", "css"],
+        ["css=.btn-success", "css:finder"],
+        ["xpath=//button[@name='submitChangeAIO']", "xpath:attributes"],
+        ["xpath=//div[3]/form/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "05ba1446-63e9-41bb-b1e7-bebc55b7da78",
+      "comment": "",
+      "command": "click",
+      "target": "css=button.btn.btn-danger",
+      "targets": [
+        ["css=button.btn.btn-danger", "css"],
+        ["xpath=//button[2]", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "16243379-f6aa-41c2-8d7d-d681a8be5717",
+    "name": "delete_case",
+    "commands": [{
+      "id": "a4acec4f-de91-41a5-9070-0f1f8e5683f7",
+      "comment": "",
+      "command": "open",
+      "target": "/login.php",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "dec6de24-911d-4744-b22c-319a961cffb1",
+      "comment": "",
+      "command": "type",
+      "target": "name=csid",
+      "targets": [
+        ["name=csid", "name"],
+        ["css=input[name=\"csid\"]", "css"],
+        ["xpath=//input[@name='csid']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "admin"
+    }, {
+      "id": "643ee70e-b313-41fa-8dbc-279ee0a7ed34",
+      "comment": "",
+      "command": "type",
+      "target": "name=password",
+      "targets": [
+        ["name=password", "name"],
+        ["css=input[name=\"password\"]", "css"],
+        ["xpath=//input[@name='password']", "xpath:attributes"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": "1"
+    }, {
+      "id": "6c4f9621-edc5-4b28-8b6d-e38972b30905",
+      "comment": "",
+      "command": "click",
+      "target": "name=LoginSubmit",
+      "targets": [
+        ["name=LoginSubmit", "name"],
+        ["css=button[name=\"LoginSubmit\"]", "css"],
+        ["xpath=//button[@name='LoginSubmit']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c05be6b1-d3ba-4fe0-b90a-6a04de2bdde5",
+      "comment": "",
+      "command": "click",
+      "target": "css=tr:nth-child(1) .dropdown > .btn",
+      "targets": [
+        ["css=tr:nth-child(1) .dropdown > .btn", "css:finder"],
+        ["xpath=//button[@type='button']", "xpath:attributes"],
+        ["xpath=//div/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "167cf6af-cc22-4c7e-849a-7b189173cc1a",
+      "comment": "",
+      "command": "click",
+      "target": "name=deleteCase",
+      "targets": [
+        ["name=deleteCase", "name"],
+        ["css=button[name=\"deleteCase\"]", "css"],
+        ["css=.dropdown-menu:nth-child(3) .delete_this_case > .btn", "css:finder"],
+        ["xpath=//button[@name='deleteCase']", "xpath:attributes"],
+        ["xpath=//li[2]/form/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "8820db85-1814-4c54-a41f-d5d31165d71e",
+      "comment": "",
+      "command": "",
+      "target": "",
+      "targets": [
+        ["css=nav.navbar.bg-secondary", "css"],
+        ["css=.navbar", "css:finder"],
+        ["xpath=//nav", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "591dc521-533e-4581-ac3e-07ac5a636c59",
+      "comment": "",
+      "command": "click",
+      "target": "css=button.btn.btn-danger",
+      "targets": [
+        ["css=button.btn.btn-danger", "css"],
+        ["xpath=//button[2]", "xpath:position"]
+      ],
+      "value": ""
+    }]
   }],
   "suites": [{
     "id": "ec938312-916b-4e6e-ab0a-429b028c7a6d",
