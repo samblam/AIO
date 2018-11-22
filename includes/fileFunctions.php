@@ -63,6 +63,7 @@
 	}
 
 	function PDFFormA ($prof, $email, $phone, $faculty, $cname, $students, $boos, $date, $comments, $case_id){
+        putenv('PATH=/usr/bin/:/usr/local/bin:/bin');
 	$numberStudents = count($students);
 	$fileText = <<<_END
 {$prof}
