@@ -31,9 +31,9 @@
 ?>
 
 <nav class="navbar bg-secondary">
-  <span class="navbar-brand">FCS - AIO Portal</span>
+  <span class="navbar-brand"><a href = ActiveCases.php>FCS - AIO Portal</a></span>
   <form class="form-inline pull-right" method="post"action=<?php echo "\"$switchRolesScript\""; ?>>
-    <?php 
+    <?php
       if( sizeof($_SESSION['roles']) > 2 ) {
     ?>
     <select class="form-control" id="roleSelect" name="newRole">
@@ -63,7 +63,7 @@
     <?php if ($_SESSION['role'] =='admin') { ?>
       <button class="btn btn-primary" style="margin-left: 10pt;" formaction=<?php echo "http://" . $_SERVER["HTTP_HOST"] . "/Admin/ManageUsers.php"; ?>>Manage Users</button>
     <?php }?>
-    
+
     <button class="btn btn-default" style="margin-left: 10pt;" formaction=<?php echo "\"$faqLink\""; ?>>FAQ</button>
     <button class="btn btn-danger" style="margin-left: 10pt;" formaction=<?php echo "\"$logOutScript\""; ?>>Logout</button>
   </form>

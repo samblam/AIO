@@ -144,7 +144,7 @@
                             if ($path_to_evidence_dir != "" && file_exists("../evidence/" . $path_to_evidence_dir . "/evidence.zip")) {
                                 // user should be shown the link to the evidence file
                                 $path_to_zip_file = "../evidence/" . $path_to_evidence_dir . "/evidence.zip";
-                                echo "<form action=\"../downloadRequest.php\" method=\"post\">
+                                echo "<form action=\"/downloadRequest.php\" method=\"post\">
                                             <input hidden name=\"caseId\" id=\"caseId\" value=\"$caseId\"/>
                                             <input type=\"submit\" class=\"submitLink\" name=\"evidenceLink\" value=\"evidence.zip\"/>
                                         </form><br />";
@@ -155,13 +155,13 @@
                                 echo "No evidence submitted<br />";
                             }
                             $path_to_PDF_dir = $caseId;
-                        if ($path_to_PDF_dir != "" && file_exists("../evidence/" . $caseId . "/FormA.pdf")){
-                            // user should be shown the link to the pdf
-                            echo "<form action=\"../downloadRequest.php\" method=\"post\">
-                                            <input hidden name=\"caseId\" id=\"caseId\" value=\"$caseId\">
-                                            <input type='submit' class='submitLink' name='PDFLink' value='FormA.pdf'/>
-                                       </form>";
-                        }
+                            if ($path_to_PDF_dir != "" && file_exists("../evidence/" . $caseId . "/{$caseId}.pdf")){
+                                // user should be shown the link to the pdf 
+                                echo "<form action=\"/downloadRequest.php\" method=\"post\">
+                                            <input hidden name=\"caseId\" id=\"caseId\" value=\"$caseId\"/>
+                                            <input type=\"submit\" class=\"submitLink\" name=\"PDFLink\" value=\"{$caseId}_formA.pdf\"/>
+                                        </form>";
+                            }
 
                             else{
                                 //no PDF generated
