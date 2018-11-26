@@ -55,7 +55,8 @@ include '../includes/formProcess.php';
                   <?php
                     $conn = OpenCon();
                     //Get all active cases and bind the returned database fields to php variables
-                    $result = $conn->query("
+                  getActiveCases();
+/*                    $result = $conn->query("
                                   SELECT 
                                     active_cases.case_id, 
                                     active_cases.class_name_code, 
@@ -73,7 +74,7 @@ include '../includes/formProcess.php';
                       echo "Database Error. Please contact admin.";
                       echo $conn->error;
                     }
-
+*/
                     //$statement->bind_result($caseId, $className, $pfname, $plname, $afname, $alname);
 
                     /**

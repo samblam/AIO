@@ -54,9 +54,11 @@
 				}
 
 				$conn = OpenCon();
+				$getStudentList="";
 				//Get the IDs of students involved in the case and make a button for each one.
 				if ($num_students > 1) {
-					$getStudentList = $conn->prepare("
+					getStudent($caseId,$conn);
+/*				    $getStudentList = $conn->prepare("
 									SELECT
 										student_id,
 										fname,
@@ -66,7 +68,7 @@
 									WHERE
 										case_id = $caseId
 									");
-
+*/
 					if(!$getStudentList->execute()){
 						echo "Execute failed: (" . $getCaseInfo->errno . ") " . $getCaseInfo->error;
 					}
@@ -95,7 +97,8 @@ NoStuIDError;
 				}
 
 				//Get info about the student.
-				$studentInfo = $conn->prepare("
+			getStudentInfo($student_id,$conn);
+/*            $studentInfo = $conn->prepare("
 									SELECT
 										S.fname,
 										S.lname,
@@ -106,7 +109,7 @@ NoStuIDError;
 									WHERE
 										student_id = $student_id
 									");
-
+*/
 				if(!$studentInfo->execute()){
 					echo "Execute failed: (" . $studentInfo->errno . ") " . $studentInfo->error;
 				}
@@ -116,7 +119,9 @@ NoStuIDError;
 				CloseCon($studentInfo);
 
 				//Get additional information about the case.
-				$caseInfo = $conn->prepare("
+            $caseInfo="";
+            getAdditionalCaseInfo($caseId,$conn);
+/*				$caseInfo = $conn->prepare("
 									SELECT
 										A.evidence_fileDir,
 										P.fname,
@@ -131,7 +136,7 @@ NoStuIDError;
 										case_id = $caseId
 
 									");
-
+*/
 				if(!$caseInfo->execute()){
 					echo "Execute failed: (" . $caseInfo->errno . ") " . $caseInfo->error;
 				}
@@ -146,7 +151,9 @@ NoStuIDError;
 					$aio_phone = "N/A";
 					$aio_email = "N/A";
 				} else {
-					$AIOInfo = $conn->prepare("
+				$AIOInfo="";
+                getAdditionalAIOInfo($aio_id,$conn);
+/*					$AIOInfo = $conn->prepare("
 									SELECT
 										phone,
 										email
@@ -155,7 +162,7 @@ NoStuIDError;
 									WHERE
 										aio_id = $aio_id
 									");
-
+*/
 					if(!$AIOInfo->execute()){
 						echo "Execute failed: (" . $AIOInfo->errno . ") " . $AIOInfo->error;
 					}

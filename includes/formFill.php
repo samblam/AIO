@@ -18,8 +18,8 @@
   // Creates the variables for professor info to be automatically inputed into form A
   if(basename($_SERVER['PHP_SELF']) == "forma.php" && $_SESSION['role'] == "professor"){
     $conn = OpenCon();
-
-    $query = $conn->prepare("SELECT fname, lname, phone, email, department FROM professor WHERE professor_id = ?");
+    $query = getPROFbyId($conn);
+    //$query = $conn->prepare("SELECT fname, lname, phone, email, department FROM professor WHERE professor_id = ?");
     $query->bind_param("s", $_SESSION['csid']);
     $query->execute();
     $query->store_result();
@@ -36,7 +36,8 @@
     $id = (int)$_GET['case_id'];
     $query = null;
     if(isset($_GET['case_id'])){
-      $query = $conn->prepare("SELECT prof_id, class_name_code, date_aware FROM active_cases WHERE case_id = ?");
+      $query = getActiveCaseInfoById($conn);
+      //$query = $conn->prepare("SELECT prof_id, class_name_code, date_aware FROM active_cases WHERE case_id = ?");
       $query->bind_param("i", $id);
       $query->execute();
     }
@@ -57,7 +58,8 @@
       $query->bind_result($prof_id, $course_name, $date_alleg);
       $query->fetch();
       if ( ($prof_id != NULL) || (!empty($prof_id))) { //This will fetch all the information needed from the professor table
-        $query = $conn->prepare("SELECT fname, lname, phone, email, department FROM professor WHERE professor_id = ?");
+        $query = getPROFInfoById($conn);
+        //$query = $conn->prepare("SELECT fname, lname, phone, email, department FROM professor WHERE professor_id = ?");
         $query->bind_param("i", $prof_id);
         $query->execute();
         $query->store_result();

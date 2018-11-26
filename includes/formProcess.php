@@ -64,8 +64,9 @@
     // Deletes all students and active cases with the given case id from Admin/ACtiveCases.php
     if(isset($_POST['deleteCase']) && isset($_POST['case_id']) && $_SESSION['role'] == "admin") {
         $id = htmlspecialchars(trim(stripslashes($_POST['case_id'])));
-        $conn->query("DELETE FROM student WHERE case_id = \"$id\"");
-        $conn->query("DELETE FROM active_cases WHERE case_id = \"$id\"");
+        deleteStudentInfoByCaseID($id,$conn);
+        //$conn->query("DELETE FROM student WHERE case_id = \"$id\"");
+        //$conn->query("DELETE FROM active_cases WHERE case_id = \"$id\"");
     }
 
     // Allows the admin to change the AIO of a case from ChangeAIO.php
@@ -75,14 +76,17 @@
         $newAIO = htmlspecialchars(trim(stripslashes($_POST['selectedAIO']))); 
         // Gets AIO id from db
         if($newAIO != "Select New"){
-            $statement = $conn->prepare("SELECT aio_id FROM aio WHERE CONCAT(TRIM(fname), ' ', TRIM(lname)) LIKE '$newAIO'"); 
+
+            $statement = findAIObySelection($newAIO,$conn);
+            // $statement = $conn->prepare("SELECT aio_id FROM aio WHERE CONCAT(TRIM(fname), ' ', TRIM(lname)) LIKE '$newAIO'");
             if(!$statement->execute()){
                 echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
             }
             $statement->bind_result($aioId);
             while($statement->fetch()){ }
             // Updates AIO in active cases table
-            $conn->query("UPDATE active_cases SET aio_id = '$aioId' WHERE case_id = '$id'"); 
+            setAIOByCaseId($aioId,$id,$conn);
+            //$conn->query("UPDATE active_cases SET aio_id = '$aioId' WHERE case_id = '$id'");
         }
     }
 
@@ -90,7 +94,8 @@
     if(isset($_POST['insufficientEvidence']) && isset($_POST['case_id']) && $_SESSION['role'] == "aio") {
         $caseId = htmlspecialchars(trim(stripslashes($_POST['case_id'])));
         // Get student name from db
-        $statement = $conn->prepare("SELECT fname, lname, csid FROM student WHERE case_id = '$caseId'"); 
+        $statement = getStudentInfoByCaseId($caseId,$conn);
+        //$statement = $conn->prepare("SELECT fname, lname, csid FROM student WHERE case_id = '$caseId'");
         if(!$statement->execute()){
             echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
         }
@@ -101,7 +106,8 @@
             $msg = wordwrap($msg, 70);
         }
         // Get prof email from db
-        $statement = $conn->prepare("SELECT professor.email FROM active_cases LEFT JOIN professor ON active_cases.prof_id = professor.professor_id WHERE active_cases.case_id = '$caseId'"); 
+        $statement = getPROFInfoByCaseId($caseId,$conn);
+        //$statement = $conn->prepare("SELECT professor.email FROM active_cases LEFT JOIN professor ON active_cases.prof_id = professor.professor_id WHERE active_cases.case_id = '$caseId'");
         if(!$statement->execute()){
             echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
         }
@@ -110,8 +116,9 @@
         while($statement->fetch()){
             mail($email, "Insufficient evidence provided for academic integrity case.", $msg);
         }
-        $conn->query("DELETE FROM student WHERE case_id = \"$caseId\"");
-        $conn->query("DELETE FROM active_cases WHERE case_id = \"$caseId\"");
+        deleteStudentInfoByCaseID($caseId,$conn);
+        //$conn->query("DELETE FROM student WHERE case_id = \"$caseId\"");
+        //$conn->query("DELETE FROM active_cases WHERE case_id = \"$caseId\"");
         // Redircets to the ActiveCases.php page once the email is sent
         header("Location: ../AIO/ActiveCases.php");
     }
@@ -119,16 +126,18 @@
     // Deletes all students and active cases with the given case id from CaseInformation.php
     if(isset($_POST['closeCaseNotGuilty']) && isset($_POST['case_id']) && $_SESSION['role'] == "aio") {
         $id = htmlspecialchars(trim(stripslashes($_POST['case_id'])));
-        $conn->query("DELETE FROM student WHERE case_id = \"$id\"");
-        $conn->query("DELETE FROM active_cases WHERE case_id = \"$id\"");
+        deleteStudentInfoByCaseID($id,$conn);
+        //$conn->query("DELETE FROM student WHERE case_id = '$id'");
+        //$conn->query("DELETE FROM active_cases WHERE case_id = '$id'");
     }
 
     // Moves all students and active cases with the given case id to archive from CaseInformation.php
     if(isset($_POST['closeCaseGuilty']) && isset($_POST['case_id']) && $_SESSION['role'] == "aio") {
         $id = htmlspecialchars(trim(stripslashes($_POST['case_id'])));
-        $conn->query("INSERT INTO history (class_name, verdict, date_allegation) SELECT class_name_code, case_verdict, date_aware FROM active_cases WHERE case_id = \"$id\"");
-        $conn->query("DELETE FROM student WHERE case_id = \"$id\"");
-        $conn->query("DELETE FROM active_cases WHERE case_id = \"$id\"");
+        insertThenDeleteStudentInfoByCaseID($id,$conn);
+        //$conn->query("INSERT INTO history (class_name, verdict, date_allegation) SELECT class_name_code, case_verdict, date_aware FROM active_cases WHERE case_id = '$id'");
+        //$conn->query("DELETE FROM student WHERE case_id = \"$id\"");
+        //$conn->query("DELETE FROM active_cases WHERE case_id = \"$id\"");
     }
 
     // TODO: Add functionality so a zip folder with all of the case files is sent with the email

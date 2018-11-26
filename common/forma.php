@@ -17,7 +17,9 @@ $case_id = "";
 // check if URL contains the case_id variable
 if(isset($_POST["caseId"])){
     $conn = OpenCon();
-    $statement = $conn->prepare("SELECT evidence_fileDir, form_a_submit_date FROM active_cases WHERE case_id = ?");
+    getActiveCase($conn);
+    //$statement = $conn->prepare("SELECT evidence_fileDir, form_a_submit_date FROM active_cases WHERE case_id = ?");
+
     // get the case_id from the URL
     $case_id = (int)$_POST["caseId"];
     $statement->bind_param("d", $case_id);
@@ -78,7 +80,8 @@ if(isset($_POST["caseId"])){
                 
                 //grab all the professors
                 $conn = OpenCon();
-                $statement = $conn->prepare("SELECT professor_id, fname, lname, email, phone FROM professor");
+                getPROF($conn);
+                //$statement = $conn->prepare("SELECT professor_id, fname, lname, email, phone FROM professor");
                 if(!$statement->execute()){
                   echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                 }

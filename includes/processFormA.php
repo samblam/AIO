@@ -24,7 +24,8 @@
 		}
 		else {
 			$csid = $_SESSION['csid'];
-			$res = $conn->query( "SELECT professor_id FROM `professor` WHERE csid=\"$csid\"" );
+			$res = findPROFById($csid,$conn);
+			//$res = $conn->query( "SELECT professor_id FROM `professor` WHERE csid=\"$csid\"" );
 			if( !$res ) {
 				echo "Database Error. Please contact admin.";
 				echo $conn->error;
@@ -82,7 +83,8 @@ MissingDataError;
 			if(isset($_POST['case_id'])){
 				// form was previously saved and is now being submitted
 				$caseId = (int)$_POST['case_id'];
-				$statement = $conn->prepare("UPDATE active_cases SET prof_id = ?, class_name_code = ?, date_aware = ?, description = ?, form_a_submit_date = ? WHERE case_id = ?");
+				$statement = setActiveCasesById($conn);
+				//$statement = $conn->prepare("UPDATE active_cases SET prof_id = ?, class_name_code = ?, date_aware = ?, description = ?, form_a_submit_date = ? WHERE case_id = ?");
 				$statement->bind_param("issssd",$profId, $cname, $date, $comments, $submitDate, $caseId); //bind the values to be inserted to the query
 
 				if(!$statement->execute()) {
@@ -94,7 +96,8 @@ MissingDataError;
 
 			else {
 				//Create new case entry
-				$statement = $conn->prepare("INSERT INTO active_cases (prof_id, class_name_code, date_aware, description, form_a_submit_date) VALUES (?, ?, ?, ?, ?)");
+				$statement = insertNewCase($conn);
+                //$statement = $conn->prepare("INSERT INTO active_cases (prof_id, class_name_code, date_aware, description, form_a_submit_date) VALUES (?, ?, ?, ?, ?)");
 				$statement->bind_param("issss",$profId, $cname, $date, $comments, $submitDate); //bind the values to be inserted to the query
 
 				if(!$statement->execute()) {
@@ -106,7 +109,8 @@ MissingDataError;
 				// Grabs case_id of the just inserted case and uses it to create the evidence directory name for this case in the database
 				// This step might be unnecessary if the value is just the same as the case_id. If its a combo of values then it might be necessary.
 				$caseId = $conn->insert_id;
-				$updateEvidence = $conn->prepare("UPDATE active_cases SET evidence_fileDir = ? WHERE case_id = ".$caseId);
+				$updateEvidence = setActiveCaseById($caseId,$conn);
+				//$updateEvidence = $conn->prepare("UPDATE active_cases SET evidence_fileDir = ? WHERE case_id = '$caseId'");
 				$updateEvidence->bind_param("s", $caseId); //bind evidence folder name to the prepared statements
 				
 				if(!$updateEvidence->execute()) {
@@ -123,7 +127,8 @@ MissingDataError;
 			 */
 			for($i = 0; $i < sizeof($students); $i++) {
 				if($students[$i] != NULL && $boos[$i] != NULL){
-					$statement = $conn->prepare("INSERT INTO student (csid, case_id, fname) VALUES (?, ?, ?)");
+					$statement= insertNewStudent($conn);
+				    //$statement = $conn->prepare("INSERT INTO student (csid, case_id, fname) VALUES (?, ?, ?)");
 					$currB00 = htmlspecialchars(trim(stripslashes($boos[$i])));
 					$currStudent = htmlspecialchars(trim(stripslashes($students[$i])));
 					$statement->bind_param("sis", $currB00, $caseId, $currStudent); //bind initial values to the prepared statements
@@ -164,7 +169,8 @@ MissingDataError;
 		//The case where this Form A has already been saved before and needs to be just saved again
 		if(isset($_POST['SaveFormA']) && !isset($_POST['case_id'])){
 			//Create new case entry
-			$statement = $conn->prepare("INSERT INTO active_cases (prof_id, class_name_code, date_aware, description) VALUES (?, ?, ?, ?)");
+			$statement = insertNewCaseSave($conn);
+            //$statement = $conn->prepare("INSERT INTO active_cases (prof_id, class_name_code, date_aware, description) VALUES (?, ?, ?, ?)");
 			$statement->bind_param("dsss",$profId, $cname, $date, $comments); //bind initial values to the prepared statements
 
 			if (!$statement->execute()) {
@@ -174,7 +180,8 @@ MissingDataError;
 			// Grabs case_id of the just inserted case and uses it to create the evidence directory name for this case in the database
 			// This step might be unnecessary if the value is just the same as the case_id. If its a combo of values then it might be necessary.
 			$caseId = $conn->insert_id;
-			$updateEvidence = $conn->prepare("UPDATE active_cases SET evidence_fileDir = ? WHERE case_id = ".$caseId);
+			$updateEvidence = setEvidenceByCaseId($caseId,$conn);
+			//$updateEvidence = $conn->prepare("UPDATE active_cases SET evidence_fileDir = ? WHERE case_id = ".$caseId);
 			$updateEvidence->bind_param("s", $caseId); //bind evidence folder name to the prepared statements
 
 			if (!$updateEvidence->execute()) {
@@ -189,7 +196,8 @@ MissingDataError;
 			 */
 			for($i = 0; $i < sizeof($students); $i++) {
 				if($students[$i] != NULL && $boos[$i] != NULL){
-					$statement = $conn->prepare("INSERT INTO student (csid, case_id, fname) VALUES (?, ?, ?)");
+					$statement= insertNewStudent($conn);
+				    //$statement = $conn->prepare("INSERT INTO student (csid, case_id, fname) VALUES (?, ?, ?)");
 					$currB00 = htmlspecialchars(trim(stripslashes($boos[$i])));
 					$currStudent = htmlspecialchars(trim(stripslashes($students[$i])));
 					$statement->bind_param("sis", $currB00, $caseId, $currStudent); //bind initial values to the prepared statements
@@ -199,8 +207,8 @@ MissingDataError;
 					}
 				}
 			}
-
-			$statement = $conn->prepare("INSERT INTO saved_info (professor, email, course, faculty, student_name, student_bannerid, date, comments, case_id, phone) VALUES ('{$prof}', '{$email}', '{$cname}', '{$faculty}', '{$students[0]}', '{$boos[0]}', '{$date}', '{$comments}', '{$caseId}', '{$phone}')");
+			    $statement = insertNewSaveInfo($prof, $email, $cname, $faculty, $students[0], $boos[0], $date, $comments, $caseId, $phone,$conn);
+			//$statement = $conn->prepare("INSERT INTO saved_info (professor, email, course, faculty, student_name, student_bannerid, date, comments, case_id, phone) VALUES ('{$prof}', '{$email}', '{$cname}', '{$faculty}', '{$students[0]}', '{$boos[0]}', '{$date}', '{$comments}', '{$caseId}', '{$phone}')");
 
     		if (!$statement->execute()) {
        			echo "Execute failed";
@@ -210,8 +218,10 @@ MissingDataError;
 		}
 		//The case where a new Form A is created but saved instead of submitted
 		if(isset($_POST['SaveFormA']) && isset($_POST['case_id'])){
-			//Create new case entry
-			$statement = $conn->prepare("UPDATE active_cases SET prof_id = ?, class_name_code = ?, date_aware = ?, description = ? WHERE case_id = " . (int)$_POST['case_id']);
+			$caseId = (int)$_POST['case_id'];
+		    //Create new case entry
+			$statement = setNewActiveCaseById($caseId,$conn);
+            //$statement = $conn->prepare("UPDATE active_cases SET prof_id = ?, class_name_code = ?, date_aware = ?, description = ? WHERE case_id = " . (int)$_POST['case_id']);
 			$statement->bind_param("dsss",$profId, $cname, $date, $comments); //bind initial values to the prepared statements
 			
 			if (!$statement->execute()) {
@@ -219,15 +229,17 @@ MissingDataError;
 			}
 
 			//Select students from this case
-			$statement = $conn->prepare("SELECT fname, csid FROM student WHERE case_id = " . (int)$_POST['case_id']);
+            $caseId = (int)$_POST['case_id'];
+			$statement = findStudentByCaseId($caseId,$conn);
+            //$statement = $conn->prepare("SELECT fname, csid FROM student WHERE case_id = " . (int)$_POST['case_id']);
 			
 			if(!$statement->execute()){
 				echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
 			}
 
 			$statement->bind_result($fname, $csid);
-
-			$statement = $conn->prepare("UPDATE saved_info SET professor='{$prof}', email='{$email}', course='{$cname}', faculty='{$faculty}', student_name='{students[0]}', student_bannerid='{$boos[0]}', date='{$date}', comments='{$comments}', phone='{$phone}' WHERE case_id='{$caseId}'");
+			$statement = setNewSaveInfo($prof,$email,$cname,$faculty,$students[0],$boos[0],$date,$comments,$phone,$caseId,$conn);
+			//$statement = $conn->prepare("UPDATE saved_info SET professor='{$prof}', email='{$email}', course='{$cname}', faculty='{$faculty}', student_name='{students[0]}', student_bannerid='{$boos[0]}', date='{$date}', comments='{$comments}', phone='{$phone}' WHERE case_id='{$caseId}'");
 
     		if (!$statement->execute()) {
        			echo "Execute failed";
@@ -248,17 +260,22 @@ MissingDataError;
 				if($students[$i] != NULL && $boos[$i] != NULL){
 					//Update a student if the csid exists already
 					if(array_key_exists("{$boos[$i]}", $currStudents) && $currStudents[$csid] != $students[$i]){
-						$statement = $conn->prepare("UPDATE student SET fname = ?, WHERE case_id = {$_POST['case_id']} AND csid = {$boos[$i]}");
+						$caseId = $_POST['case_id'];
+					    $statement= setStudentByCaseID($caseId,$boos[$i],$conn);
+					    //$statement = $conn->prepare("UPDATE student SET fname = ?, WHERE case_id = {$_POST['case_id']} AND csid = {$boos[$i]}");
 						$statement->bind_param("s", $student[$i]);
 					}
 
 					elseif(!array_key_exists("{$boos[$i]}", $currStudents)) {
-						$statement = $conn->prepare("INSERT INTO student (csid, case_id, fname) VALUES (?, ?, ?)");
+						$statement = insertNewStudent($conn);
+					    //$statement = $conn->prepare("INSERT INTO student (csid, case_id, fname) VALUES (?, ?, ?)");
 						$statement->bind_param("sss", $boos[$i], $caseId, $students[$i]); //bind initial values to the prepared statements
 					}
 
 					elseif(!in_array($currStudents[$boos[$i]], $students)){
-						$statement = $conn->prepare("DELETE FROM student WHERE case_id = {$_POST['case_id']} AND csid = {$boos[$i]}");
+
+					    $statement = deleteStudentByCaseId($caseId,$boos,$conn);
+					    //$statement = $conn->prepare("DELETE FROM student WHERE case_id = {$_POST['case_id']} AND csid = {$boos[$i]}");
 					}
 
 					if (!$statement->execute()) {

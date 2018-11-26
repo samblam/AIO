@@ -20,13 +20,17 @@
     if(isset($_POST['caseId'])){
         //Gets case id from URL
         $caseId = intval($_POST['caseId']);
-        $statement = $conn->prepare("SELECT evidence_fileDir, aio_id, prof_id FROM active_cases WHERE case_id = " . $caseId);
+        getCaseInfo($caseId);
+
+   /*     $statement = $conn->prepare("SELECT evidence_fileDir, aio_id, prof_id FROM active_cases WHERE case_id ='$caseId' ");
         if(!$statement->execute()){
             echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
         }
         $statement->bind_result($path_to_evidence_dir, $aio_id, $prof_id);
         $statement->fetch();
+
         CloseCon($conn);
+   */
     }
 ?>
 
@@ -68,7 +72,8 @@
                 }
 
                 //Get all relevant fields and bind them to php variables
-                $statement = $conn->prepare("
+            getMoreCaseInfo($caseIdValue,$conn);
+/*                $statement = $conn->prepare("
                     SELECT
                         active_cases.form_a_submit_date,
                         active_cases.stu_csid_list,
@@ -81,10 +86,11 @@
                     FROM 
                         professor 
                         LEFT JOIN active_cases ON professor.professor_id = active_cases.prof_id 
-                        LEFT JOIN student ON student.case_id = $caseIdValue
+                        LEFT JOIN student ON student.case_id = '$caseIdValue'
                     WHERE 
-                        active_cases.case_id = $caseIdValue
+                        active_cases.case_id = '$caseIdValue'
                         ");
+*/
                 if(!$statement->execute()){
                     echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                 }
@@ -186,9 +192,11 @@
                 $aio_id=NULL;
                 // check if URL contains the case_id variable
                 if(isset($_SESSION["lastCaseId"])){
-                    $statement = $conn->prepare("SELECT aio_id FROM active_cases WHERE case_id = ?");
-                    //binding current cases aio id to variable
                     $case_id = (int)$_SESSION["lastCaseId"];
+                    getCaseID($case_id,$conn);
+            //  $statement = $conn->prepare("SELECT aio_id FROM active_cases WHERE case_id = '$caseId'");
+                    //binding current cases aio id to variable
+
                     $statement->bind_param("i", $case_id);
                     if(!$statement->execute()){
                         echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
@@ -237,10 +245,14 @@ DenyButtons;
                 }
 
                 //Get case verdict from db
-                $statement = $conn->prepare("SELECT case_verdict FROM active_cases WHERE case_id = '$caseIdValue' AND aio_id = ?"); 
+                    $id = $_SESSION['csid'];
+            getCaseVerdict($caseIdValue,$id,$conn);
+                // $statement = $conn->prepare("SELECT case_verdict FROM active_cases WHERE case_id = '$caseIdValue' AND aio_id = ?");
+
                 $statement->bind_param("d", $id); //bind the csid to the prepared statements
-                $id = $_SESSION['csid'];
-                $res = $conn->query( "SELECT aio_id FROM `aio` WHERE csid=\"$id\"" );
+
+               // $res = $conn->query( "SELECT aio_id FROM `aio` WHERE csid='$id'" );
+            getAIOId($id,$conn);
                 $id = $res->fetch_array()[0];
                 if(!$statement->execute()){
                     echo "Execute failed: (" . $statement->errno . ") " . $statement->error;

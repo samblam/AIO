@@ -38,8 +38,9 @@ MissingDataError;
 
 	//Edit database to record meeting
     $conn = OpenCon();
-
-	$setMeeting = $conn->prepare("
+    $setMeeting="";
+setMeeting($conn);
+/* $setMeeting = $conn->prepare("
 		UPDATE student
 		SET
 			c_meetingDate = ?,
@@ -47,6 +48,7 @@ MissingDataError;
 			c_meetingTime = ?
 		WHERE student_id = ?
 	");
+*/
 	//Bind vars to '?' parameters in SQL.
     $setMeeting->bind_param("sssd", $forattedDate, $room, $data['timepickerC'], $data['student_id']);
     if (!$setMeeting->execute()) {

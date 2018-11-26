@@ -61,7 +61,8 @@ include '../includes/formProcess.php';
                 </thead>
                 <tbody>
                   <?php
-                    $conn = OpenCon();
+                  selectAIO();
+/*                    $conn = OpenCon();
                     $result = $conn->query("
                                   SELECT
                                     aio.fname, 
@@ -101,6 +102,7 @@ ViewAllPost;
 
                     $result->close();
                     CloseCon( $conn );
+*/
                   ?>
 
                 </tbody>
@@ -129,6 +131,8 @@ ViewAllPost;
                 </thead>
                 <tbody>
                   <?php
+                  selectPROF();
+/*
                     $conn = OpenCon();
                     $result = $conn->query("
                                   SELECT *
@@ -164,7 +168,8 @@ ViewAllPost;
                     }
 
                     $result->close();
-                    // CloseCon( $conn );
+                    CloseCon( $conn );
+*/
                   ?>
 
                 </tbody>
@@ -182,10 +187,14 @@ ViewAllPost;
 // Deleta a user
 if (isset($_GET['delete_aio'])) {
 	$delete_aio = $_GET['delete_aio'];
-
+	deleteAIO($delete_aio);
+/*	$conn= OpenCon();
 	$sql = "DELETE FROM aio WHERE aio_id = '$delete_aio'";
 
 	$result_delete_aio = $conn->query($sql);
+
+	CloseCon($conn);
+*/
 	?>
 	<script type="text/javascript">
 		window.location.href = 'ManageUsers.php';
@@ -196,10 +205,14 @@ if (isset($_GET['delete_aio'])) {
 
 if (isset($_GET['delete_prof'])) {
 	$delete_prof = $_GET['delete_prof'];
+    deletePROF($delete_prof);
 
+/*	$conn = OpenCon();
 	$sql = "DELETE FROM professor WHERE professor_id = '$delete_prof'";
 
 	$result_delete_prof = $conn->query($sql);
+	CloseCon($conn);
+*/
 	?>
 	<script type="text/javascript">
 		window.location.href = 'ManageUsers.php';
