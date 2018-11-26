@@ -89,7 +89,7 @@ _END;
 	//Maybe a security issue
 	chdir("{$dir}");
 	shell_exec("xelatex FormA.tex");
-	$rename = "{$case_id}.pdf";
+	$rename = "FormA.pdf";
 	//To change name and file location of PDF
 	rename ("FormA.pdf", "../evidence/{$case_id}/{$rename}");
 }
