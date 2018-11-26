@@ -126,9 +126,9 @@
 // Extracted SQL from various project files below here
 
 // ActiveCases.php
-  function getActiveCases()
+  function getActiveCases($conn)
   {
-    $conn= OpenCon();
+
       $result = $conn->query("
                                   SELECT 
                                     active_cases.case_id, 
@@ -143,13 +143,8 @@
                                   LEFT JOIN aio 
                                   ON aio.aio_id = active_cases.aio_id
                                   ORDER BY active_cases.case_id ");
-      CloseCon( $conn );
-      if( !$result ) {
-          echo "Database Error. Please contact admin.";
-          echo $conn->error;
-      }
 
-
+      return $result;
 
   }
  // add_user.php
@@ -170,81 +165,37 @@ $conn= OpenCon();
 
   }
 // changeAIO.php
-  function getCurrentAIO($a){
-    $conn = OpenCon();
+  function getCurrentAIO($a,$conn){
+
     $statement = $conn->prepare("SELECT active_cases.aio_id, aio.fname, aio.lname FROM active_cases LEFT JOIN aio ON aio.aio_id = active_cases.aio_id WHERE active_cases.case_id = '$a' ");
-    if(!$statement->execute()){
-        echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
-    }
-    $statement->bind_result($aioId, $aioFName, $aioLName);
-    while($statement->fetch()){
-        if($aioId == NULL){
-            echo <<<NoAIO
-                            No AIO is assigned to this case. <br><br>
-NoAIO;
-        }
-        else{
-            echo <<<CurrentAIO
-                            Current AIO: $aioFName $aioLName <br><br>
-CurrentAIO;
-        }
-    }
-    CloseCon( $conn );
+    return $statement;
 }
-function selectNameAIO()
+function selectNameAIO($conn)
 {
-    $conn = OpenCon();
+
     $statement = $conn->prepare("SELECT fname, lname FROM aio");
-    if (!$statement->execute()) {
-        echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
-    }
-// Start of form, and drop down select
-    echo <<<SelectNew
-                    New AIO: 
-                    <form class="submit_new_aio" method="post" action="ActiveCases.php">
-                        <select class="border border-dark" name="selectedAIO">
-                            <option selected >Select New</option>
-SelectNew;
-    $statement->bind_result($aioFName, $aioLName);
-    while ($statement->fetch()) {
-        // Drop down options for each AIO in the DB
-        echo <<<OptionAIO
-                        <option>$aioFName $aioLName</option>      
-OptionAIO;
-    }
-//Gets case id from URL
-    $caseId = $_POST['caseId'];
-// Submit button, and End of form
-    echo <<<Button
-                    </select>
-                    <br><br>
-                        <input type="text" name="case_id" value="$caseId" hidden>
-                        <button class="btn btn-success" value="true" type="submit" name="submitChangeAIO">Submit</button>
-                    </form>
-Button;
-    CloseCon($conn);
+    return $statement;
+
 }
 //edituser.php
-function getAIOidROW($a){
-    $conn = OpenCon();
+function getAIOidROW($a,$conn){
 
     $sql = "SELECT * FROM aio WHERE aio_id = '$a'";
 
     $result = $conn->query($sql);
 
-    return $row= $result->fetch_assoc();
+    return $result;
 }
 
-function getPROFidROW($a)
+function getPROFidROW($a,$conn)
 {
-    $conn = OpenCon();
 
     $sql = "SELECT * FROM professor WHERE professor_id = '$a'";
 
     $result = $conn->query($sql);
 
 
-    return $row = $result->fetch_assoc();
+    return $result;
 
 }
 
@@ -265,9 +216,8 @@ function updatePROF($a,$b,$c,$d,$e,$f,$g,$h,$i){
   CloseCon($conn);
 }
 // ManageUsers.php
-function selectAIO(){
-    $conn = OpenCon();
-    $result = $conn->query("
+function selectAIO($conn){
+   $result = $conn->query("
                                   SELECT
                                     aio.fname, 
                                     aio.lname, 
@@ -277,74 +227,16 @@ function selectAIO(){
                                     aio.aio_id  
                                   FROM aio 
                                   ORDER BY aio.lname ");
-    if( !$result ) {
-        echo "Database Error. Please contact admin.";
-        echo $conn->error;
-    }
-
-    while( $row = $result->fetch_array() ) {
-
-        $name = $row[1].", ". $row[0];
-        $csid = $row[2];
-        $phone = $row[3];
-        $email = $row[4];
-        $AIO_id = $row['aio_id'];
-        echo <<<ViewAllPost
-                      <tr>
-                          <td>$name</td>
-                          <td>$csid</td>
-                          <td>$phone</td>
-                          <td>$email</td>
-                          <td><a class='btn btn-warning btn-sm' href='edit_user.php?aio=$AIO_id'>EDIT</a></td>
-                          <td><a class='btn btn-danger btn-sm' href='ManageUsers.php?delete_aio=$AIO_id' onclick="return confirm('Are you sure you want to delete this user?')">DELETE</a></td>
-
-
-
-                      </tr>
-ViewAllPost;
-    }
-
-    $result->close();
-    CloseCon( $conn );
+   return $result;
 }
 
-function selectPROF(){
-    $conn = OpenCon();
+function selectPROF($conn){
+
     $result = $conn->query("
                                   SELECT *
                                   FROM professor 
                                   ORDER BY professor.lname ");
-    if( !$result ) {
-        echo "Database Error. Please contact admin.";
-        echo $conn->error;
-    }
-
-    while( $row = $result->fetch_array() ) {
-        $name = $row[3].", ". $row[2];
-        $csid = $row[1];
-        $faculty = $row[6].", ".$row[7];
-        $phone = $row[4];
-        $email = $row[5];
-        $altemail = $row[8];
-        $prof_id = $row['professor_id'];
-        echo <<<ViewAllPost
-                      <tr>
-                          <td>$name</td>
-                          <td>$csid</td>
-                          <td>$faculty</td>
-                         
-                          <td>$phone</td>
-                          <td>$email</td>
-                          <td>$altemail</td>
-                          <td><a class='btn btn-warning btn-sm' href='edit_user.php?prof=$prof_id'>EDIT</a></td>
-                          <td><a class='btn btn-danger btn-sm' href='ManageUsers.php?delete_prof=$prof_id' onclick="return confirm('Are you sure you want to delete this user?')">DELETE</a></td>
-
-                      </tr>
-ViewAllPost;
-    }
-
-    $result->close();
-    CloseCon( $conn );
+   return $result;
 }
 
 function deleteAIO($a){
@@ -363,16 +255,9 @@ function deletePROF($a){
     CloseCon($conn);
 }
 //CaseInformation.php
-function getCaseInfo($a)
+function getCaseInfo($a,$conn)
 {
-    $conn = OpenCon();
     $statement = $conn->prepare("SELECT evidence_fileDir, aio_id, prof_id FROM active_cases WHERE case_id ='$a' ");
-    if (!$statement->execute()) {
-        echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
-    }
-    $statement->bind_result($path_to_evidence_dir, $aio_id, $prof_id);
-    $statement->fetch();
-    CloseCon($conn);
     return $statement;
 
 }
@@ -398,7 +283,7 @@ function getMoreCaseInfo($a,$conn){
     return $statement;
 
 }
-function getCaseID($a,$conn){
+function selectCaseID($a,$conn){
     $statement = $conn->prepare("SELECT aio_id FROM active_cases WHERE case_id = '$a'");
     return $statement;
 }
@@ -424,6 +309,7 @@ function setMeeting($conn){
 }
 //AIO/ActiveCases.php
 Function getAssignedCases($conn){
+
     $statement = $conn->prepare("
                           SELECT 
                             professor.fname, 

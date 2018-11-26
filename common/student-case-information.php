@@ -20,7 +20,7 @@ if(isset($_POST['caseId'])){
     $caseId = intval($_POST['caseId']);
     
     $conn = OpenCon();
-    getStudentCaseInfo($caseId,$conn);
+    $statement = getStudentCaseInfo($caseId,$conn);
    // $statement = $conn->prepare("SELECT evidence_fileDir, aio_id, prof_id FROM active_cases WHERE case_id = '$caseId'");
     if(!$statement->execute()){
         echo "Execute failed: (" . $statement->errno . ") " . $statement->error;

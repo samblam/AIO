@@ -55,8 +55,8 @@ include '../includes/formProcess.php';
                   <?php
                     $conn = OpenCon();
                     //Get all active cases and bind the returned database fields to php variables
-                  getActiveCases();
-/*                    $result = $conn->query("
+                  $result = getActiveCases($conn);
+/*                  $result = $conn->query("
                                   SELECT 
                                     active_cases.case_id, 
                                     active_cases.class_name_code, 
@@ -70,12 +70,13 @@ include '../includes/formProcess.php';
                                   LEFT JOIN aio 
                                   ON aio.aio_id = active_cases.aio_id
                                   ORDER BY active_cases.case_id ");
+*/
                     if( !$result ) {
                       echo "Database Error. Please contact admin.";
                       echo $conn->error;
                     }
-*/
-                    //$statement->bind_result($caseId, $className, $pfname, $plname, $afname, $alname);
+
+                    // $result = $conn->bind_result($caseId, $className, $pfname, $plname, $afname, $alname);
 
                     /**
                      * Fetches each query result, one by one, and prints out a row for each case.

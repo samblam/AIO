@@ -46,8 +46,8 @@ include '../includes/formProcess.php';
             $conn = OpenCon();
 
             //Get all active cases assigned to this AIO and bind the returned database fields to php variables
-    		   getAssignedCases($conn);
-   /*       $statement = $conn->prepare("
+    		$statement =  getAssignedCases($conn);
+/*         $statement = $conn->prepare("
                           SELECT 
                             professor.fname, 
                             professor.lname, 
@@ -67,8 +67,7 @@ include '../includes/formProcess.php';
 */
     		$statement->bind_param("d", $id); //bind the csid to the prepared statements
             $csid = $_SESSION['csid'];
-            $result = NULL;
-           getAssignedAIOId($csid,$conn);
+            $result = getAssignedAIOId($csid,$conn);
             //$result = $conn->query( "SELECT aio_id FROM `aio` WHERE csid='$csid'" );
             if( !$result ) {
               echo "Database Error. Please contact admin.";
@@ -122,8 +121,7 @@ ViewAllPost;
         <tbody>  
           <?php
             $conn = OpenCon();
-            $query=NULL;
-  getUnassignedCases($conn);
+            $query=getUnassignedCases($conn);
 
 /*            $query = $conn->prepare(
                       "

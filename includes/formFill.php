@@ -1,6 +1,6 @@
 <?php
   require_once "globalSecure.php";
-  
+  include "db.php";
   function parsePhoneNumber( $number ) {
     if( is_int( $number ) ) {
       $areacode = $number % 10000000;

@@ -38,38 +38,38 @@ include '../includes/formProcess.php';
 
         	$_SESSION["edit"] = $_GET['aio'];
 
-            getAIOidROW($aio_id);
-/*
+
+
         	$conn = OpenCon();
+            $result = getAIOidROW($aio_id,$conn);
+        	//$sql = "SELECT * FROM aio WHERE aio_id = '$aio_id'";
 
-        	$sql = "SELECT * FROM aio WHERE aio_id = '$aio_id'";
-
-			$result = $conn->query($sql);
+			//$result = $conn->query($sql);
 
 
 			$row= $result->fetch_assoc();
-*/
+
         }
         
         if (isset($_GET['prof'])) {
-        	
+        	$conn = OpenCon();
         	$user= 'Professor';
 
         	$prof_id= $_GET['prof'];
 
         	$_SESSION["edit"] = $_GET['prof'];
 
-        	getPROFidROW($prof_id);
-/*
-        	$conn = OpenCon();
-        	
-        	$sql = "SELECT * FROM professor WHERE professor_id = '$prof_id'";
+        	$result = getPROFidROW($prof_id,$conn);
 
-			$result = $conn->query($sql);
+        	//$conn = OpenCon();
+        	
+        	//$sql = "SELECT * FROM professor WHERE professor_id = '$prof_id'";
+
+			//$result = $conn->query($sql);
 
 
 			$row= $result->fetch_assoc();
-*/
+
         }
 
 
@@ -291,7 +291,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 
-    //CloseCon( $conn );
+    CloseCon( $conn );
 
  }
 

@@ -72,11 +72,12 @@ include '../includes/formProcess.php';
             <!-- Displays the current AIO, or that there isn't one. -->
             <?php
                 //Gets case id from URL
+                $conn = OpenCon();
                 $caseId = $_POST['caseId'];
-                getCurrentAIO($caseId);
+                $statement = getCurrentAIO($caseId,$conn);
                 //Get aio_id and aio name.
-/*                $conn = OpenCon();
-                $statement = $conn->prepare("SELECT active_cases.aio_id, aio.fname, aio.lname FROM active_cases LEFT JOIN aio ON aio.aio_id = active_cases.aio_id WHERE active_cases.case_id = '$caseId' "); 
+
+             //   $statement = $conn->prepare("SELECT active_cases.aio_id, aio.fname, aio.lname FROM active_cases LEFT JOIN aio ON aio.aio_id = active_cases.aio_id WHERE active_cases.case_id = '$caseId' ");
                 if(!$statement->execute()){
                     echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                 }
@@ -94,16 +95,16 @@ CurrentAIO;
                     }
                 }
                 CloseCon( $conn );
-*/
+
             ?>
             
             <!-- Dropdown for selecting AIO-->    
             <?php
                 //Get aio_id and aio name.
-            selectNameAIO();
-/*
+
                 $conn = OpenCon();
-                $statement = $conn->prepare("SELECT fname, lname FROM aio"); 
+                $statement = selectNameAIO($conn);
+               // $statement = $conn->prepare("SELECT fname, lname FROM aio");
                 if(!$statement->execute()){
                     echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                 }
@@ -132,7 +133,7 @@ OptionAIO;
                     </form>
 Button;
                 CloseCon( $conn );
-*/
+
             ?>
         </div>
     </body>

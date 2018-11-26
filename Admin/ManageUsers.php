@@ -61,8 +61,9 @@ include '../includes/formProcess.php';
                 </thead>
                 <tbody>
                   <?php
-                  selectAIO();
-/*                    $conn = OpenCon();
+                  $conn = OpenCon();
+                  $result = selectAIO($conn);
+/*
                     $result = $conn->query("
                                   SELECT
                                     aio.fname, 
@@ -73,6 +74,7 @@ include '../includes/formProcess.php';
                                     aio.aio_id  
                                   FROM aio 
                                   ORDER BY aio.lname ");
+*/
                     if( !$result ) {
                       echo "Database Error. Please contact admin.";
                       echo $conn->error;
@@ -102,7 +104,7 @@ ViewAllPost;
 
                     $result->close();
                     CloseCon( $conn );
-*/
+
                   ?>
 
                 </tbody>
@@ -131,13 +133,15 @@ ViewAllPost;
                 </thead>
                 <tbody>
                   <?php
-                  selectPROF();
+                  $conn = OpenCon();
+                $result =  selectPROF($conn);
 /*
-                    $conn = OpenCon();
+
                     $result = $conn->query("
                                   SELECT *
                                   FROM professor 
                                   ORDER BY professor.lname ");
+*/
                     if( !$result ) {
                       echo "Database Error. Please contact admin.";
                       echo $conn->error;
@@ -169,7 +173,7 @@ ViewAllPost;
 
                     $result->close();
                     CloseCon( $conn );
-*/
+
                   ?>
 
                 </tbody>

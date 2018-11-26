@@ -39,7 +39,7 @@ MissingDataError;
 	//Edit database to record meeting
     $conn = OpenCon();
     $setMeeting="";
-setMeeting($conn);
+    $setMeeting = setMeeting($conn);
 /* $setMeeting = $conn->prepare("
 		UPDATE student
 		SET

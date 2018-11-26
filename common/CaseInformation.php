@@ -20,9 +20,9 @@
     if(isset($_POST['caseId'])){
         //Gets case id from URL
         $caseId = intval($_POST['caseId']);
-        getCaseInfo($caseId);
+       $statement = getCaseInfo($caseId,$conn);
 
-   /*     $statement = $conn->prepare("SELECT evidence_fileDir, aio_id, prof_id FROM active_cases WHERE case_id ='$caseId' ");
+      // $statement = $conn->prepare("SELECT evidence_fileDir, aio_id, prof_id FROM active_cases WHERE case_id ='$caseId' ");
         if(!$statement->execute()){
             echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
         }
@@ -30,7 +30,7 @@
         $statement->fetch();
 
         CloseCon($conn);
-   */
+
     }
 ?>
 
@@ -72,7 +72,7 @@
                 }
 
                 //Get all relevant fields and bind them to php variables
-            getMoreCaseInfo($caseIdValue,$conn);
+            $statement = getMoreCaseInfo($caseIdValue,$conn);
 /*                $statement = $conn->prepare("
                     SELECT
                         active_cases.form_a_submit_date,
@@ -190,10 +190,11 @@
             <?php 
                 //setting original AIO id to null for bind parameter
                 $aio_id=NULL;
-                // check if URL contains the case_id variable
+                                // check if URL contains the case_id variable
                 if(isset($_SESSION["lastCaseId"])){
                     $case_id = (int)$_SESSION["lastCaseId"];
-                    getCaseID($case_id,$conn);
+                    $conn = OpenCon();
+                   $statement = selectCaseID($case_id,$conn);
             //  $statement = $conn->prepare("SELECT aio_id FROM active_cases WHERE case_id = '$caseId'");
                     //binding current cases aio id to variable
 
@@ -224,13 +225,14 @@ DenyButtons;
                     }
                 }
                 CloseCon($conn);
-                $conn=OpenCon();
+
             ?>
         </div>
 
         <!-- Close case and insufficient evidence buttons -->
         <div class="center-block text-center">
             <?php
+            $conn=OpenCon();
                 if(!isset($_POST['caseId'])){
                     if(!isset($_SESSION['lastCaseId'])){
                         header('ActiveCases.php');
@@ -246,13 +248,13 @@ DenyButtons;
 
                 //Get case verdict from db
                     $id = $_SESSION['csid'];
-            getCaseVerdict($caseIdValue,$id,$conn);
+            $statement = getCaseVerdict($caseIdValue,$id,$conn);
                 // $statement = $conn->prepare("SELECT case_verdict FROM active_cases WHERE case_id = '$caseIdValue' AND aio_id = ?");
 
                 $statement->bind_param("d", $id); //bind the csid to the prepared statements
 
                // $res = $conn->query( "SELECT aio_id FROM `aio` WHERE csid='$id'" );
-            getAIOId($id,$conn);
+            $res = getAIOId($id,$conn);
                 $id = $res->fetch_array()[0];
                 if(!$statement->execute()){
                     echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
