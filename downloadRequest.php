@@ -45,7 +45,7 @@
 
 	    if ($role == "aio" || $role == "professor" || $role == "admin"){
 	    	$path_to_evidence_dir = "evidence/" . $evidence_folder . "/evidence.zip";
-            $path_to_PDF_dir = "evidence/$evidence_folder/FormA.pdf";
+			$path_to_PDF_dir = "evidence/$evidence_folder/FormA.pdf";
             if (isset ($_POST['evidenceLink']) && $evidence_folder != "" && file_exists($path_to_evidence_dir)) {
                 // user should be shown the link to the evidence file
                 header("Cache-Control: public");
