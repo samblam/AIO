@@ -10,7 +10,8 @@
     
     // Grabs case_id of the just inserted case and uses it to set aio_id to current aio
     $csid = $_SESSION['csid'];
-    $result = $conn->query( "SELECT aio_id FROM `aio` WHERE csid='$csid'" );
+    $result = setAIOid($csid,$conn);
+    //$result = $conn->query( "SELECT aio_id FROM `aio` WHERE csid='$csid'" );
     if( !$result ) {
       echo "Database Error. Please contact admin.";
       echo $conn->error;
@@ -19,8 +20,8 @@
     $userId =(int)$result->fetch_assoc()['aio_id'];
 
     $CurrCaseId=(int)$_POST['CurrCaseId'];
-    
-    $CaseInfo = $conn->prepare("UPDATE active_cases SET aio_id = ?  WHERE case_id = ?");
+    $CaseInfo = setCurrentAIOId($conn);
+    //$CaseInfo = $conn->prepare("UPDATE active_cases SET aio_id = ?  WHERE case_id = ?");
     $CaseInfo->bind_param("dd", $userId,$CurrCaseId); //bind evidence folder name to the prepared statements
     if (!$CaseInfo->execute()) {
       echo "Execute failed: (" . $CaseInfo->errno . ") " . $CaseInfo->error;
@@ -36,8 +37,8 @@
 
     // Grabs case_id of the just inserted case and uses it to set aio id to null
     $CurrCaseId=(int)$_POST['CurrCaseId'];
-    
-    $CaseInfo = $conn->prepare("UPDATE active_cases SET aio_id = NULL WHERE case_id = ?");
+    $CaseInfo = setOtherCurrentAIOid($conn);
+    //$CaseInfo = $conn->prepare("UPDATE active_cases SET aio_id = NULL WHERE case_id = ?");
     $CaseInfo->bind_param("d",$CurrCaseId); //bind evidence folder name to the prepared statements
     
     if (!$CaseInfo->execute()) {

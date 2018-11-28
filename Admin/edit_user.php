@@ -38,32 +38,38 @@ include '../includes/formProcess.php';
 
         	$_SESSION["edit"] = $_GET['aio'];
 
+
+
         	$conn = OpenCon();
+            $result = getAIOidROW($aio_id,$conn);
+        	//$sql = "SELECT * FROM aio WHERE aio_id = '$aio_id'";
 
-        	$sql = "SELECT * FROM aio WHERE aio_id = '$aio_id'";
-
-			$result = $conn->query($sql);
+			//$result = $conn->query($sql);
 
 
 			$row= $result->fetch_assoc();
+
         }
 
         if (isset($_GET['prof'])) {
-
+        	$conn = OpenCon();
         	$user= 'Professor';
 
         	$prof_id= $_GET['prof'];
 
         	$_SESSION["edit"] = $_GET['prof'];
 
-        	$conn = OpenCon();
+        	$result = getPROFidROW($prof_id,$conn);
 
-        	$sql = "SELECT * FROM professor WHERE professor_id = '$prof_id'";
+        	//$conn = OpenCon();
 
-			$result = $conn->query($sql);
+        	//$sql = "SELECT * FROM professor WHERE professor_id = '$prof_id'";
+
+			//$result = $conn->query($sql);
 
 
 			$row= $result->fetch_assoc();
+
         }
 
 
@@ -236,7 +242,7 @@ if($user == 'Professor'){
 
 if($_SERVER["REQUEST_METHOD"] == "POST") {
 
-	$conn = OpenCon();
+	//$conn = OpenCon();
 
     if (isset($_POST['edit_aio'])) {
         //get all the values from the form
@@ -259,13 +265,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 			//make an sql statment
-			$sql_aio = "UPDATE aio SET csid='$aio_csid', fname='$aio_fname', lname='$aio_lname', phone='$aio_phone', email='$aio_email', signature='$fileName' WHERE aio_id= '$aio_id1'";
+             updateAIO($aio_csid,$aio_fname,$aio_lname,$aio_phone,$aio_email,$aio_id1);
+/*		$sql_aio = "UPDATE aio SET csid='$aio_csid', fname='$aio_fname', lname='$aio_lname', phone='$aio_phone', email='$aio_email' WHERE aio_id= '$aio_id1'";
+
 
 
 			$result = $conn->query($sql_aio);
-
-
-
+*/
 			?>
 			<script type="text/javascript">
 				window.location.href = 'ManageUsers.php';
@@ -288,14 +294,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         	$prof_aemail=$_POST['aemail'];
 
 
-
+            updatePROF($prof_csid,$prof_fname,$prof_lname,$prof_phone,$prof_email,$prof_faculty,$prof_department,$prof_aemail,$prof_id1);
 
 			//make an sql statment
-			$sql_prof= "UPDATE professor SET csid='$prof_csid', fname='$prof_fname', lname='$prof_lname', phone='$prof_phone', email='$prof_email', faculty='$prof_faculty', department='$prof_department', alt_email= '$prof_aemail' WHERE professor_id= '$prof_id1'";
+/*			$sql_prof= "UPDATE professor SET csid='$prof_csid', fname='$prof_fname', lname='$prof_lname', phone='$prof_phone', email='$prof_email', faculty='$prof_faculty', department='$prof_department', alt_email= '$prof_aemail' WHERE professor_id= '$prof_id1'";
 
 
 			$result = $conn->query($sql_prof);
-
+*/
 			?>
 			<script type="text/javascript">
 				window.location.href = 'ManageUsers.php';

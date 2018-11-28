@@ -54,9 +54,11 @@
 				}
 
 				$conn = OpenCon();
+				$getStudentList="";
 				//Get the IDs of students involved in the case and make a button for each one.
 				if ($num_students > 1) {
-					$getStudentList = $conn->prepare("
+					$getStudentList = getStudent($caseId,$conn);
+/*				    $getStudentList = $conn->prepare("
 									SELECT
 										student_id,
 										fname,
@@ -66,7 +68,7 @@
 									WHERE
 										case_id = $caseId
 									");
-
+*/
 					if(!$getStudentList->execute()){
 						echo "Execute failed: (" . $getCaseInfo->errno . ") " . $getCaseInfo->error;
 					}
@@ -81,7 +83,7 @@
 AltStudentButton;
 					}
 
-					CloseCon($getStudentList);
+					CloseCon($conn);
 				}
 
 				if(isset($_GET["student_id"]) && is_numeric($_GET["student_id"])){
@@ -93,9 +95,10 @@ AltStudentButton;
 NoStuIDError;
 					exit();
 				}
-
+            $conn=OpenCon();
 				//Get info about the student.
-				$studentInfo = $conn->prepare("
+              $studentInfo = getStudentInfo($student_id,$conn);
+/*            $studentInfo = $conn->prepare("
 									SELECT
 										S.fname,
 										S.lname,
@@ -106,17 +109,19 @@ NoStuIDError;
 									WHERE
 										student_id = $student_id
 									");
-
+*/
 				if(!$studentInfo->execute()){
 					echo "Execute failed: (" . $studentInfo->errno . ") " . $studentInfo->error;
 				}
 
 				$studentInfo->bind_result($stu_fname, $stu_lname, $stu_email, $stu_csid);
 				$studentInfo->fetch();	//Pull just one row.
-				CloseCon($studentInfo);
+				CloseCon($conn);
 
 				//Get additional information about the case.
-				$caseInfo = $conn->prepare("
+            $conn=OpenCon();
+            $caseInfo = getAdditionalCaseInfo($caseId,$conn);
+/*				$caseInfo = $conn->prepare("
 									SELECT
 										A.evidence_fileDir,
 										P.fname,
@@ -131,14 +136,14 @@ NoStuIDError;
 										case_id = $caseId
 
 									");
-
+*/
 				if(!$caseInfo->execute()){
 					echo "Execute failed: (" . $caseInfo->errno . ") " . $caseInfo->error;
 				}
 
 				$caseInfo->bind_result($evidence_path, $prof_fname, $prof_lname, $prof_email, $aio_id);
 				$caseInfo->fetch();	//Pull just one row.
-				CloseCon($caseInfo);
+				CloseCon($conn);
 
 				//Add another DB visit for getting AIO info, if they exist.
 				if ($aio_id == "") {
@@ -146,7 +151,9 @@ NoStuIDError;
 					$aio_phone = "N/A";
 					$aio_email = "N/A";
 				} else {
-					$AIOInfo = $conn->prepare("
+                $conn=OpenCon();
+				$AIOInfo= getAdditionalAIOInfo($aio_id,$conn);
+/*					$AIOInfo = $conn->prepare("
 									SELECT
 										phone,
 										email
@@ -155,14 +162,14 @@ NoStuIDError;
 									WHERE
 										aio_id = $aio_id
 									");
-
+*/
 					if(!$AIOInfo->execute()){
 						echo "Execute failed: (" . $AIOInfo->errno . ") " . $AIOInfo->error;
 					}
 
 					$AIOInfo->bind_result($aio_phone, $aio_email);
 					$AIOInfo->fetch();	//Pull just one row.
-					CloseCon($AIOInfo);
+					CloseCon($conn);
 				}
 			?>
         </div>

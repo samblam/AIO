@@ -58,7 +58,8 @@ include '../includes/formProcess.php';
                     $id = (int)$res->fetch_array()[0];
 
                     //Get all active cases created by this professor and bind the returned database fields to php variables
-                    $statement = $conn->prepare("
+                    $statement = getAllActiveCasesByProfId($id,$conn);
+/*                    $statement = $conn->prepare("
 					SELECT
 						aio.fname,
 						aio.lname,
@@ -72,7 +73,7 @@ include '../includes/formProcess.php';
 						LEFT JOIN aio ON aio.aio_id = active_cases.aio_id
 					WHERE active_cases.prof_id = $id
 					");
-
+*/
                     if(!$statement->execute()){
                       echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                     }

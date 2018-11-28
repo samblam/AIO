@@ -182,7 +182,7 @@ if($user == 'Professor'){
 if($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
-	$conn = OpenCon();
+	//$conn = OpenCon();
 
     if (isset($_POST['add_aio'])) {
         //get all the values from the form
@@ -192,13 +192,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         	$aio_phone=$_POST['phone'];
         	$aio_email=$_POST['email'];
 
-
+        insertUserAIO($aio_csid,$aio_fname,$aio_lname,$aio_phone,$aio_email);
 
 			//make an sql statment
-			$sql_aio="INSERT INTO aio(csid, fname, lname, phone, email) VALUES ('$aio_csid', '$aio_fname','$aio_lname','$aio_phone' ,'$aio_email')";
+/*			$sql_aio="INSERT INTO aio(csid, fname, lname, phone, email) VALUES ('$aio_csid', '$aio_fname','$aio_lname','$aio_phone' ,'$aio_email')";
 
 			$result = $conn->query($sql_aio);
-
+*/
 			?>
 			<script type="text/javascript">
 				window.location.href = 'ManageUsers.php';
@@ -223,10 +223,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 			//make an sql statment
-			$sql_prof="INSERT INTO professor(csid, fname, lname, phone, email, faculty, department, alt_email) VALUES ('$prof_csid', '$prof_fname','$prof_lname','$prof_phone' ,'$prof_email','$prof_faculty','$prof_department','$prof_aemail')";
+            insertUserPROF($prof_csid,$aio_fname,$aio_lname,$prof_phone,$prof_email,$prof_faculty,$prof_department,$prof_aemail);
+
+/*			$sql_prof="INSERT INTO professor(csid, fname, lname, phone, email, faculty, department, alt_email) VALUES ('$prof_csid', '$prof_fname','$prof_lname','$prof_phone' ,'$prof_email','$prof_faculty','$prof_department','$prof_aemail')";
 
 			$result = $conn->query($sql_prof);
-
+*/
 			?>
 			<script type="text/javascript">
 				window.location.href = 'ManageUsers.php';
@@ -240,7 +242,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 
-    CloseCon( $conn );
+    //CloseCon( $conn );
 
  }
 
