@@ -61,7 +61,7 @@
       // echo " The role is ". $_SESSION['role'] ."   ok";
     ?>
     <?php if ($_SESSION['role'] =='admin') { ?>
-      <button class="btn btn-primary" style="margin-left: 10pt;" formaction=<?php echo "http://" . $_SERVER["HTTP_HOST"] . "/Admin/ManageUsers.php"; ?>>Manage Users</button>
+      <button class="btn btn-primary" style="margin-left: 10pt;" formaction=<?php echo "../Admin/ManageUsers.php"; ?>>Manage Users</button>
     <?php }?>
 
     <button class="btn btn-default" style="margin-left: 10pt;" formaction=<?php echo "\"$faqLink\""; ?>>FAQ</button>
