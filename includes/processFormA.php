@@ -1,4 +1,4 @@
-<?php	
+<?php
 	require_once "formProcess.php";
 	include_once 'fileFunctions.php';
 	require_once 'session.php';
@@ -18,7 +18,7 @@
 	if(isset($_POST['SaveFormA']) || isset($_POST['SubmitFormA'])){
 		$profId = -1;
 
-		if( isset($_POST['SubmitFormA']) && 
+		if( isset($_POST['SubmitFormA']) &&
 			      isset($_POST["AdminSubmittedProfId"]) ) {
 			$profId = intval($_POST["AdminSubmittedProfId"]);
 		}
@@ -89,10 +89,12 @@ MissingDataError;
 
 				if(!$statement->execute()) {
 					//might want to replace this with header("location: ../forma.php"); so that you aren't executing the script further if there is an error
-					echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
-					$processSuccessful = false;
+					//echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
+					//$processSuccessful = false;
+
+					header("location: ../forma.php");
 				}
-			} 
+			}
 
 			else {
 				//Create new case entry
@@ -112,7 +114,7 @@ MissingDataError;
 				$updateEvidence = setActiveCaseById($caseId,$conn);
 				//$updateEvidence = $conn->prepare("UPDATE active_cases SET evidence_fileDir = ? WHERE case_id = '$caseId'");
 				$updateEvidence->bind_param("s", $caseId); //bind evidence folder name to the prepared statements
-				
+
 				if(!$updateEvidence->execute()) {
 					echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
 					$processSuccessful = false;
@@ -146,13 +148,13 @@ MissingDataError;
 			// Creates the case directory for uploading evidence
 			if(!is_dir($baseEvidenceDir . $caseId)){
 			    mkdir($baseEvidenceDir . $caseId);
-			} 
+			}
 
-			$zipFileLocation = $baseEvidenceDir . $caseId; 
+			$zipFileLocation = $baseEvidenceDir . $caseId;
 
 			$uploadSuccessful = moveUploadedFilesToZip($allFilesAreValid, $zipFileLocation);
 
-			//PDF function 
+			//PDF function
 
 			$PDFFunction = PDFFormA ($prof, $email, $phone, $faculty, $cname, $students, $boos, $date, $comments, $caseId);
 
@@ -201,7 +203,7 @@ MissingDataError;
 					$currB00 = htmlspecialchars(trim(stripslashes($boos[$i])));
 					$currStudent = htmlspecialchars(trim(stripslashes($students[$i])));
 					$statement->bind_param("sis", $currB00, $caseId, $currStudent); //bind initial values to the prepared statements
-					
+
 					if (!$statement->execute()) {
 						echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
 					}
@@ -223,7 +225,7 @@ MissingDataError;
 			$statement = setNewActiveCaseById($caseId,$conn);
             //$statement = $conn->prepare("UPDATE active_cases SET prof_id = ?, class_name_code = ?, date_aware = ?, description = ? WHERE case_id = " . (int)$_POST['case_id']);
 			$statement->bind_param("dsss",$profId, $cname, $date, $comments); //bind initial values to the prepared statements
-			
+
 			if (!$statement->execute()) {
 			   echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
 			}
@@ -293,14 +295,14 @@ MissingDataError;
 
 		if(!isset($_POST['EvidenceDirectory'])){
 			echo "Error - there was no evidence directory in which to add the uploaded files.";
-		} 
+		}
 
 		else {
 			$evidenceDir = $baseEvidenceDir . $_POST['EvidenceDirectory'];
 			// Creates the case directory for uploading evidence
 			if(!is_dir($evidenceDir)){
 				mkdir($evidenceDir);
-			} 
+			}
 
 			$allFilesAreValid = validateUploadedFiles();
 			$uploadSuccessful = moveUploadedFilesToZip($allFilesAreValid, $evidenceDir);

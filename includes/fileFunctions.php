@@ -1,6 +1,6 @@
 <?php
 
-	function validateUploadedFiles(){		 
+	function validateUploadedFiles(){
 		/* the file validation values should be based on the values set in the php.ini file
 			important values for max file size:
 				'post_max_size'
@@ -8,7 +8,7 @@
 				'upload_max_filesize'
 
 			the smallest of these values should be used as the max filesize.
-			these values can be retrieved using ini_get('var_name'), however they are reported as strings with letters 
+			these values can be retrieved using ini_get('var_name'), however they are reported as strings with letters
 			in them and would require complex parsing.
 		*/
 
@@ -25,7 +25,7 @@
 		$allUploadedFilesAreValid = true;
 
 		for($i = 0; $i < $numUploadedFiles; $i++){
-		    // Check if there was an error uploading the file or if the file size exceeds the max size allowed 
+		    // Check if there was an error uploading the file or if the file size exceeds the max size allowed
 		    if($_FILES["fileInput"]["error"][$i] == 1 || $_FILES["fileInput"]["size"][$i] > $maxFileSize){
 		        $allUploadedFilesAreValid = false;
 		        break;
@@ -43,9 +43,9 @@
 		    $zip = new ZipArchive();
 		    $zipPath = $zipFileDir . '/' . $evidenceZipFileName;
 
-		    if(!$zip->open($zipPath, ZIPARCHIVE::CREATE)) { 
+		    if(!$zip->open($zipPath, ZIPARCHIVE::CREATE)) {
 		        echo "ZIP creation failed. Could not upload the files.";
-		    } 
+		    }
 
 		    else {
 		        // move the uploaded files from the temporary directory to the evidence zip file
@@ -57,13 +57,12 @@
 		        $zip->close();
 		       	return true;
 		    }
-		} 
+		}
 
 		return false;
 	}
 
 	function PDFFormA ($prof, $email, $phone, $faculty, $cname, $students, $boos, $date, $comments, $case_id){
-        putenv('PATH=/usr/bin/:/usr/local/bin:/bin');
 	$numberStudents = count($students);
 	$fileText = <<<_END
 {$prof}
@@ -88,9 +87,9 @@ _END;
 	//Change to run
 	$dir = "../LaTeX";
 	//Maybe a security issue
-	$redir = chdir("{$dir}");
-	$console = shell_exec("xelatex FormA.tex");
-	$rename = "{$case_id}.pdf";
+	chdir("{$dir}");
+	shell_exec("xelatex FormA.tex");
+	$rename = "FormA.pdf";
 	//To change name and file location of PDF
 	rename ("FormA.pdf", "../evidence/{$case_id}/{$rename}");
 }

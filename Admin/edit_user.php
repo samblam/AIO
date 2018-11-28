@@ -27,11 +27,11 @@ include '../includes/formProcess.php';
 
   <body style="margin: auto;">
         <?php include_once '../includes/navbar.php'; ?>
-        
-        <?php  
-        
+
+        <?php
+
         if (isset($_GET['aio'])) {
-        	
+
         	$user= 'AIO';
 
         	$aio_id= $_GET['aio'];
@@ -50,7 +50,7 @@ include '../includes/formProcess.php';
 			$row= $result->fetch_assoc();
 
         }
-        
+
         if (isset($_GET['prof'])) {
         	$conn = OpenCon();
         	$user= 'Professor';
@@ -62,7 +62,7 @@ include '../includes/formProcess.php';
         	$result = getPROFidROW($prof_id,$conn);
 
         	//$conn = OpenCon();
-        	
+
         	//$sql = "SELECT * FROM professor WHERE professor_id = '$prof_id'";
 
 			//$result = $conn->query($sql);
@@ -83,7 +83,7 @@ include '../includes/formProcess.php';
 
 <?php
 
-if($user == 'AIO'){	
+if($user == 'AIO'){
 ?>
 <div class="form-container">
 <form class="form-horizontal" action="edit_user.php" method="post" enctype="multipart/form-data">
@@ -102,14 +102,14 @@ if($user == 'AIO'){
 				<input type="text" class="form-control" name="fname" value=<?php echo $row['fname'];?>  required >
 			</div>
 			</div>
-			
+
 			<div class="form-group">
 			<div class="col-sm-9">
 				<label for="title">Last Name</label>
 				<input type="text" class="form-control" name="lname" value=<?php echo $row['lname'];?>  required >
 			</div>
 			</div>
-			
+
 			<div class="form-group">
 			<div class="col-sm-9">
 				<label for="title">Phone Number</label>
@@ -125,6 +125,19 @@ if($user == 'AIO'){
 			</div>
 
 
+      <div class="form-group col-lg-6">
+        <label for="user_image">Signature</label>
+          <?php
+            if($row['signature'] != "") {
+              echo "<br><img width='100' src='../AIOSignatures/{$row['signature']}' alt='thumbnails'><br><br>";
+            }
+            else {
+              echo "<br>No Signature Added<br><br><br>";
+            }
+          ?>
+        <input type="file" name="aio_signature">
+      </div>
+
 
 			<div class="form-group">
 			<div class="col-sm-9">
@@ -132,6 +145,7 @@ if($user == 'AIO'){
 				<a  class="btn btn-danger" href="ManageUsers.php">Cancel</a>
 			</div>
 			</div>
+
 
 
 	</div>
@@ -144,7 +158,7 @@ if($user == 'AIO'){
 
 <?php
 
-if($user == 'Professor'){	
+if($user == 'Professor'){
 ?>
 <div class="form-container">
 <form class="form-horizontal" action="edit_user.php" method="post" enctype="multipart/form-data">
@@ -163,14 +177,14 @@ if($user == 'Professor'){
 				<input type="text" class="form-control" name="fname" value=<?php echo $row['fname'];?>  required >
 			</div>
 			</div>
-			
+
 			<div class="form-group">
 			<div class="col-sm-9">
 				<label for="title">Last Name</label>
 				<input type="text" class="form-control" name="lname" value=<?php echo $row['lname'];?>  required >
 			</div>
 			</div>
-			
+
 			<div class="form-group">
 			<div class="col-sm-9">
 				<label for="title">Phone Number</label>
@@ -223,7 +237,7 @@ if($user == 'Professor'){
 
 <?php }?>
 
-<?php 
+<?php
 
 
 if($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -238,6 +252,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         	$aio_lname=$_POST['lname'];
         	$aio_phone=$_POST['phone'];
         	$aio_email=$_POST['email'];
+
+
+          $file = $_FILES['aio_signature'];
+
+          $fileName = $_FILES['aio_signature']['name'];
+          $fileTmpName = $_FILES['aio_signature']['tmp_name'];
+
+          $targetFile = "../AIOSignatures/" . $fileName;
+
+          move_uploaded_file($fileTmpName, "$targetFile");
 
 
 			//make an sql statment
