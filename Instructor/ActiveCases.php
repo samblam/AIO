@@ -2,7 +2,7 @@
 require_once '../includes/session.php';
 require_once 'secure.php';
 //Open the db connection
-include '../includes/db.php';
+include_once '../includes/db.php';
 //Check if the form variables have been submitted, store them in the session variables
 include '../includes/formProcess.php';
 
@@ -50,7 +50,7 @@ include '../includes/formProcess.php';
                   <?php
                     $conn = OpenCon();
                     $csid = $_SESSION['csid'];
-                    $res = $conn->query( "SELECT professor_id FROM `professor` WHERE csid=\"$csid\"" );
+                    $res = $conn->query( "SELECT professor_id FROM `professor` WHERE csid='$csid'" );
                     if( !$res ){
                         echo "Database Error. Contact admin.";
                         echo $conn->error;
