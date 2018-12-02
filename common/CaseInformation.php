@@ -199,7 +199,7 @@
             //  $statement = $conn->prepare("SELECT aio_id FROM active_cases WHERE case_id = '$caseId'");
                     //binding current cases aio id to variable
 
-                    $statement->bind_param("i", $case_id);
+                //    $statement->bind_param("i", $case_id);
                     if(!$statement->execute()){
                         echo "Execute failed: (" . $statement->errno . ") " . $statement->error;
                     }
@@ -233,7 +233,7 @@ DenyButtons;
         <!-- Close case and insufficient evidence buttons -->
         <div class="center-block text-center">
             <?php
-            $conn=OpenCon();
+            $conn = OpenCon();
                 if(!isset($_POST['caseId'])){
                     if(!isset($_SESSION['lastCaseId'])){
                         header('ActiveCases.php');
@@ -252,7 +252,7 @@ DenyButtons;
             $statement = getCaseVerdict($caseIdValue,$id,$conn);
                 // $statement = $conn->prepare("SELECT case_verdict FROM active_cases WHERE case_id = '$caseIdValue' AND aio_id = ?");
 
-                $statement->bind_param("d", $id); //bind the csid to the prepared statements
+          //      $statement->bind_param("d", $id); //bind the csid to the prepared statements
 
                // $res = $conn->query( "SELECT aio_id FROM `aio` WHERE csid='$id'" );
             $res = getAIOId($id,$conn);
